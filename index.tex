@@ -198,7 +198,7 @@ Willis and Sean Mussenden}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, frame hidden, sharp corners, interior hidden, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, boxrule=0pt, interior hidden, borderline west={3pt}{0pt}{shadecolor}, sharp corners, enhanced, frame hidden]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -4653,7 +4653,10 @@ pick 10.
 \end{Shaded}
 
 \begin{verbatim}
-Warning: One or more parsing issues, see `problems()` for details
+Warning: One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat <- vroom(...)
+  problems(dat)
 \end{verbatim}
 
 \begin{verbatim}
@@ -4719,6 +4722,7 @@ Rows: 476915 Columns: 13
 Delimiter: ","
 chr (6): county, precinct, office, candidate, party, election_day
 dbl (5): district, absentee, mail, provisional, limited
+num (2): votes, early_voting
 
 i Use `spec()` to retrieve the full column specification for this data.
 i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -4926,7 +4930,10 @@ take a look:
 \end{Shaded}
 
 \begin{verbatim}
-Warning: One or more parsing issues, see `problems()` for details
+Warning: One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat <- vroom(...)
+  problems(dat)
 \end{verbatim}
 
 \begin{verbatim}
@@ -5039,6 +5046,10 @@ have \texttt{lubridate} handy for \texttt{floor\_date}.
 \FunctionTok{library}\NormalTok{(lubridate)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+Loading required package: timechange
+\end{verbatim}
 
 \begin{verbatim}
 
@@ -6138,13 +6149,13 @@ pop up automatically.
 You first have to import your data into a project. Click the choose
 files button and upload a csv of the DC food-related expenditures.
 
-\includegraphics{./images/open1.png}
+\includegraphics[width=8.51in,height=\textheight]{./images/open1.png}
 
 After your data is loaded into the app, you'll get a screen to look over
 what the data looks like. On the top right corner, you'll see a button
 to create the project. Click that.
 
-\includegraphics{./images/open2.png}
+\includegraphics[width=11.9in,height=\textheight]{./images/open2.png}
 
 Open Refine has many, many tools. We're going to use one piece of it, as
 a tool for data cleaning. To learn how to use it, we're going to clean
@@ -6156,30 +6167,30 @@ we can preserve the original data while cleaning the new one.
 Click the dropdown arrow next to the recipient\_name column, choose
 ``edit column'' \textgreater{} ``Add column based on this column'':
 
-\includegraphics{./images/open2a.png}
+\includegraphics[width=6.86in,height=\textheight]{./images/open2a.png}
 
 On the window that pops up, type ``recipient\_name\_orig'' in the ``new
 column name'' field. Then hit the OK button.
 
-\includegraphics{./images/open2b.png}
+\includegraphics[width=4.75in,height=\textheight]{./images/open2b.png}
 
 Now, let's get to work cleaning the recipient\_name column.
 
 Next to the recipient\_name field name, click the down arrow, then
 facet, then text facet.
 
-\includegraphics{./images/open3.png}
+\includegraphics[width=2.84in,height=\textheight]{./images/open3.png}
 
 After that, a new box will appear on the left. It tells us how many
 unique recipient\_names there are: 1,655. And, there's a button on the
 right of the box that says Cluster.
 
-\includegraphics{./images/open4.png}
+\includegraphics[width=1.93in,height=\textheight]{./images/open4.png}
 
 Click the cluster button. A new window will pop up, a tool to help us
 identify things that need to be cleaned, and quickly clean them.
 
-\includegraphics{./images/open5.png}
+\includegraphics[width=6.66in,height=\textheight]{./images/open5.png}
 
 The default ``method'' used is a clustering algorithim called ``key
 collision'', using the fingerprint function. This is the same method we
@@ -6189,7 +6200,7 @@ At the top, you'll see which method was used, and how many clusters that
 algorithm identified. There are several different methods, each of which
 work slightly differently and produce different results.
 
-\includegraphics{./images/open6.png}
+\includegraphics[width=6.66in,height=\textheight]{./images/open6.png}
 
 Then, below that, you can see what those clusters are. Right away, we
 can see how useful this program is. It identified 99 rows that have some
@@ -6227,7 +6238,7 @@ When you're finished cleaning, click ``Merge Selected \& Close''.
 
 Then, export the data as a csv so you can load it back into R.
 
-\includegraphics{./images/open7.png}
+\includegraphics[width=9.5in,height=\textheight]{./images/open7.png}
 
 A question for all data analysts -- if the dataset is bad enough, can it
 ever be cleaned?
@@ -6288,12 +6299,12 @@ somewhere, and then click import. After it imports, click autodetect
 tables. You'll see red boxes appear around what Tabula believes are the
 tables. You'll see it does a pretty good job at this.
 
-\includegraphics{./images/md_voters.png}
+\includegraphics[width=1.89in,height=\textheight]{./images/md_voters.png}
 
 Now you can hit the green ``Preview \& Export Extracted Data'' button on
 the top right. You should see something very like this:
 
-\includegraphics{./images/md_voters2.png}
+\includegraphics[width=5.4in,height=\textheight]{./images/md_voters2.png}
 
 You can now export that extracted table to a CSV file using the
 ``Export'' button. And then we can read it into R:
@@ -6309,6 +6320,7 @@ Rows: 25 Columns: 10
 -- Column specification --------------------------------------------------------
 Delimiter: ","
 chr (1): County
+num (9): DEM, REP, BAR, GRN, LIB, WCP, OTH, UNA, TOTAL
 
 i Use `spec()` to retrieve the full column specification for this data.
 i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -6343,11 +6355,12 @@ Boom - we're good to go.
 \section{When it looks good, but needs a little
 fixing}\label{when-it-looks-good-but-needs-a-little-fixing}}
 
-Here's a slightly more involved PDF. Here's a
-\href{https://raw.githubusercontent.com/openelections/openelections-sources-pa/master/2020/general/Fayette\%20PA\%202020\%20General\%20Summary.pdf}{PDF
-of 2020 general election results from Fayette County, Pa.}.
+Here's a slightly more involved PDF, from our Missouri primary election
+collection efforts! It's from
+\href{https://drive.google.com/file/d/1PcsvFpkulCZUM6bnEM74cttf3W0WWC0U/view?usp=sharing}{Camden
+County}.
 
-\includegraphics{./images/fayette_1.png}
+\includegraphics[width=2.69in,height=\textheight]{./images/camden_1.png}
 
 Looks like a spreadsheet, right? Save that PDF file to your computer in
 a place where you'll remember it (like a Downloads folder).
@@ -6355,238 +6368,172 @@ a place where you'll remember it (like a Downloads folder).
 Now let's repeat the steps we did to import the PDF into Tabula and
 autodetect the tables. It should look like this:
 
-\includegraphics{./images/fayette_2.png}
+\includegraphics[width=0.91in,height=\textheight]{./images/camden_2.png}
 
-This is pretty good, but we don't want the ``Times Cast'' boxes at the
-top of each contest, because they have a slightly different layout. Go
-through the pages (there are 9 of them) and click the ``x'' to the right
-of those to clear them.
+This is pretty good, but we want to capture the second line of the
+headers - \texttt{Voters}, \texttt{Cast} and \texttt{Turnout} - and for
+our purposes we only want the first page of the PDF for now. So hit
+``Clear All Selections'' button at the top and let's draw a box around
+what we want. Using your cursor, click and drag a box across the first
+page so it looks like this:
+
+\includegraphics[width=0.98in,height=\textheight]{./images/camden_3.png}
 
 Now you can hit the green ``Preview \& Export Extracted Data'' button on
-the top right. Using the ``Lattice'' method, you should see something
+the top right. Using the ``Stream'' method, you should see something
 very like this:
 
-\includegraphics{./images/fayette_3.png}
+\includegraphics[width=4.86in,height=\textheight]{./images/camden_4.png}
 
 You can now export that extracted table to a CSV file using the
 ``Export'' button. And then we can read it into R and clean up the
-column names:
+column names and some other things:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fayette\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/tabula{-}Fayette PA 2020 General Summary.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
+\NormalTok{camden\_2022 }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/tabula{-}camden\_county\_election\_results.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 New names:
-* `` -> `...8`
-\end{verbatim}
-
-\begin{verbatim}
-Warning: One or more parsing issues, see `problems()` for details
-\end{verbatim}
-
-\begin{verbatim}
-Rows: 284 Columns: 8
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr (7): Candidate, Party, Election Day, Absentee, Mail-In, Provisional, Total
-lgl (1): ...8
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 23 Columns: 4
+-- Column specification
+-------------------------------------------------------- Delimiter: "," chr
+(3): ...1, Voters, Turnout dbl (1): Cast
+i Use `spec()` to retrieve the full column specification for this data. i
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+* `` -> `...1`
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fayette\_2020}
+\NormalTok{camden\_2022}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 284 x 8
-   candidate                   party elect~1 absen~2 mail_in provi~3 total x8   
-   <chr>                       <chr> <chr>   <chr>   <chr>   <chr>   <chr> <lgl>
- 1 "Joseph R. Biden V.P. Kama~ DEM   9,337   1,364   9,181   574     20,4~ NA   
- 2 "Donald J. Trump V.P. Mich~ REP   34,965  1,224   4,056   998     41,2~ NA   
- 3 "Jo Jorgensen V.P Jeremy\r~ LIB   328     34      94      12      468   NA   
- 4 "Write-in"                  <NA>  51      4       32      4       91    NA   
- 5  <NA>                       <NA>  Electi~ Absent~ Mail-In Provis~ Total NA   
- 6 "Brian Carroll"             WRIT~ 0       0       0       0       0     NA   
- 7 "Andrew Tang"               WRIT~ 1       0       0       0       1     NA   
- 8 "Kayne West"                WRIT~ 1       0       0       0       1     NA   
- 9 "Benjamin Sota"             WRIT~ 1       0       0       0       1     NA   
-10 "Patrick Roy"               WRIT~ 1       0       0       0       1     NA   
-# ... with 274 more rows, and abbreviated variable names 1: election_day,
-#   2: absentee, 3: provisional
+# A tibble: 23 x 4
+   x1                        voters  cast turnout
+   <chr>                     <chr>  <dbl> <chr>  
+ 1 Jurisdiction Wide         <NA>      NA <NA>   
+ 2 BARNUMTON                 1065     360 33.80% 
+ 3 CAMDENTON 1               2618     775 29.60% 
+ 4 CAMDENTON 2               2530     711 28.10% 
+ 5 CAMDENTON 3 & HA HA TONKA 2952     840 28.46% 
+ 6 CLIMAX SPRINGS            1144     354 30.94% 
+ 7 DECATURVILLE              1272     461 36.24% 
+ 8 FREEDOM                   594      224 37.71% 
+ 9 GREENVIEW                 1551     570 36.75% 
+10 HILLHOUSE                 503      167 33.20% 
+# ... with 13 more rows
 \end{verbatim}
 
 \hypertarget{cleaning-up-the-data-in-r}{%
 \section{Cleaning up the data in R}\label{cleaning-up-the-data-in-r}}
 
 The good news is that we have data we don't have to retype. The bad news
-is, it's hardly in importable shape. We have a few things to fix. All
-the columns with the number of votes in them have commas, which causes R
-to think they are columns, not numbers. Let's fix that by re-importing
-it and calling \texttt{mutate} so that those columns are numeric.
+is, it's hardly in importable shape. We have a few things to fix. Some
+of the datatypes are wrong, we've got a column to rename and two rows
+with NAs, plus a precinct name that wraps over to the next line. Let's
+start by re-importing it and calling \texttt{mutate} to fix the column
+\& datatype issues, plus that precinct name:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fayette\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/tabula{-}Fayette PA 2020 General Summary.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
+\NormalTok{camden\_2022 }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/tabula{-}camden\_county\_election\_results.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 New names:
-* `` -> `...8`
-\end{verbatim}
-
-\begin{verbatim}
-Warning: One or more parsing issues, see `problems()` for details
-\end{verbatim}
-
-\begin{verbatim}
-Rows: 284 Columns: 8
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr (7): Candidate, Party, Election Day, Absentee, Mail-In, Provisional, Total
-lgl (1): ...8
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 23 Columns: 4
+-- Column specification
+-------------------------------------------------------- Delimiter: "," chr
+(3): ...1, Voters, Turnout dbl (1): Cast
+i Use `spec()` to retrieve the full column specification for this data. i
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+* `` -> `...1`
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fayette\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ fayette\_2020 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{election\_day=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{parse\_number}\NormalTok{(election\_day)), }\AttributeTok{absentee=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{parse\_number}\NormalTok{(absentee)), }\AttributeTok{mail\_in=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{parse\_number}\NormalTok{(mail\_in)), }\AttributeTok{provisional=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{parse\_number}\NormalTok{(provisional)),}\AttributeTok{total=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{parse\_number}\NormalTok{(total)))}
+\NormalTok{camden\_2022 }\OtherTok{\textless{}{-}}\NormalTok{ camden\_2022 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{precinct =}\NormalTok{ x1) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{voters =} \FunctionTok{as.numeric}\NormalTok{(voters),}
+         \AttributeTok{turnout =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_replace}\NormalTok{(turnout, }\StringTok{\textquotesingle{}\%\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{))}
+\NormalTok{         ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{precinct =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    precinct }\SpecialCharTok{==} \StringTok{\textquotesingle{}SUNRISE BEACH 2 \& 3 AND WILSON\textquotesingle{}} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}SUNRISE BEACH 2 \& 3 AND WILSON BEND\textquotesingle{}}\NormalTok{,}
+    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ precinct}
+\NormalTok{  )}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-Warning: 20 parsing failures.
-row col expected       actual
-  5  -- a number Election Day
- 25  -- a number Election Day
- 73  -- a number Election Day
- 74  -- a number Election Day
- 80  -- a number Election Day
-... ... ........ ............
-See problems(...) for more details.
-\end{verbatim}
+Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
 
-\begin{verbatim}
-Warning: 20 parsing failures.
-row col expected   actual
-  5  -- a number Absentee
- 25  -- a number Absentee
- 73  -- a number Absentee
- 74  -- a number Absentee
- 80  -- a number Absentee
-... ... ........ ........
-See problems(...) for more details.
-\end{verbatim}
-
-\begin{verbatim}
-Warning: 20 parsing failures.
-row col expected  actual
-  5  -- a number Mail-In
- 25  -- a number Mail-In
- 73  -- a number Mail-In
- 74  -- a number Mail-In
- 80  -- a number Mail-In
-... ... ........ .......
-See problems(...) for more details.
-\end{verbatim}
-
-\begin{verbatim}
-Warning: 20 parsing failures.
-row col expected      actual
-  5  -- a number Provisional
- 25  -- a number Provisional
- 73  -- a number Provisional
- 74  -- a number Provisional
- 80  -- a number Provisional
-... ... ........ ...........
-See problems(...) for more details.
-\end{verbatim}
-
-\begin{verbatim}
-Warning: 20 parsing failures.
-row col expected actual
-  5  -- a number  Total
- 25  -- a number  Total
- 73  -- a number  Total
- 74  -- a number  Total
- 80  -- a number  Total
-... ... ........ ......
-See problems(...) for more details.
+Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fayette\_2020}
+\NormalTok{camden\_2022}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 284 x 8
-   candidate                   party elect~1 absen~2 mail_in provi~3 total x8   
-   <chr>                       <chr>   <dbl>   <dbl>   <dbl>   <dbl> <dbl> <lgl>
- 1 "Joseph R. Biden V.P. Kama~ DEM      9337    1364    9181     574 20456 NA   
- 2 "Donald J. Trump V.P. Mich~ REP     34965    1224    4056     998 41243 NA   
- 3 "Jo Jorgensen V.P Jeremy\r~ LIB       328      34      94      12   468 NA   
- 4 "Write-in"                  <NA>       51       4      32       4    91 NA   
- 5  <NA>                       <NA>       NA      NA      NA      NA    NA NA   
- 6 "Brian Carroll"             WRIT~       0       0       0       0     0 NA   
- 7 "Andrew Tang"               WRIT~       1       0       0       0     1 NA   
- 8 "Kayne West"                WRIT~       1       0       0       0     1 NA   
- 9 "Benjamin Sota"             WRIT~       1       0       0       0     1 NA   
-10 "Patrick Roy"               WRIT~       1       0       0       0     1 NA   
-# ... with 274 more rows, and abbreviated variable names 1: election_day,
-#   2: absentee, 3: provisional
+# A tibble: 23 x 4
+   precinct                  voters  cast turnout
+   <chr>                      <dbl> <dbl>   <dbl>
+ 1 Jurisdiction Wide             NA    NA    NA  
+ 2 BARNUMTON                   1065   360    33.8
+ 3 CAMDENTON 1                 2618   775    29.6
+ 4 CAMDENTON 2                 2530   711    28.1
+ 5 CAMDENTON 3 & HA HA TONKA   2952   840    28.5
+ 6 CLIMAX SPRINGS              1144   354    30.9
+ 7 DECATURVILLE                1272   461    36.2
+ 8 FREEDOM                      594   224    37.7
+ 9 GREENVIEW                   1551   570    36.8
+10 HILLHOUSE                    503   167    33.2
+# ... with 13 more rows
 \end{verbatim}
 
 Ok, now we have numbers. Next we'll get rid of the rows where
-\texttt{candidate} is NA or the value of \texttt{candidate} is literally
-``Candidate'' and also drop the \texttt{x8} blank column. To do the
-former, we'll use the inverse of the \texttt{is.na} function by placing
-an exclamation point before it (you can read that filter as ``where
-candidate is NOT NA'') and do the same to exclude ``Candidate'' from the
-matching values. For the latter, we'll use select and the minus sign to
-drop that column
+\texttt{cast} is NA (why not \texttt{voters}?). To do that, we'll use
+the inverse of the \texttt{is.na} function by placing an exclamation
+point before it (you can read that filter as ``where cast is NOT NA'').
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fayette\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ fayette\_2020 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(candidate)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(candidate }\SpecialCharTok{!=} \StringTok{"Candidate"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{x8)}
+\NormalTok{camden\_2022 }\OtherTok{\textless{}{-}}\NormalTok{ camden\_2022 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(cast))}
 
-\NormalTok{fayette\_2020}
+\NormalTok{camden\_2022}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 264 x 7
-   candidate                         party elect~1 absen~2 mail_in provi~3 total
-   <chr>                             <chr>   <dbl>   <dbl>   <dbl>   <dbl> <dbl>
- 1 "Joseph R. Biden V.P. Kamala\rD.~ DEM      9337    1364    9181     574 20456
- 2 "Donald J. Trump V.P. Michael\rR~ REP     34965    1224    4056     998 41243
- 3 "Jo Jorgensen V.P Jeremy\rSpike ~ LIB       328      34      94      12   468
- 4 "Write-in"                        <NA>       51       4      32       4    91
- 5 "Brian Carroll"                   WRIT~       0       0       0       0     0
- 6 "Andrew Tang"                     WRIT~       1       0       0       0     1
- 7 "Kayne West"                      WRIT~       1       0       0       0     1
- 8 "Benjamin Sota"                   WRIT~       1       0       0       0     1
- 9 "Patrick Roy"                     WRIT~       1       0       0       0     1
-10 "R19 Boddie"                      WRIT~       0       0       0       0     0
-# ... with 254 more rows, and abbreviated variable names 1: election_day,
-#   2: absentee, 3: provisional
+# A tibble: 21 x 4
+   precinct                  voters  cast turnout
+   <chr>                      <dbl> <dbl>   <dbl>
+ 1 BARNUMTON                   1065   360    33.8
+ 2 CAMDENTON 1                 2618   775    29.6
+ 3 CAMDENTON 2                 2530   711    28.1
+ 4 CAMDENTON 3 & HA HA TONKA   2952   840    28.5
+ 5 CLIMAX SPRINGS              1144   354    30.9
+ 6 DECATURVILLE                1272   461    36.2
+ 7 FREEDOM                      594   224    37.7
+ 8 GREENVIEW                   1551   570    36.8
+ 9 HILLHOUSE                    503   167    33.2
+10 HORSESHOE BEND              4100  1230    30  
+# ... with 11 more rows
 \end{verbatim}
 
-This still isn't perfect - we don't have the offices these folks are
-running for - but all things considered, that was pretty easy. Many -
-most? - electronic PDFs aren't so easy to parse. Sometimes you'll need
-to open the exported CSV file and clean things up before importing into
-R. Other times you'll be able to do that cleaning in R itself.
+All things considered, that was pretty easy. Many - most? - electronic
+PDFs aren't so easy to parse. Sometimes you'll need to open the exported
+CSV file and clean things up before importing into R. Other times you'll
+be able to do that cleaning in R itself.
 
 Here's the sad truth: THIS IS PRETTY GOOD. It sure beats typing it out.
 And since many government processes don't change all that much, you can
@@ -7077,14 +7024,14 @@ We'll load these packages first:
 
 For this example, we're going to work on loading a simple table of data
 from the Maryland State Board of Elections. This is a table of
-unofficial election results from the July Republican gubernatorial
-primary election.
+unofficial county-level election results for the Attorney General's race
+from the November general election.
 
 Let's suppose we can't find a table like that for download, but we do
 see a version on the SBOE website at this URL:
-\url{https://elections.maryland.gov/elections/2022/primary_results/gen_detail_results_2022_1_1_Republican.html}.
+\url{https://elections.maryland.gov/elections/2022/general_results/gen_detail_results_2022_3_1.html}.
 
-\includegraphics{./images/rvest1.png}
+\includegraphics[width=1.31in,height=\textheight]{./images/rvest1.png}
 
 We could get this table into R with the following manual steps:
 highlighting the text, copying it into Excel, saving it as a csv, and
@@ -7092,7 +7039,9 @@ reading it into R. Or, we could write a few lines of webscraping code to
 have R do that for us!
 
 In this simple example, it's probably faster to do it manually than have
-R do it for us. And this table is unlikely to change much in the future.
+R do it for us. But during the time when ballots are being counted, this
+table is likely to change, and we don't want to keep doing manual
+repetitive tasks.
 
 Why would we ever write code to grab a single table? There's several
 reasons:
@@ -7106,10 +7055,9 @@ reasons:
   steps, which are harder to document than writing code.
 \item
   Let's suppose we wanted to grab the same table every day, to monitor
-  for changes (like, say, a table on a health department website that
-  has COVID case numbers that update every day). Writing a script once,
-  and pressing a single button every day is going to be much more
-  efficient than doing this manually every day.
+  for changes. Writing a script once, and pressing a single button every
+  day is going to be much more efficient than doing this manually every
+  day.
 \item
   If we're doing it manually, we're more likely to make a mistake, like
   maybe failing to copy every row from the whole table.
@@ -7121,11 +7069,11 @@ reasons:
 \end{enumerate}
 
 So, to scrape, the first thing we need to do is start with the URL.
-Let's store it as an object called naics\_url.
+Let's store it as an object called ag\_url.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sboe\_url }\OtherTok{\textless{}{-}} \StringTok{"https://elections.maryland.gov/elections/2022/primary\_results/gen\_detail\_results\_2022\_1\_1\_Republican.html"}
+\NormalTok{ag\_url }\OtherTok{\textless{}{-}} \StringTok{"https://elections.maryland.gov/elections/2022/general\_results/gen\_detail\_results\_2022\_3\_1.html"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7138,11 +7086,11 @@ creates that page.
 In our web browser, if we right-click anywhere on the page and select
 ``view source'' from the popup menu, we can see the source code. Or you
 can just copy this into Google Chrome:
-view-source:https://elections.maryland.gov/elections/2022/primary\_results/gen\_detail\_results\_2022\_1\_1\_Republican.html.
+view-source:https://elections.maryland.gov/elections/2022/general\_results/gen\_detail\_results\_2022\_3\_1.html.
 
 Here's a picture of what some of the source code looks like.
 
-\includegraphics{./images/rvest2.png}
+\includegraphics[width=2.03in,height=\textheight]{./images/rvest2.png}
 
 We'll use those HTML tags -- things like
 \texttt{\textless{}table\textgreater{}} and
@@ -7153,12 +7101,12 @@ Okay, step 1.
 Let's write a bit of code to tell R to go to the URL for the page and
 ingest all of that HTML code. In the code below, we're starting with our
 URL and using the read\_html() function from rvest to ingest all of the
-page html, storing it as an object called naics\_industry.
+page html, storing it as an object called results.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# read in the html}
-\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ sboe\_url }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ ag\_url }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{read\_html}\NormalTok{()}
 
 \CommentTok{\# display the html below}
@@ -7187,7 +7135,7 @@ is the \texttt{\textless{}head\textgreater{}} and
 most web pages. We're going to pull information out of the
 \texttt{\textless{}body\textgreater{}} tag in a bit.
 
-\includegraphics{./images/rvest3.png}
+\includegraphics[width=3.25in,height=\textheight]{./images/rvest3.png}
 
 Now, our task is to just pull out the section of the html that contains
 the information we need.
@@ -7197,14 +7145,14 @@ out, we can go back to the page in a web browser like chrome, and use
 built in developer tools to ``inspect'' the html code underlying the
 page.
 
-On the page, find the data we want to grab -- ``Table 2. NAICS Sectors''
-- and right click on the word ``Sector'' in the column header of the
-table. That will bring up a dropdown menu. Select ``Inspect'', which
-will pop up a window called the ``element inspector'' that shows us
-where different elements on the page are located, what html tags created
-those elements, and other info.
+On the page, find the data we want to grab -- ``Vote for 1'' - and right
+click on the word ``Jurisdiction'' in the column header of the table.
+That will bring up a dropdown menu. Select ``Inspect'', which will pop
+up a window called the ``element inspector'' that shows us where
+different elements on the page are located, what html tags created those
+elements, and other info.
 
-\includegraphics{./images/rvest4.png}
+\includegraphics[width=1.41in,height=\textheight]{./images/rvest4.png}
 
 The entire table that we want of results is actually contained inside an
 html \texttt{\textless{}table\textgreater{}}. It has a
@@ -7220,7 +7168,7 @@ only has one so we're good.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# read in the html and extract all the tables}
-\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ sboe\_url }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ ag\_url }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{read\_html}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{html\_table}\NormalTok{()}
 
@@ -7232,24 +7180,22 @@ only has one so we're good.
 
 \begin{verbatim}
 [[1]]
-# A tibble: 25 x 5
-   Jurisdiction     Dan Cox and Gordana Schifanelli\r\~1 Robin~2 Kelly~3 Joe W~4
-   <chr>            <chr>                                <chr>   <chr>   <chr>  
- 1 Allegany         4,469                                399     2,259   99     
- 2 Anne Arundel     18,039                               711     18,581  513    
- 3 Baltimore City   1,771                                168     2,010   156    
- 4 Baltimore County 18,129                               842     18,247  649    
- 5 Calvert          6,081                                335     3,628   186    
- 6 Caroline         2,533                                49      1,409   39     
- 7 Carroll          10,462                               404     9,997   268    
- 8 Cecil            4,998                                203     3,487   128    
- 9 Charles          3,473                                176     1,709   127    
-10 Dorchester       2,475                                75      916     42     
+# A tibble: 25 x 4
+   Jurisdiction     Michael Anthony Peroutka\r\n\r\n\r\nRepubl~1 Antho~2 Other~3
+   <chr>            <chr>                                        <chr>   <chr>  
+ 1 Allegany         14,382                                       6,994   16     
+ 2 Anne Arundel     91,718                                       121,096 433    
+ 3 Baltimore City   14,594                                       128,282 288    
+ 4 Baltimore County 100,480                                      170,858 467    
+ 5 Calvert          20,275                                       16,647  41     
+ 6 Caroline         7,128                                        3,475   13     
+ 7 Carroll          44,195                                       26,928  112    
+ 8 Cecil            20,750                                       11,844  35     
+ 9 Charles          16,042                                       37,945  55     
+10 Dorchester       6,615                                        4,784   16     
 # ... with 15 more rows, and abbreviated variable names
-#   1: `Dan Cox and Gordana Schifanelli\r\n\r\n\r\nRepublican`,
-#   2: `Robin Ficker and LeRoy F. Yegge, Jr.\r\n\r\n\r\nRepublican`,
-#   3: `Kelly Schulz and Jeff Woolford\r\n\r\n\r\nRepublican`,
-#   4: `Joe Werner and Minh Thanh Luong\r\n\r\n\r\nRepublican`
+#   1: `Michael Anthony Peroutka\r\n\r\n\r\nRepublican`,
+#   2: `Anthony G. Brown\r\n\r\n\r\nDemocratic`, 3: `Other Write-Ins`
 \end{verbatim}
 
 In the environment window at right, look at results Note that it's now a
@@ -7260,13 +7206,13 @@ list that contains one data frame -- also called tibbles -- one for each
 table that exists on the web page we scraped.
 
 So, all we need to do now is to store that single dataframe as an
-object. We can do that with this code, which says ``keep only the second
-dataframe from our nested list.
+object. We can do that with this code, which says ``keep only the first
+dataframe from our nested list.''
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Read in all html from table, store all tables on page as nested list of dataframes.}
-\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ sboe\_url }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ ag\_url }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{read\_html}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{html\_table}\NormalTok{()}
 
@@ -7281,24 +7227,22 @@ dataframe from our nested list.
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 25 x 5
-   Jurisdiction     Dan Cox and Gordana Schifanelli\r\~1 Robin~2 Kelly~3 Joe W~4
-   <chr>            <chr>                                <chr>   <chr>   <chr>  
- 1 Allegany         4,469                                399     2,259   99     
- 2 Anne Arundel     18,039                               711     18,581  513    
- 3 Baltimore City   1,771                                168     2,010   156    
- 4 Baltimore County 18,129                               842     18,247  649    
- 5 Calvert          6,081                                335     3,628   186    
- 6 Caroline         2,533                                49      1,409   39     
- 7 Carroll          10,462                               404     9,997   268    
- 8 Cecil            4,998                                203     3,487   128    
- 9 Charles          3,473                                176     1,709   127    
-10 Dorchester       2,475                                75      916     42     
+# A tibble: 25 x 4
+   Jurisdiction     Michael Anthony Peroutka\r\n\r\n\r\nRepubl~1 Antho~2 Other~3
+   <chr>            <chr>                                        <chr>   <chr>  
+ 1 Allegany         14,382                                       6,994   16     
+ 2 Anne Arundel     91,718                                       121,096 433    
+ 3 Baltimore City   14,594                                       128,282 288    
+ 4 Baltimore County 100,480                                      170,858 467    
+ 5 Calvert          20,275                                       16,647  41     
+ 6 Caroline         7,128                                        3,475   13     
+ 7 Carroll          44,195                                       26,928  112    
+ 8 Cecil            20,750                                       11,844  35     
+ 9 Charles          16,042                                       37,945  55     
+10 Dorchester       6,615                                        4,784   16     
 # ... with 15 more rows, and abbreviated variable names
-#   1: `Dan Cox and Gordana Schifanelli\r\n\r\n\r\nRepublican`,
-#   2: `Robin Ficker and LeRoy F. Yegge, Jr.\r\n\r\n\r\nRepublican`,
-#   3: `Kelly Schulz and Jeff Woolford\r\n\r\n\r\nRepublican`,
-#   4: `Joe Werner and Minh Thanh Luong\r\n\r\n\r\nRepublican`
+#   1: `Michael Anthony Peroutka\r\n\r\n\r\nRepublican`,
+#   2: `Anthony G. Brown\r\n\r\n\r\nDemocratic`, 3: `Other Write-Ins`
 \end{verbatim}
 
 We now have a proper dataframe, albeit with some lengthy column headers.
@@ -7316,7 +7260,7 @@ which we use to replace all the commas with nothing.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Read in all html from table, get the HTML table.}
-\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ sboe\_url }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ ag\_url }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{read\_html}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{html\_table}\NormalTok{()}
 
@@ -7324,13 +7268,11 @@ which we use to replace all the commas with nothing.
 
 \NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ results[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{clean\_names}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{rename}\NormalTok{(}\AttributeTok{cox =} \DecValTok{2}\NormalTok{, }\AttributeTok{ficker =} \DecValTok{3}\NormalTok{, }\AttributeTok{schulz =} \DecValTok{4}\NormalTok{, }\AttributeTok{werner =} \DecValTok{5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{peroutka =} \DecValTok{2}\NormalTok{, }\AttributeTok{brown =} \DecValTok{3}\NormalTok{, }\AttributeTok{write\_ins =} \DecValTok{4}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{slice}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{cox =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, cox))) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{ficker =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, ficker))) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{schulz =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, schulz))) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{werner =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, werner)))}
-
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{peroutka =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, peroutka))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{brown =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, brown))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{write\_ins =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{""}\NormalTok{, write\_ins)))}
 
 \CommentTok{\# show the dataframe}
 \NormalTok{results}
@@ -7338,24 +7280,24 @@ which we use to replace all the commas with nothing.
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 24 x 5
-   jurisdiction       cox ficker schulz werner
-   <chr>            <dbl>  <dbl>  <dbl>  <dbl>
- 1 Allegany          4469    399   2259     99
- 2 Anne Arundel     18039    711  18581    513
- 3 Baltimore City    1771    168   2010    156
- 4 Baltimore County 18129    842  18247    649
- 5 Calvert           6081    335   3628    186
- 6 Caroline          2533     49   1409     39
- 7 Carroll          10462    404   9997    268
- 8 Cecil             4998    203   3487    128
- 9 Charles           3473    176   1709    127
-10 Dorchester        2475     75    916     42
+# A tibble: 24 x 4
+   jurisdiction     peroutka  brown write_ins
+   <chr>               <dbl>  <dbl>     <dbl>
+ 1 Allegany            14382   6994        16
+ 2 Anne Arundel        91718 121096       433
+ 3 Baltimore City      14594 128282       288
+ 4 Baltimore County   100480 170858       467
+ 5 Calvert             20275  16647        41
+ 6 Caroline             7128   3475        13
+ 7 Carroll             44195  26928       112
+ 8 Cecil               20750  11844        35
+ 9 Charles             16042  37945        55
+10 Dorchester           6615   4784        16
 # ... with 14 more rows
 \end{verbatim}
 
-And there we go. We now have a nice tidy dataframe of Maryland GOP
-gubernatorial primary results that we could ask some questions of.
+And there we go. We now have a nice tidy dataframe of Maryland attorney
+general election results that we could ask some questions of.
 
 \bookmarksetup{startatroot}
 
@@ -7834,23 +7776,21 @@ First, let's load libraries. When we load the tidyverse, we get ggplot2.
 \end{Highlighting}
 \end{Shaded}
 
-The dataset we'll use is the voter registration data for Maryland. Let's
-load it.
+The dataset we'll use is voter registration data by county in Maryland
+from 2020 and September 2022. Let's load it.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ppp\_maryland }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"pre\_labs/pre\_lab\_09/data/ppp\_loans\_md.csv.zip"}\NormalTok{)}
+\NormalTok{md\_voters }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/maryland\_voters\_2020\_2022.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-Rows: 195865 Columns: 63
+Rows: 25 Columns: 20
 -- Column specification --------------------------------------------------------
 Delimiter: ","
-chr  (32): name, slug, state, address, city, zip, business_type, race, gende...
-dbl  (21): id, amount, naics_code, jobs_retained, loan_number, sba_office_co...
-lgl   (7): non_profit, loan_range_sort_key, previous_loan_range, previous_na...
-date  (3): date_approved, loan_status_date, forgiveness_date
+chr  (1): County
+dbl (19): FIPS, DEM_2020, REP_2020, BAR_2020, GRN_2020, LIB_2020, WCP_2020, ...
 
 i Use `spec()` to retrieve the full column specification for this data.
 i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -7868,40 +7808,37 @@ the next.
 So if we have thing, like a county, or a state, or a group name, and
 then a count of that group, we can make a bar chart.
 
-So what does the chart of the top 10 maryland counties with the most
-total PPP loans look like?
+So what does the chart of the top 10 maryland counties with the biggest
+change in registered voters from 2020 to 2022 look like?
 
 First, we'll create a dataframe of those top 10, called
-maryland\_ppp\_top\_counties.
+maryland\_top\_counties.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\OtherTok{\textless{}{-}}\NormalTok{ ppp\_maryland }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(project\_county\_name) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{total\_loans =} \FunctionTok{n}\NormalTok{()}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(total\_loans)) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\OtherTok{\textless{}{-}}\NormalTok{ md\_voters }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(TOTAL\_DIFF)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(County, TOTAL\_DIFF) }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
 
-\NormalTok{maryland\_ppp\_top\_counties}
+\NormalTok{maryland\_top\_counties}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 # A tibble: 10 x 2
-   project_county_name total_loans
-   <chr>                     <int>
- 1 MONTGOMERY                38782
- 2 PRINCE GEORGES            34409
- 3 BALTIMORE                 28789
- 4 BALTIMORE CITY            20004
- 5 ANNE ARUNDEL              17336
- 6 HOWARD                    12011
- 7 FREDERICK                  6666
- 8 HARFORD                    6301
- 9 CHARLES                    4398
-10 CARROLL                    4040
+   County           TOTAL_DIFF
+   <chr>                 <dbl>
+ 1 Frederick             11590
+ 2 Montgomery             8333
+ 3 Howard                 5719
+ 4 Anne Arundel           5052
+ 5 Harford                4316
+ 6 Carroll                3908
+ 7 Charles                3778
+ 8 Cecil                  2282
+ 9 Baltimore County       2236
+10 Saint Mary's           2180
 \end{verbatim}
 
 Now let's create a bar chart using ggplot.
@@ -7914,7 +7851,7 @@ hold our chart.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -7929,8 +7866,8 @@ hold our chart.
 
 Next we need to tell ggplot what kind of chart to make.
 
-In ggplot, we work with two key concepts called geometries (abbreivated
-frequently as geom) and asthetics (abbreviated as aes).
+In ggplot, we work with two key concepts called geometries (abbreviated
+frequently as geom) and aesthetics (abbreviated as aes).
 
 Geometries are the shape that the data will take; think of line charts,
 bar charts, scatterplots, histograms, pie charts and other common
@@ -7964,9 +7901,9 @@ either, just something to live with.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{project\_county\_name, }\AttributeTok{weight=}\NormalTok{total\_loans))}
+  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{County, }\AttributeTok{weight=}\NormalTok{TOTAL\_DIFF))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7985,9 +7922,9 @@ just that:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(project\_county\_name,total\_loans), }\AttributeTok{weight=}\NormalTok{total\_loans))}
+  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(County,TOTAL\_DIFF), }\AttributeTok{weight=}\NormalTok{TOTAL\_DIFF))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -8006,9 +7943,9 @@ does that for you.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(project\_county\_name,total\_loans), }\AttributeTok{weight=}\NormalTok{total\_loans)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(County,TOTAL\_DIFF), }\AttributeTok{weight=}\NormalTok{TOTAL\_DIFF)) }\SpecialCharTok{+}
   \FunctionTok{coord\_flip}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -8037,10 +7974,10 @@ themes, theme\_minimal()
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(project\_county\_name,total\_loans), }\AttributeTok{weight=}\NormalTok{total\_loans)) }\SpecialCharTok{+}
-  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(County,TOTAL\_DIFF), }\AttributeTok{weight=}\NormalTok{TOTAL\_DIFF)) }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} 
   \FunctionTok{theme\_minimal}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -8074,10 +8011,10 @@ theme\_economist()
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(project\_county\_name,total\_loans), }\AttributeTok{weight=}\NormalTok{total\_loans)) }\SpecialCharTok{+}
-  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(County,TOTAL\_DIFF), }\AttributeTok{weight=}\NormalTok{TOTAL\_DIFF)) }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} 
   \FunctionTok{theme\_economist}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -8091,24 +8028,24 @@ theme\_economist()
 \end{figure}
 
 Those axis titles are kind of a mess. Let's change ``count'' on the x
-axis to ``total loans'' and change
-``reorder(project\_county\_name,total\_loans)'' to ``county''. And while
-we're at it, let's add a basic title and a source as a caption. We'll
-use a new function, labs(), which is short for labels.
+axis to ``net change'' and change ``reorder(County,TOTAL\_DIFF)'' to
+``county''. And while we're at it, let's add a basic title and a source
+as a caption. We'll use a new function, labs(), which is short for
+labels.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_ppp\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{maryland\_top\_counties }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(project\_county\_name,total\_loans), }\AttributeTok{weight=}\NormalTok{total\_loans)) }\SpecialCharTok{+}
-  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{reorder}\NormalTok{(County,TOTAL\_DIFF), }\AttributeTok{weight=}\NormalTok{TOTAL\_DIFF)) }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} 
   \FunctionTok{theme\_economist}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{labs}\NormalTok{(}
-    \AttributeTok{title=}\StringTok{"Maryland Counties with Most PPP Loans"}\NormalTok{,}
-    \AttributeTok{x =} \StringTok{"total loans"}\NormalTok{,}
+    \AttributeTok{title=}\StringTok{"Maryland Counties with Biggest Increases in Voters"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"net change"}\NormalTok{,}
     \AttributeTok{y =} \StringTok{"county"}\NormalTok{,}
-    \AttributeTok{caption =} \StringTok{"source: SBA PPP loan database"}
-
+    \AttributeTok{caption =} \StringTok{"source: Maryland State Board of Elections"}
+    
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
@@ -8133,91 +8070,96 @@ understand patterns in your data.
 Line charts can show change over time. It works much the same as a bar
 chart, code wise, but instead of a weight, it uses a y.
 
-So, let's create a dataframe with a count of Maryland loans for each
-date in our dataframe.
+So, let's load some WinRed contribution data we've previously used and
+create a dataframe with a count of contributions for each date in our
+data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ppp\_maryland\_loans\_by\_date }\OtherTok{\textless{}{-}}\NormalTok{ ppp\_maryland }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(date\_approved) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{md\_winred }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/maryland\_winred.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then we'll make our aggregate dataframe:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_winred\_by\_date }\OtherTok{\textless{}{-}}\NormalTok{ md\_winred }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(date) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{total\_loans=}\FunctionTok{n}\NormalTok{()}
+    \AttributeTok{total\_contributions=}\FunctionTok{n}\NormalTok{()}
 \NormalTok{  )}
 
-\NormalTok{ppp\_maryland\_loans\_by\_date}
+\NormalTok{md\_winred\_by\_date }
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 235 x 2
-   date_approved total_loans
-   <date>              <int>
- 1 2020-04-03             28
- 2 2020-04-04            262
- 3 2020-04-05            487
- 4 2020-04-06            830
- 5 2020-04-07           1164
- 6 2020-04-08           1354
- 7 2020-04-09           1777
- 8 2020-04-10           1728
- 9 2020-04-11           1243
-10 2020-04-12            528
-# ... with 225 more rows
+# A tibble: 91 x 2
+   date       total_contributions
+   <date>                   <int>
+ 1 2022-04-01                 580
+ 2 2022-04-02                 499
+ 3 2022-04-03                 437
+ 4 2022-04-04                 597
+ 5 2022-04-05                 601
+ 6 2022-04-06                 669
+ 7 2022-04-07                 665
+ 8 2022-04-08                 619
+ 9 2022-04-09                 498
+10 2022-04-10                 500
+# ... with 81 more rows
 \end{verbatim}
 
 And now let's make a line chart to look for patterns in this data.
 
-We'll put the date on the x axis and total loans on the y axis.
+We'll put the date on the x axis and total contributions on the y axis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ppp\_maryland\_loans\_by\_date }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date\_approved, }\AttributeTok{y=}\NormalTok{total\_loans))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}[H]
-
-{\centering \includegraphics{./visualizing-for-reporting_files/figure-pdf/unnamed-chunk-13-1.pdf}
-
-}
-
-\end{figure}
-
-It's not super pretty, but there's an obvious pattern! There are a ton
-of loans right at the beginning of the program. There's a trickle for
-the next few months, and then no loans at all for several months.
-
-At the beginning of 2021, there's another spike, and a pretty steady
-level with some fluctuations until July 2021. We know from previous
-chapters the explanation for this: there was a flood of loans when the
-program was first authorized, but it eventually ran out of money, and
-then it was later reauthorized.
-
-Right now, it's kind of hard to see specifics, though. Exactly when did
-loans fall to zero? August 2020?
-
-We can't really tell. So let's modify the x axis to have one tick mark
-and label per month. We can do that with a function called
-scale\_x\_date().
-
-We'll set the date\_breaks to appear for every month; if we wanted every
-week, we'd say date\_breaks = ``1 week''. We can set the date to appear
-as month abbreviated name (\%b) and four-digit year (\%Y).
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ppp\_maryland\_loans\_by\_date }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date\_approved, }\AttributeTok{y=}\NormalTok{total\_loans)) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"1 month"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b{-}\%Y"}\NormalTok{)}
+\NormalTok{md\_winred\_by\_date }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date, }\AttributeTok{y=}\NormalTok{total\_contributions))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}[H]
 
 {\centering \includegraphics{./visualizing-for-reporting_files/figure-pdf/unnamed-chunk-14-1.pdf}
+
+}
+
+\end{figure}
+
+It's not super pretty, but there's a pattern here: the number of
+contributions fluctuates between 400 and 800 a day for most of this
+period, and then jumps way up at the end of June. We've learned that the
+end of June is the end of a reporting period, and donors respond to
+deadlines.
+
+Right now, it's kind of hard to see specifics, though. When did some of
+those smaller spikes and troughs happen?
+
+We can't really tell. So let's modify the x axis to have one tick mark
+and label per month. We can do that with a function called
+scale\_x\_date().
+
+We'll set the date\_breaks to appear for every week; if we wanted every
+month, we'd say date\_breaks = ``1 month''. We can set the date to
+appear as month abbreviated name (\%b) and day (\%d).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_winred\_by\_date }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date, }\AttributeTok{y=}\NormalTok{total\_contributions)) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"1 week"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b \%d"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{./visualizing-for-reporting_files/figure-pdf/unnamed-chunk-15-1.pdf}
 
 }
 
@@ -8230,10 +8172,10 @@ the date labels 45 degrees.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ppp\_maryland\_loans\_by\_date }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date\_approved, }\AttributeTok{y=}\NormalTok{total\_loans)) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"1 month"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b{-}\%Y"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{md\_winred\_by\_date }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date, }\AttributeTok{y=}\NormalTok{total\_contributions)) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"1 week"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b \%d"}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{theme}\NormalTok{(}
     \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{,  }\AttributeTok{hjust=}\DecValTok{1}\NormalTok{)}
 \NormalTok{  )}
@@ -8242,7 +8184,7 @@ the date labels 45 degrees.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{./visualizing-for-reporting_files/figure-pdf/unnamed-chunk-15-1.pdf}
+{\centering \includegraphics{./visualizing-for-reporting_files/figure-pdf/unnamed-chunk-16-1.pdf}
 
 }
 
@@ -8254,317 +8196,6 @@ we can quickly see a pattern that can help guide our reporting.
 We're just scratching the surface of what ggplot can do, and chart
 types. There's so much more you can do, so many other chart types you
 can make. But the basics we've shown here will get you started.
-
-\bookmarksetup{startatroot}
-
-\hypertarget{visualizing-your-data-for-publication}{%
-\chapter{Visualizing your data for
-publication}\label{visualizing-your-data-for-publication}}
-
-Doing data visualization well, and at professional level, takes time,
-skill and practice to perfect. Understanding it and doing it at a
-complex level is an entire class on it's own. It uses some of the same
-skills here -- grouping, filtering, calculating -- but then takes that
-data and turns it into data pictures.
-
-But simple stuff -- and even some slightly complicated stuff -- can be
-done with tools made for people who aren't data viz pros.
-
-The tool we're going to use is called
-\href{https://www.datawrapper.de/}{Datawrapper}.
-
-First, let's get some data and work with it. Let's use the county-level
-results from the 2022 Republican Governor primary in Maryland that we
-scraped with rvest. Let's look at it.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(tidyverse)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_gop\_gov }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/md\_primary\_2022\_gov\_rep.csv"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Rows: 24 Columns: 5
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr (1): jurisdiction
-dbl (4): cox, ficker, schulz, werner
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(md\_gop\_gov)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-# A tibble: 6 x 5
-  jurisdiction       cox ficker schulz werner
-  <chr>            <dbl>  <dbl>  <dbl>  <dbl>
-1 Allegany          4469    399   2259     99
-2 Anne Arundel     18039    711  18581    513
-3 Baltimore City    1771    168   2010    156
-4 Baltimore County 18129    842  18247    649
-5 Calvert           6081    335   3628    186
-6 Caroline          2533     49   1409     39
-\end{verbatim}
-
-Let's make this data a bit more useful by calculating percentages for
-each candidate, using the total of all votes in each county in the
-gubernatorial primary. Then we can calculate the difference in
-percentages between Dan Cox, the nominee, and Kelly Schulz, who came in
-second. Finally we can write that CSV file out using
-\texttt{write\_csv}, because that's what we'll need for Datawrapper:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_gop\_gov }\OtherTok{\textless{}{-}}\NormalTok{ md\_gop\_gov }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{total =}\NormalTok{ cox }\SpecialCharTok{+}\NormalTok{ ficker }\SpecialCharTok{+}\NormalTok{ schulz }\SpecialCharTok{+}\NormalTok{ werner) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{pct\_cox =}\NormalTok{ cox}\SpecialCharTok{/}\NormalTok{total, }\AttributeTok{pct\_ficker =}\NormalTok{ ficker}\SpecialCharTok{/}\NormalTok{total, }\AttributeTok{pct\_schulz =}\NormalTok{ schulz}\SpecialCharTok{/}\NormalTok{total, }\AttributeTok{pct\_werner =}\NormalTok{ werner}\SpecialCharTok{/}\NormalTok{total) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{cox\_schulz\_diff =}\NormalTok{ (pct\_cox }\SpecialCharTok{{-}}\NormalTok{ pct\_schulz)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(jurisdiction, cox\_schulz\_diff)}
-
-\FunctionTok{write\_csv}\NormalTok{(md\_gop\_gov, }\StringTok{"\textasciitilde{}/Downloads/md\_gop\_gov.csv"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{datawrapper}{%
-\section{Datawrapper}\label{datawrapper}}
-
-Making charts in Datawrapper is preposterously simple, which is the
-point. There are dozens of chart types, and dozens of options. To get
-from a csv to a chart to publication is very, very easy.
-
-First, go to \href{https://www.datawrapper.de/}{datawrapper.de} and sign
-up for an account. It's free.
-
-Once logged in, you'll click on New Chart.
-
-\includegraphics{./images/ppp_datawrapper1.png}
-
-The first thing we'll do is upload our CSV that we created before. Click
-on XLS/CSV and upload the file.
-
-\includegraphics{./images/datawrapper2.png}
-
-Next up is to check and see what Datawrappper did with our data when we
-uploaded it. As you can see from the text on the left, if it's blue,
-it's a number. If it's green, it's a date. If it's black, it's text. Red
-means there's a problem. This data is very clean, so it imports cleanly.
-Click on the ``Proceed'' button.
-
-\includegraphics{./images/datawrapper3.png}
-
-Now we make a chart. Bar chart comes up by default, which is good,
-because with a single percentage difference, that's what we have.
-
-Click on Refine. The first option we want to change is the Number
-Format, because we have percentages to display and we want to make it as
-easy as possible for readers to understand what we're displaying.
-Datawrapper has a list of popular formats and an excellent reference for
-its
-\href{https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper}{custom
-formats} that you can consult. Let's choose \texttt{0.0\%}, which adds a
-percentage sign and abbreviates larger amounts:
-
-\includegraphics{./images/datawrapper4.png}
-
-Now we need to annotate our charts. Every chart needs a title, a source
-line and a credit line. Most need chatter (called description here).
-Click on the ``Annotate'' tab to get started.
-
-Really think about the title and description: the title is like a
-headline and the description is provides some additional context.
-Another way to think about it: the title is the most important lesson
-from the graphic, and the description could be the next most important
-lesson or could provide more context to the title.
-
-\includegraphics{./images/datawrapper5.png}
-
-To publish, we click the ``Publish \& Embed'' tab. Some publication
-systems allow for the embedding of HTML into a post or a story. Some
-don't. The only way to know is to ask someone at your publication. Every
-publication system on the planet, though, can publish an image. So
-there's always a way to export your chart as a PNG file, which you can
-upload like any photo.
-
-\includegraphics{./images/datawrapper6.png}
-
-\hypertarget{making-a-map}{%
-\subsection{Making a Map}\label{making-a-map}}
-
-Let's create a choropleth map - one that shows the data we displayed
-above in geographic terms. Let's take the \texttt{md\_gop\_gov.csv} data
-we just finished with and start there. We will need to add some
-information to it to make it possible to display on a map, so we'll need
-to read it back in.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_gop\_gov }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{\textquotesingle{}data/md\_gop\_gov.csv\textquotesingle{}}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Rows: 24 Columns: 2
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr (1): jurisdiction
-dbl (1): cox_schulz_diff
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-\end{verbatim}
-
-In order to make a map, we need to be able to tell Datawrapper that a
-certain column contains geographic information (besides the name of the
-county). The easiest way to do that for U.S. maps is to use something
-called a
-\href{https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html}{FIPS
-Code}. You should read about them so you understand what they are, and
-think of them as a unique identifier for some geographical entity like a
-state or county. Our md\_gop\_gov dataframe doesn't have a FIPS code for
-each county, but this is a solved problem thanks to the Tigris library.
-Let's install it:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#install.packages(\textquotesingle{}tigris\textquotesingle{},repos = "http://cran.us.r{-}project.org")}
-\FunctionTok{library}\NormalTok{(tigris)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-To enable caching of data, set `options(tigris_use_cache = TRUE)`
-in your R script or .Rprofile.
-\end{verbatim}
-
-Once we've done that, we have access to a dataframe containing all fips
-codes. Let's isolate the Maryland codes:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{all\_fips }\OtherTok{\textless{}{-}}\NormalTok{ fips\_codes }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{as\_tibble}\NormalTok{()}
-\NormalTok{md\_fips }\OtherTok{\textless{}{-}}\NormalTok{ all\_fips }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(state }\SpecialCharTok{==} \StringTok{\textquotesingle{}MD\textquotesingle{}}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Looks good, but there are two issues: Datawrapper expects a 5-digit FIPS
-code (the state code plus the county code, so ``24001'' for Allegany
-County) and the county names don't match the \texttt{jurisdiction} in
-the primary data. Let's fix the first issue - adding a full FIPS code
-based on its components using the function \texttt{str\_c}, which
-concatenates multiple strings:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_fips }\OtherTok{\textless{}{-}}\NormalTok{ md\_fips }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{fips\_code =} \FunctionTok{str\_c}\NormalTok{(state\_code, county\_code))}
-\end{Highlighting}
-\end{Shaded}
-
-Now we'll deal with the county names in \texttt{md\_counties}. They are
-all caps and contain no punctuation, we could:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Change counties in \texttt{md\_gop\_gov} to match \texttt{md\_fips}
-\item
-  Change counties in \texttt{md\_fips} to match \texttt{md\_gop\_gov}
-\end{enumerate}
-
-Let's do the latter. We'll use mutate to remove '' COUNTY'', replace the
-quotemarks with nothing, change counties so they match the primary data
-and fix both Baltimore city and Baltimore County:
-
-Change the county names in \texttt{md\_fips}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_fips }\OtherTok{\textless{}{-}}\NormalTok{ md\_fips }\SpecialCharTok{\%\textgreater{}\%}
-   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{match\_county =} \FunctionTok{str\_replace}\NormalTok{(county, }\StringTok{\textquotesingle{} County\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{match\_county =} \FunctionTok{str\_replace}\NormalTok{(match\_county, }\StringTok{"St. Mary"}\NormalTok{, }\StringTok{"Saint Mary"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{match\_county =} \FunctionTok{str\_replace}\NormalTok{(match\_county, }\StringTok{"Baltimore city"}\NormalTok{, }\StringTok{"Baltimore City"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{match\_county =} \FunctionTok{if\_else}\NormalTok{(match\_county }\SpecialCharTok{==} \StringTok{"Baltimore"}\NormalTok{, }\StringTok{"Baltimore County"}\NormalTok{, match\_county))}
-\end{Highlighting}
-\end{Shaded}
-
-Now we'll join \texttt{md\_gop\_gov} and \texttt{md\_fips} together
-using our new \texttt{match\_county} column:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_gop\_gov\_with\_fips }\OtherTok{\textless{}{-}}\NormalTok{ md\_gop\_gov }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(md\_fips, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}jurisdiction\textquotesingle{}}\OtherTok{=}\StringTok{\textquotesingle{}match\_county\textquotesingle{}}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-Then we'll write \texttt{md\_gop\_gov\_with\_fips} to a CSV in the data
-folder using write\_csv:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{write\_csv}\NormalTok{(md\_gop\_gov\_with\_fips, }\StringTok{"data/md\_gop\_gov\_with\_fips.csv"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Go back to Datawrapper and click on ``New Map''. Click on ``Choropleth
-map'' and then choose ``USA \textgreater\textgreater{} Counties (2022)''
-for the map base and click the Proceed button.
-
-Now we can upload the \texttt{md\_gop\_gov\_with\_fips.csv} file we just
-saved using the Upload File button. It should look like the following
-image:
-
-\includegraphics{./images/datawrapper7.png}
-
-We'll need to make sure that Datawrapper understands what the data is
-and where the FIPS code is. Click on the ``Match'' tab and make sure
-that yours looks like the image below:
-
-\includegraphics{./images/datawrapper8.png}
-
-Click the ``Proceed'' button (you should have to click it twice, since
-the first time it will tell you that there's no data for 3,197 counties
-- the rest of the U.S.). That will take you to the Visualize tab.
-
-You'll see that the map currently is of the whole nation, and we only
-have Maryland data. Let's fix that.
-
-Look for ``Hide regions without data'' under Appearance, and click the
-slider icon to enable that feature. You should see a map zoomed into
-Maryland with some counties in various colors.
-
-But it's a little rough visually, so let's clean that up.
-
-Look for the ``Show color legend'' label and add a caption for the
-legend, which is the horizontal bar under the title. Then click on the
-``Annotate'' tab to add a title, description, data source and byline.
-The title should represent the headline, while the description should be
-a longer phrase that tells people what they are looking at.
-
-That's better, but check out the tooltip by hovering over a county. It's
-not super helpful. Let's change the tooltip behavior to show the county
-name and a better-formatted number.
-
-Click the ``Customize tooltips'' button so it expands down. Change \{\{
-fips \}\} to \{\{ jurisdiction \}\} and \{\{ cox\_schulz\_diff \}\} to
-\{\{ FORMAT(cox\_schulz\_diff, ``0.0\%'')\}\}
-
-Ok, that looks better. Let's publish!
-
-Click the ``Proceed'' button until you get to the ``Publish \& Embed''
-tab, then click ``Publish Now''.
 
 \bookmarksetup{startatroot}
 
@@ -8614,7 +8245,7 @@ head first:
   boundaries on layer Y. And it's the plane that holds them together.
 \end{enumerate}
 
-\includegraphics{./images/geolayers.jpg}
+\includegraphics[width=3.41in,height=\textheight]{./images/geolayers.jpg}
 
 \hypertarget{importing-and-viewing-data}{%
 \section{Importing and viewing data}\label{importing-and-viewing-data}}
@@ -8632,8 +8263,8 @@ viewing. Load libraries as usual.
 
 First: an aside on geographic data. There are many formats for
 geographic data, but data type you'll see the most is called the
-shapefile. It comes from a company named ESRI, which created the most
-widely-used GIS software in the world. For years, they were the only
+shapefile. It comes from a company named ERSI, which created the most
+widely used GIS software in the world. For years, they were the only
 game in town, really, and the shapefile became ubiquitous, especially so
 in government and utilities.
 
@@ -8642,13 +8273,15 @@ shapefile isn't just a single file -- it's a collection of files that
 combined make up all the data that allow you to use it. There's a .shp
 file -- that's the main file that pulls it all together -- but it's
 important to note if your shapefiles has a .prj file, which indicates
-that the projection is specified. There's also a newer format from ESRI
-called a geodatabase (.gdb) that contains all of the elements that
-shapefiles do. We can use the \texttt{sf} library to read either format.
+that the projection is specified.
 
-The data we're going to be working with is a file from the Maryland
-Citizens Redistricting Commission showing data about political districts
-in the state and their demographic characteristics.
+You also might be working with a GeoDatabase, or a .gdb file. That's a
+slightly different, more compact version of a Shapefile.
+
+The data we're going to be working with is a GeoDatabase from the
+\href{https://gisdata.pgplanning.org/opendata/}{Prince George's County
+Department of Planning} that contains information about the county's
+election precincts.
 
 Similar to \texttt{readr}, the \texttt{sf} library has functions to read
 geographic data. In this case, we're going to use \texttt{st\_read} to
@@ -8656,266 +8289,59 @@ read in our hospitals data. And then glimpse it to look at the columns.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{blocks }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/Adjusted2020.gdb"}\NormalTok{)}
+\NormalTok{pg\_precincts }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/Election\_Precinct\_2022\_Py.gdb"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-Reading layer `Census_Blocks' from data source 
-  `/Users/derekwillis/code/datajournalismbook-elections/data/Adjusted2020.gdb' 
+Reading layer `Election_Precinct_2022_Py' from data source 
+  `/Users/akessler/GITREPOS/github_kessler/datajournalismbook-elections/data/Election_Precinct_2022_Py.gdb' 
   using driver `OpenFileGDB'
-Simple feature collection with 83827 features and 26 fields
-Geometry type: MULTIPOLYGON
+Simple feature collection with 356 features and 9 fields
+Geometry type: GEOMETRY
 Dimension:     XY
-Bounding box:  xmin: -79.48765 ymin: 37.88661 xmax: -74.98628 ymax: 39.72304
-Geodetic CRS:  NAD83
+Bounding box:  xmin: 1290345 ymin: 317969.7 xmax: 1406390 ymax: 533363.1
+Projected CRS: NAD83(2011) / Maryland (ftUS)
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{glimpse}\NormalTok{(blocks)}
+\FunctionTok{glimpse}\NormalTok{(pg\_precincts)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-Rows: 83,827
-Columns: 27
-$ Block               <chr> "240479514002073", "240479514001005", "24047951400~
-$ BlockGroup          <chr> "240479514002", "240479514001", "240479514001", "2~
-$ Tract               <chr> "24047951400", "24047951400", "24047951400", "2404~
-$ County              <chr> "24047", "24047", "24047", "24047", "24047", "2404~
-$ State               <chr> "24", "24", "24", "24", "24", "24", "24", "24", "2~
-$ VTD                 <chr> "2404704-001", "2404702-001", "2404702-001", "2404~
-$ Adj_Population      <int> 0, 4, 0, 31, 18, 2, 28, 3, 18, 5, 45, 0, 5, 0, 0, ~
-$ Adj_Hispanic_Origin <int> 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH_Wht          <int> 0, 4, 0, 29, 13, 0, 16, 1, 8, 3, 16, 0, 1, 0, 0, 0~
-$ Adj_NH_Blk          <int> 0, 0, 0, 0, 3, 0, 7, 0, 1, 0, 28, 0, 3, 0, 0, 0, 0~
-$ Adj_NH_Ind          <int> 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH_Asn          <int> 0, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH_Hwn          <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH_Oth          <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH_2__Races     <int> 0, 0, 0, 0, 1, 1, 0, 2, 6, 1, 0, 0, 1, 0, 0, 0, 1,~
-$ Adj_18__Pop         <int> 0, 4, 0, 30, 15, 2, 21, 1, 12, 4, 32, 0, 4, 0, 0, ~
-$ Adj_H18__Pop        <int> 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH18__Wht       <int> 0, 4, 0, 28, 11, 0, 13, 1, 8, 3, 7, 0, 1, 0, 0, 0,~
-$ Adj_NH18__Blk       <int> 0, 0, 0, 0, 3, 0, 7, 0, 0, 0, 25, 0, 3, 0, 0, 0, 0~
-$ Adj_NH18__Ind       <int> 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH18__Asn       <int> 0, 0, 0, 0, 0, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH18__Hwn       <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH18__Oth       <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,~
-$ Adj_NH18__2__Races  <int> 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,~
-$ Shape_Length        <dbl> 0.256035239, 0.069209540, 0.156886172, 0.278946567~
-$ Shape_Area          <dbl> 7.494290e-05, 1.873535e-04, 3.687426e-05, 1.309177~
-$ Shape               <MULTIPOLYGON [°]> MULTIPOLYGON (((-75.42637 3..., MULTI~
+Rows: 356
+Columns: 10
+$ PRECINCT_ID   <chr> "003-004", "010-009", "012-002", "013-023", "013-006", "~
+$ PRECINCT_NAME <chr> "PERRYWOOD ELEMENTARY SCHOOL", "OAKLANDS ELEMENTARY SCHO~
+$ CONGRESS      <chr> "5", "4", "4", "5", "5", "5", "5", "4", "4", "5", "5", "~
+$ LEGIS         <chr> "25", "21", "26", "24", "25", "23", "25", "25", "26", "2~
+$ COUNCIL       <chr> "6", "1", "8", "6", "6", "9", "9", "9", "8", "9", "6", "~
+$ SCHOOL        <chr> "7", "1", "8", "6", "6", "9", "9", "9", "8", "9", "6", "~
+$ POLLING_ID    <chr> "003-004", "010-009", "012-002", "013-023", "013-006", "~
+$ Shape_Length  <dbl> 57210.064, 32694.336, 18569.900, 9904.106, 26469.667, 32~
+$ Shape_Area    <dbl> 120064600, 41053127, 16555067, 6072400, 33437592, 347735~
+$ Shape         <GEOMETRY [US_survey_foot]> MULTIPOLYGON (((1378044 433..., MU~
 \end{verbatim}
 
 This looks like a normal dataframe, and mostly it is. We have one row
-per Census block - the smallest geographic census unit - and each column
-is some feature of that block: the census tract, county and state it is
-located in and more. What sets this data apart from other dataframes
-we've used is the last column, ``geometry'', which is of a new data
-type. It's not a character or a number, it's a ``MULTIPOLYGON'', which
-is composed of a shape that, when we plot it on a map, will be
-highlighted. If you've ever filled in a ``connect the dots'' picture by
-drawing lines between points, in order to reveal a hidden shape, then
-you're familiar with the concept.
+per precinct, and each column is some feature of that precinct: the ID,
+name and more. What sets this data apart from other dataframes we've
+used is the last column, ``Shape'', which is of a new data type. It's
+not a character or a number, it's a ``Multipolygon'', which is composed
+of multiple longitude and latitude values. When we plot these on a grid
+of latitude and longitude, it will draw those shapes on a map.
 
-You can see the
-\href{https://redistricting.maryland.gov/Documents/Data/DataDictionary.pdf}{full
-description of the data}.
+Let's look at these precincts. We have 356 of them, according to this
+data.
 
-Let's look at just Baltimore City census blocks. Good news --
-\texttt{sf} plays very nicely with the tidyverse, so we can filter data
-the way we are accustomed. The County column represents what is called a
-FIPS code, which is a unique code for a geographic unit like state or
-county. All Maryland FIPS codes begin with ``24'', which is the code for
-the state as a whole.
+But where in Prince George's County are these places? We can simply plot
+them on a longitude-latitude grid using ggplot and geom\_sf.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{baltimore\_city\_blocks }\OtherTok{\textless{}{-}}\NormalTok{ blocks }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(County }\SpecialCharTok{==} \StringTok{"24510"}\NormalTok{)}
-
-\NormalTok{baltimore\_city\_blocks}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Simple feature collection with 10025 features and 26 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: -76.71152 ymin: 39.19721 xmax: -76.52945 ymax: 39.37221
-Geodetic CRS:  NAD83
-First 10 features:
-             Block   BlockGroup       Tract County State         VTD
-1  245102705011005 245102705011 24510270501  24510    24 2451027-011
-2  245102705011004 245102705011 24510270501  24510    24 2451027-011
-3  245102705013006 245102705013 24510270501  24510    24 2451027-010
-4  245102705013007 245102705013 24510270501  24510    24 2451027-010
-5  245102705011012 245102705011 24510270501  24510    24 2451027-010
-6  245102705021015 245102705021 24510270502  24510    24 2451027-008
-7  245102705021013 245102705021 24510270502  24510    24 2451027-008
-8  245102705021014 245102705021 24510270502  24510    24 2451027-008
-9  245102705021011 245102705021 24510270502  24510    24 2451027-008
-10 245102705021010 245102705021 24510270502  24510    24 2451027-008
-   Adj_Population Adj_Hispanic_Origin Adj_NH_Wht Adj_NH_Blk Adj_NH_Ind
-1              21                   3          8          6          0
-2              47                   4         22         17          0
-3              45                   1          5         32          0
-4              67                   2         18         43          0
-5              25                   0         13          5          0
-6              37                   2         17         18          0
-7              54                   4         29         20          0
-8              41                   2          6         29          0
-9              12                   0          1          5          0
-10             19                   5          9          5          0
-   Adj_NH_Asn Adj_NH_Hwn Adj_NH_Oth Adj_NH_2__Races Adj_18__Pop Adj_H18__Pop
-1           0          0          1               3          20            3
-2           3          0          0               1          40            3
-3           2          0          0               5          39            1
-4           1          0          0               3          55            2
-5           4          0          1               2          25            0
-6           0          0          0               0          23            2
-7           0          0          0               1          47            3
-8           0          0          4               0          29            0
-9           1          0          0               5           7            0
-10          0          0          0               0          19            5
-   Adj_NH18__Wht Adj_NH18__Blk Adj_NH18__Ind Adj_NH18__Asn Adj_NH18__Hwn
-1              8             5             0             0             0
-2             19            14             0             3             0
-3              5            26             0             2             0
-4             17            32             0             1             0
-5             13             5             0             4             0
-6             12             9             0             0             0
-7             24            20             0             0             0
-8              6            19             0             0             0
-9              1             1             0             0             0
-10             9             5             0             0             0
-   Adj_NH18__Oth Adj_NH18__2__Races Shape_Length   Shape_Area
-1              1                  3  0.004460665 8.112280e-07
-2              0                  1  0.005213052 1.167317e-06
-3              0                  5  0.005749833 1.816332e-06
-4              0                  3  0.009587319 3.818661e-06
-5              1                  2  0.004994883 1.492671e-06
-6              0                  0  0.004975204 1.464421e-06
-7              0                  0  0.012717356 6.443919e-06
-8              4                  0  0.004851208 1.433677e-06
-9              0                  5  0.004014872 7.556780e-07
-10             0                  0  0.003981790 7.430995e-07
-                            Shape
-1  MULTIPOLYGON (((-76.5405 39...
-2  MULTIPOLYGON (((-76.53746 3...
-3  MULTIPOLYGON (((-76.53486 3...
-4  MULTIPOLYGON (((-76.53509 3...
-5  MULTIPOLYGON (((-76.53303 3...
-6  MULTIPOLYGON (((-76.53278 3...
-7  MULTIPOLYGON (((-76.5299 39...
-8  MULTIPOLYGON (((-76.53184 3...
-9  MULTIPOLYGON (((-76.53112 3...
-10 MULTIPOLYGON (((-76.53258 3...
-\end{verbatim}
-
-We have 10,025 blocks, according to this data. Now we can try to get a
-sense of the population in them. In how many blocks does the number of
-Hispanic population 18 and over exceed both non-Hispanic white 18 and
-over population and non-Hispanic Black 18 and over population?
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{baltimore\_city\_blocks }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Adj\_H18\_\_Pop }\SpecialCharTok{\textgreater{}}\NormalTok{ Adj\_NH18\_\_Wht }\SpecialCharTok{\&}\NormalTok{ Adj\_H18\_\_Pop }\SpecialCharTok{\textgreater{}}\NormalTok{ Adj\_NH18\_\_Blk)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Simple feature collection with 386 features and 26 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: -76.71119 ymin: 39.20299 xmax: -76.52952 ymax: 39.36776
-Geodetic CRS:  NAD83
-First 10 features:
-             Block   BlockGroup       Tract County State         VTD
-1  245102605013003 245102605013 24510260501  24510    24 2451026-004
-2  245102605013000 245102605013 24510260501  24510    24 2451026-004
-3  245102605011005 245102605011 24510260501  24510    24 2451026-005
-4  245102605011019 245102605011 24510260501  24510    24 2451026-005
-5  245102605011011 245102605011 24510260501  24510    24 2451026-004
-6  245102605011012 245102605011 24510260501  24510    24 2451026-004
-7  245102605011002 245102605011 24510260501  24510    24 2451026-004
-8  245102605011008 245102605011 24510260501  24510    24 2451026-004
-9  245102605011009 245102605011 24510260501  24510    24 2451026-004
-10 245102604041015 245102604041 24510260404  24510    24 2451026-011
-   Adj_Population Adj_Hispanic_Origin Adj_NH_Wht Adj_NH_Blk Adj_NH_Ind
-1             180                  85         51         39          0
-2              26                  17          5          0          0
-3              71                  56          8          4          0
-4             109                  54         35          9          2
-5              94                  47         34          8          0
-6              90                  57         25          2          0
-7              74                  56          6         11          0
-8             103                  62         27          8          0
-9              59                  33         18          7          0
-10             10                   6          0          4          0
-   Adj_NH_Asn Adj_NH_Hwn Adj_NH_Oth Adj_NH_2__Races Adj_18__Pop Adj_H18__Pop
-1           2          0          0               3         131           53
-2           0          0          0               4          14           10
-3           0          0          0               3          50           36
-4           6          0          0               3          83           37
-5           2          0          0               3          64           28
-6           6          0          0               0          55           26
-7           1          0          0               0          50           34
-8           0          0          0               6          78           48
-9           0          0          0               1          49           24
-10          0          0          0               0           7            6
-   Adj_NH18__Wht Adj_NH18__Blk Adj_NH18__Ind Adj_NH18__Asn Adj_NH18__Hwn
-1             47            28             0             2             0
-2              4             0             0             0             0
-3              8             4             0             0             0
-4             32             5             1             6             0
-5             24             8             0             2             0
-6             25             2             0             2             0
-7              6             9             0             1             0
-8             24             0             0             0             0
-9             17             7             0             0             0
-10             0             1             0             0             0
-   Adj_NH18__Oth Adj_NH18__2__Races Shape_Length   Shape_Area
-1              0                  1  0.005735603 1.580966e-06
-2              0                  0  0.006037951 1.841948e-06
-3              0                  2  0.003040933 5.478480e-07
-4              0                  2  0.003975398 7.063020e-07
-5              0                  2  0.004041064 7.579205e-07
-6              0                  0  0.003965293 7.160955e-07
-7              0                  0  0.003695767 6.496640e-07
-8              0                  6  0.003821795 6.676600e-07
-9              0                  1  0.003384148 5.786680e-07
-10             0                  0  0.024130223 1.573279e-05
-                            Shape
-1  MULTIPOLYGON (((-76.52971 3...
-2  MULTIPOLYGON (((-76.52958 3...
-3  MULTIPOLYGON (((-76.54528 3...
-4  MULTIPOLYGON (((-76.54295 3...
-5  MULTIPOLYGON (((-76.54244 3...
-6  MULTIPOLYGON (((-76.541 39....
-7  MULTIPOLYGON (((-76.54008 3...
-8  MULTIPOLYGON (((-76.54054 3...
-9  MULTIPOLYGON (((-76.53773 3...
-10 MULTIPOLYGON (((-76.53792 3...
-\end{verbatim}
-
-So there are 386 Census blocks with adult Hispanic population greater
-than either white or Black adult population. Where are they? We can
-simply plot them on a longitude-latitude grid using ggplot.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{baltimore\_hispanic\_blocks }\OtherTok{\textless{}{-}}\NormalTok{ baltimore\_city\_blocks }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Adj\_H18\_\_Pop }\SpecialCharTok{\textgreater{}}\NormalTok{ Adj\_NH18\_\_Wht }\SpecialCharTok{\&}\NormalTok{ Adj\_H18\_\_Pop }\SpecialCharTok{\textgreater{}}\NormalTok{ Adj\_NH18\_\_Blk)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{baltimore\_hispanic\_blocks }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{pg\_precincts }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{geom\_sf}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{theme\_minimal}\NormalTok{()}
@@ -8924,29 +8350,31 @@ simply plot them on a longitude-latitude grid using ggplot.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-7-1.pdf}
+{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-4-1.pdf}
 
 }
 
 \end{figure}
 
-Each shape is a Census block.
+Each shape is a precinct, with the boundaries plotted according to its
+degrees of longitude and latitude.
 
-If you know anything about the shape of Baltimore, you can kinda
-identify it here. The untouched area in the lower right is probably the
-harbor, right? But this map is not exactly ideal. It would help to have
-a state and county map layered underneath of it, to help make sense of
-the spatial nature of this data.
+If you know anything about Prince George's, you can kinda pick out the
+geographic context here. To the west is the District of Columbia, for
+example. College Park is near the top. But this map is not exactly
+ideal. It would help to have a state and county map layered underneath
+of it, to help make sense of the spatial nature of this data.
 
 This is where layering becomes more clear. First, we want to go out and
-get another shapefile, this one showing Maryland jurisdiction outlines.
+get another shapefile, this one showing Maryland county outlines.
 
 Instead of loading it from our local machine, like we did above, we're
 going to use a package to directly download it from the U.S. Census. The
 package is called \texttt{tigris} and it's developed by the same person
 who made \texttt{tidycensus}.
 
-In the console, install tigris with the install packages function
+In the console, install tigris with
+\texttt{install.packages(\textquotesingle{}tigris\textquotesingle{})}
 
 Then load it:
 
@@ -8967,167 +8395,10 @@ shapefile of all U.S. counties.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{counties }\OtherTok{\textless{}{-}} \FunctionTok{counties}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-Retrieving data for the year 2020
-\end{verbatim}
-
-\begin{verbatim}
-
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |                                                                      |   1%
-  |                                                                            
-  |=                                                                     |   1%
-  |                                                                            
-  |=                                                                     |   2%
-  |                                                                            
-  |==                                                                    |   3%
-  |                                                                            
-  |==                                                                    |   4%
-  |                                                                            
-  |===                                                                   |   4%
-  |                                                                            
-  |====                                                                  |   6%
-  |                                                                            
-  |======                                                                |   8%
-  |                                                                            
-  |=======                                                               |  10%
-  |                                                                            
-  |========                                                              |  12%
-  |                                                                            
-  |=========                                                             |  12%
-  |                                                                            
-  |==========                                                            |  14%
-  |                                                                            
-  |===========                                                           |  16%
-  |                                                                            
-  |============                                                          |  18%
-  |                                                                            
-  |==============                                                        |  20%
-  |                                                                            
-  |===============                                                       |  22%
-  |                                                                            
-  |================                                                      |  23%
-  |                                                                            
-  |=================                                                     |  24%
-  |                                                                            
-  |==================                                                    |  26%
-  |                                                                            
-  |===================                                                   |  28%
-  |                                                                            
-  |=====================                                                 |  30%
-  |                                                                            
-  |======================                                                |  32%
-  |                                                                            
-  |=======================                                               |  33%
-  |                                                                            
-  |=========================                                             |  35%
-  |                                                                            
-  |==========================                                            |  37%
-  |                                                                            
-  |===========================                                           |  38%
-  |                                                                            
-  |============================                                          |  40%
-  |                                                                            
-  |=============================                                         |  42%
-  |                                                                            
-  |===============================                                       |  44%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |=================================                                     |  48%
-  |                                                                            
-  |===================================                                   |  50%
-  |                                                                            
-  |====================================                                  |  52%
-  |                                                                            
-  |======================================                                |  54%
-  |                                                                            
-  |=======================================                               |  56%
-  |                                                                            
-  |========================================                              |  58%
-  |                                                                            
-  |==========================================                            |  60%
-  |                                                                            
-  |============================================                          |  62%
-  |                                                                            
-  |=============================================                         |  64%
-  |                                                                            
-  |==============================================                        |  66%
-  |                                                                            
-  |================================================                      |  68%
-  |                                                                            
-  |=================================================                     |  70%
-  |                                                                            
-  |===================================================                   |  72%
-  |                                                                            
-  |===================================================                   |  73%
-  |                                                                            
-  |=====================================================                 |  75%
-  |                                                                            
-  |======================================================                |  77%
-  |                                                                            
-  |======================================================                |  78%
-  |                                                                            
-  |========================================================              |  80%
-  |                                                                            
-  |=========================================================             |  82%
-  |                                                                            
-  |===========================================================           |  84%
-  |                                                                            
-  |============================================================          |  86%
-  |                                                                            
-  |=============================================================         |  87%
-  |                                                                            
-  |==============================================================        |  89%
-  |                                                                            
-  |===============================================================       |  90%
-  |                                                                            
-  |=================================================================     |  92%
-  |                                                                            
-  |==================================================================    |  94%
-  |                                                                            
-  |===================================================================   |  96%
-  |                                                                            
-  |====================================================================  |  98%
-  |                                                                            
-  |======================================================================|  99%
-  |                                                                            
-  |======================================================================| 100%
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{glimpse}\NormalTok{(counties)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-Rows: 3,234
-Columns: 18
-$ STATEFP  <chr> "31", "53", "35", "31", "31", "72", "46", "48", "06", "21", "~
-$ COUNTYFP <chr> "039", "069", "011", "109", "129", "085", "099", "327", "091"~
-$ COUNTYNS <chr> "00835841", "01513275", "00933054", "00835876", "00835886", "~
-$ GEOID    <chr> "31039", "53069", "35011", "31109", "31129", "72085", "46099"~
-$ NAME     <chr> "Cuming", "Wahkiakum", "De Baca", "Lancaster", "Nuckolls", "L~
-$ NAMELSAD <chr> "Cuming County", "Wahkiakum County", "De Baca County", "Lanca~
-$ LSAD     <chr> "06", "06", "06", "06", "06", "13", "06", "06", "06", "06", "~
-$ CLASSFP  <chr> "H1", "H1", "H1", "H1", "H1", "H1", "H1", "H1", "H1", "H1", "~
-$ MTFCC    <chr> "G4020", "G4020", "G4020", "G4020", "G4020", "G4020", "G4020"~
-$ CSAFP    <chr> NA, NA, NA, "339", NA, "490", NA, NA, NA, NA, "534", "352", N~
-$ CBSAFP   <chr> NA, NA, NA, "30700", NA, "41980", "43620", NA, NA, NA, "22300~
-$ METDIVFP <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
-$ FUNCSTAT <chr> "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "~
-$ ALAND    <dbl> 1477645345, 680976231, 6016818946, 2169272970, 1489645188, 87~
-$ AWATER   <dbl> 10690204, 61568965, 29090018, 22847034, 1718484, 32509, 18188~
-$ INTPTLAT <chr> "+41.9158651", "+46.2946377", "+34.3592729", "+40.7835474", "~
-$ INTPTLON <chr> "-096.7885168", "-123.4244583", "-104.3686961", "-096.6886584~
-$ geometry <MULTIPOLYGON [°]> MULTIPOLYGON (((-97.01952 4..., MULTIPOLYGON (((~
-\end{verbatim}
 
 This looks pretty similar to our Census blocks shapefile, in that it
 looked mostly like a normal dataframe with the exception of the new
@@ -9160,7 +8431,7 @@ pretty clearly see the shapes of Maryland counties.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-11-1.pdf}
+{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-8-1.pdf}
 
 }
 
@@ -9176,7 +8447,7 @@ let's get that:
 \end{Highlighting}
 \end{Shaded}
 
-With this map, we can layer our Census block data.
+With this county map, we can layer our places data.
 
 Something to note: The layers are rendered in the order they appear. So
 the first geom\_sf is rendered first. The second geom\_sf is rendered ON
@@ -9189,8 +8460,73 @@ dataframe. We have two to plot now, so it's easier this way.
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{baltimore\_city) }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{baltimore\_hispanic\_blocks) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_counties }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(COUNTYFP }\SpecialCharTok{==} \StringTok{"033"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{pg\_precincts) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-10-1.pdf}
+
+}
+
+\end{figure}
+
+Notice the subtle differences at the boundaries?
+
+Let's dive back into Prince George's precincts and see what more we can
+find out about them. It would be useful to know, for example, what
+turnout was like for the July primary election. We can use
+\href{https://elections.maryland.gov/press_room/2022_stats/Official\%20by\%20Party\%20and\%20Precinct.csv}{the
+state's data} to determine this.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{primary\_22 }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/Official by Party and Precinct.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Rows: 14665 Columns: 10
+-- Column specification --------------------------------------------------------
+Delimiter: ","
+chr (5): LBE, CONGRESSIONAL_DISTRICT_CODE, LEGISLATIVE_DISTRICT_CODE, PRECIN...
+dbl (5): POLLS, EARLY_VOING, ABSENTEE, PROVISIONAL, ELIGIBLE_VOTERS
+
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pg\_turnout }\OtherTok{\textless{}{-}}\NormalTok{ primary\_22 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(lbe }\SpecialCharTok{==} \StringTok{"Prince George\textquotesingle{}s"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(precinct) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_polls =} \FunctionTok{sum}\NormalTok{(polls), }\AttributeTok{total\_early =} \FunctionTok{sum}\NormalTok{(early\_voing), }\AttributeTok{total\_absentee =} \FunctionTok{sum}\NormalTok{(absentee), }\AttributeTok{total\_provisional =} \FunctionTok{sum}\NormalTok{(provisional), }\AttributeTok{total\_eligible =} \FunctionTok{sum}\NormalTok{(eligible\_voters))}
+
+\FunctionTok{View}\NormalTok{(pg\_turnout)}
+\end{Highlighting}
+\end{Shaded}
+
+Now we can join the precincts to the turnout data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pg\_precincts\_with\_turnout }\OtherTok{\textless{}{-}}\NormalTok{ pg\_precincts }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{left\_join}\NormalTok{(pg\_turnout, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{"PRECINCT\_ID"}\OtherTok{=}\StringTok{"precinct"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Now we can use color to distinguish precincts from each other. Let's use
+the total eligible voters to start with, and we'll use a color scale
+that will help us see the differences:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{pg\_precincts\_with\_turnout, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{total\_eligible)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_colour\_viridis\_b}\NormalTok{(}\AttributeTok{option=}\StringTok{"magma"}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{theme\_minimal}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -9203,101 +8539,21 @@ dataframe. We have two to plot now, so it's easier this way.
 
 \end{figure}
 
-What can we tell from this?
-
-Well, Census blocks where adult Hispanic population outnumbers both
-white and Black adult population are clustered in the city's eastern and
-southwestern areas. There are fewer such blocks in the northern parts of
-the city. We're also missing the water - the harbor, rivers and streams.
-But we can add those, too! The city offers various GIS data, including
-the
-\href{https://data.baltimorecity.gov/datasets/water/explore?location=89.796632\%2C-66.364958\%2C0.00}{locations
-of waterways}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{water }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/Water.shp"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Reading layer `Water' from data source 
-  `/Users/derekwillis/code/datajournalismbook-elections/data/Water.shp' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 468 features and 5 fields
-Geometry type: POLYGON
-Dimension:     XY
-Bounding box:  xmin: 1393746 ymin: 557989.5 xmax: 1445801 ymax: 621654.7
-Projected CRS: NAD83 / Maryland (ftUS)
-\end{verbatim}
-
-Now let's add that to our previous map. The order here matters - we want
-the outline of the city first, followed by water and then the Hispanic
-population blocks:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{baltimore\_city) }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{water) }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{baltimore\_hispanic\_blocks) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}[H]
-
-{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-15-1.pdf}
-
-}
-
-\end{figure}
-
-Better, but this is a pretty blunt visualization. Not all Census blocks
-are equally sized. Some have more people than the others, for example.
-It's hard to differentiate that here.
-
-We can get a sense of where the largest Hispanic populations are, by
-changing the color of the shapes according to the number of people. We
-do this by setting the aesthetic -- or aes -- to use the Adj\_H18\_\_POP
-column inside of the geom\_sf function. To make the differences easier
-to see, we're going to change the fill of the city white, too, and use a
-special color palette, viridis magma. We're also going to make the
-shapes slightly bigger.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{baltimore\_city, }\AttributeTok{fill=}\StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{water) }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{baltimore\_hispanic\_blocks, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{Adj\_H18\_\_Pop), }\AttributeTok{size=}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_colour\_viridis\_b}\NormalTok{(}\AttributeTok{option=}\StringTok{"magma"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}[H]
-
-{\centering \includegraphics{./geographic-basics_files/figure-pdf/unnamed-chunk-16-1.pdf}
-
-}
-
-\end{figure}
-
-With these changes, what else can we make out here? Well, definitely the
-eastern and southwestern blocks have larger Hispanic populations, and
-then there's the northwest corner that stands out, too. You should have
-questions.
+With these changes, what else can we make out here? First, you can
+pretty easily spot our ``ghost precincts'' - they are the ones in white,
+where there are no eligible voters. But you also can see that there's
+some pretty big variation among the number of eligible voters per
+precinct across the county, with some very large ones in the middle.
 
 \bookmarksetup{startatroot}
 
 \hypertarget{geographic-analysis}{%
 \chapter{Geographic analysis}\label{geographic-analysis}}
 
-In the previous chapter, we looked at the demographics of Census blocks
-in Baltimore city and made a nice map. Let's go little further and
-combine demographic data with political data to learn more about
-Maryland's political geography.
+In the previous chapter, we looked at election precincts in Prince
+George's County to show a bit of a pattern regarding concentration of
+the precincts with the most and 0 eligible voters. Let's go little
+further and look at voters statewide.
 
 First, let's load the libraries we'll need. We're also going to load
 tidycensus and set an API key for tidycensus.
@@ -9312,211 +8568,485 @@ tidycensus and set an API key for tidycensus.
 \end{Highlighting}
 \end{Shaded}
 
-And now let's load a dataframe of Maryland county population information
-from the 2020 Census, but this time we'll add in county geographic data.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{maryland\_counties }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/md\_counties\_2020.csv"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Rows: 24 Columns: 39
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr  (8): SUMLEV, GEOCODE, NAME, BASENAME, FILEID, STUSAB, CHARITER, CIFSN
-dbl (31): GEOID, LOGRECNO, TOTAL_POP, POP_ONE_RACE, POP_WHITE, POP_BLACK, PO...
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{maryland\_county\_shapes }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/Maryland2020\_County.json"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Reading layer `Maryland2020_County' from data source 
-  `/Users/derekwillis/code/datajournalismbook-elections/data/Maryland2020_County.json' 
-  using driver `ESRIJSON'
-Simple feature collection with 24 features and 18 fields
-Geometry type: POLYGON
-Dimension:     XY
-Bounding box:  xmin: -79.48765 ymin: 37.8866 xmax: -74.98628 ymax: 39.72304
-Geodetic CRS:  NAD83
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{maryland\_counties\_with\_shapes }\OtherTok{\textless{}{-}}\NormalTok{ maryland\_counties }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(maryland\_county\_shapes, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}GEOID\textquotesingle{}}\OtherTok{=}\StringTok{\textquotesingle{}GEOID20\textquotesingle{}}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Error in `inner_join()`:
-! Can't join on `x$GEOID` x `y$GEOID` because of incompatible types.
-i `x$GEOID` is of type <double>>.
-i `y$GEOID` is of type <character>>.
-\end{verbatim}
-
-And there's that join error: we've got incompatible data types. We can
-quickly fix that:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{maryland\_counties }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/md\_counties\_2020.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{GEOID =} \FunctionTok{as.character}\NormalTok{(GEOID))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Rows: 24 Columns: 39
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr  (8): SUMLEV, GEOCODE, NAME, BASENAME, FILEID, STUSAB, CHARITER, CIFSN
-dbl (31): GEOID, LOGRECNO, TOTAL_POP, POP_ONE_RACE, POP_WHITE, POP_BLACK, PO...
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{maryland\_county\_shapes }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/Maryland2020\_County.json"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Reading layer `Maryland2020_County' from data source 
-  `/Users/derekwillis/code/datajournalismbook-elections/data/Maryland2020_County.json' 
-  using driver `ESRIJSON'
-Simple feature collection with 24 features and 18 fields
-Geometry type: POLYGON
-Dimension:     XY
-Bounding box:  xmin: -79.48765 ymin: 37.8866 xmax: -74.98628 ymax: 39.72304
-Geodetic CRS:  NAD83
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{maryland\_counties\_with\_shapes }\OtherTok{\textless{}{-}}\NormalTok{ maryland\_counties }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(maryland\_county\_shapes, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}GEOID\textquotesingle{}}\OtherTok{=}\StringTok{\textquotesingle{}GEOID20\textquotesingle{}}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
 For the rest of this chapter, we're going to work on building a map that
-will help us gain insight into geographic patterns in registered voters
-and population by county and in Maryland. Our starting question: by
-examining the number of voters and the population in each county, what
-regional geographic patterns can we identify?
+will help us gain insight into geographic patterns in voter registration
+by county in Maryland. Our question: by examining the number of
+Democrats/Republicans/Unaffiliated voters per 100,000 people in each
+county, what regional geographic patterns can we identify?
 
-First we need to load voter registration data - since the population
-data is from 2020, we'll use the county totals as of the 2020 general
-election. And we'll make sure that the FIPS code that we need to join on
-is a character column:
+We've got voters by county, so let's load that and take a look:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_voters\_by\_county }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/maryland\_voters\_2020g.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{FIPS=}\FunctionTok{as.character}\NormalTok{(FIPS))}
+\NormalTok{voters\_by\_county }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/eligible\_voters.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-Rows: 24 Columns: 11
+Rows: 24 Columns: 10
 -- Column specification --------------------------------------------------------
 Delimiter: ","
-chr  (1): County
-dbl (10): FIPS, DEM, REP, BAR, GRN, LIB, WCP, OTH, UNA, TOTAL
+chr (1): County
+dbl (9): DEM, REP, BAR, GRN, LIB, WCP, OTH, UNA, TOTAL
 
 i Use `spec()` to retrieve the full column specification for this data.
 i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 \end{verbatim}
 
-Now let's combine our two dataframes:
-
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{maryland\_voters\_by\_county\_with\_pop }\OtherTok{\textless{}{-}}\NormalTok{ maryland\_voters\_by\_county }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(maryland\_counties\_with\_shapes, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}FIPS\textquotesingle{}}\OtherTok{=}\StringTok{\textquotesingle{}GEOID\textquotesingle{}}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-Now we can do some calculations and visualize them on a map. Let's
-calculate the number of Unaffiliated (no party) voters per 10,000 people
-and take a look at just the numbers.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{md\_una\_per\_10k }\OtherTok{\textless{}{-}}\NormalTok{ maryland\_voters\_by\_county\_with\_pop }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{una\_per\_10k =}\NormalTok{ UNA}\SpecialCharTok{/}\NormalTok{TOTAL\_POP}\SpecialCharTok{*}\DecValTok{10000}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(una\_per\_10k)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(County, DEM, REP, OTH, UNA, TOTAL, una\_per\_10k, geometry)}
-
-\NormalTok{md\_una\_per\_10k}
+\NormalTok{voters\_by\_county }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(TOTAL))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 24 x 8
-   County       DEM    REP   OTH    UNA  TOTAL una_p~1                  geometry
-   <chr>      <dbl>  <dbl> <dbl>  <dbl>  <dbl>   <dbl>             <POLYGON [°]>
- 1 Frederick  72487  68767   801  42961 186356   2069. ((-77.62017 39.48469, -7~
- 2 Howard    118705  52748  2035  51909 226634   2067. ((-77.041 39.23419, -77.~
- 3 Calvert    24587  28181   567  14178  67984   1999. ((-76.69195 38.68377, -7~
- 4 Anne Aru~ 174494 135457  2715  90162 405616   1977. ((-76.81615 39.12143, -7~
- 5 Carroll    33662  63967  1072  25770 125361   1908. ((-77.19802 39.57543, -7~
- 6 Cecil      21601  30880   727  15110  68819   1878. ((-75.93711 39.72188, -7~
- 7 Harford    66258  80038  1535  37942 187092   1875. ((-76.45929 39.50719, -7~
- 8 Queen An~  11091  18930   280   7133  37678   1824. ((-76.04684 39.16321, -7~
- 9 Saint Ma~  26373  30661   606  15661  73833   1813. ((-76.82022 38.43505, -7~
-10 Montgome~ 410935 105561  5816 147417 673198   1800. ((-77.43151 39.23217, -7~
-# ... with 14 more rows, and abbreviated variable name 1: una_per_10k
+# A tibble: 24 x 10
+   County              DEM    REP   BAR   GRN   LIB   WCP   OTH    UNA  TOTAL
+   <chr>             <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
+ 1 Montgomery       409636  97505     0  1113  2227   446  5468 156978 673373
+ 2 Prince George's  462097  37739     0   789  1313   593 10733  85143 598407
+ 3 Baltimore County 309297 137378     0   898  2493   687  5921 106789 563463
+ 4 Anne Arundel     173922 129893     0   632  2257   434  2951  96403 406492
+ 5 Baltimore City   303620  28211     0   908  1080   666  3984  56665 395134
+ 6 Howard           120954  49011     0   351   894   134  1981  56199 229524
+ 7 Frederick         76712  68334     0   318  1147   179  1060  48035 195785
+ 8 Harford           65127  80005     0   238  1182   202  1628  40778 189160
+ 9 Carroll           33572  63771     0   191   797   102  1033  28139 127605
+10 Charles           74373  23334     0   129   425   143   864  21819 121087
+# ... with 14 more rows
 \end{verbatim}
 
-Let's take a look at the result of this table. We might call this where
-the swing voters are, although political science tells us that most
-independents actually vote with a party most of the time. Frederick,
-Howard, Calvert, Anne Arundel and Carroll counties all have some
-competitive races at the local and state level, so that makes some
-sense. Montgomery, the state's largest jurisdiction, has more
-independents than Republicans.
+So, what do we see here? Montgomery County has the most, followed by
+Prince George's \& Baltimore County. Checks out.
+
+Next, we'll go out and get population data for each county from
+tidycensus. The variable for total population is B01001\_001.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population }\OtherTok{\textless{}{-}} \FunctionTok{get\_acs}\NormalTok{(}\AttributeTok{geography =} \StringTok{"county"}\NormalTok{,}
+              \AttributeTok{variables =} \FunctionTok{c}\NormalTok{(}\AttributeTok{population =} \StringTok{"B01001\_001"}\NormalTok{),}
+              \AttributeTok{state =} \StringTok{"MD"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Getting data from the 2017-2021 5-year ACS
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 24 x 5
+   GEOID NAME                          variable   estimate   moe
+   <chr> <chr>                         <chr>         <dbl> <dbl>
+ 1 24001 Allegany County, Maryland     population    68684    NA
+ 2 24003 Anne Arundel County, Maryland population   584064    NA
+ 3 24005 Baltimore County, Maryland    population   850702    NA
+ 4 24009 Calvert County, Maryland      population    92515    NA
+ 5 24011 Caroline County, Maryland     population    33234    NA
+ 6 24013 Carroll County, Maryland      population   172148    NA
+ 7 24015 Cecil County, Maryland        population   103370    NA
+ 8 24017 Charles County, Maryland      population   165209    NA
+ 9 24019 Dorchester County, Maryland   population    32486    NA
+10 24021 Frederick County, Maryland    population   267498    NA
+# ... with 14 more rows
+\end{verbatim}
+
+Ultimately, we're going to join this county population table with our
+voters by county table, and then calculate a voters per 50,000 people
+statistic. But remember, we then want to visualize this data by drawing
+a county map that helps us pick out trends. Thinking ahead, we know
+we'll need a county map shapefile. Fortunately, we can pull this
+geometry information right from tidycensus at the same time that we pull
+in the population data by adding ``geometry = TRUE'' to our get\_acs
+function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population }\OtherTok{\textless{}{-}} \FunctionTok{get\_acs}\NormalTok{(}\AttributeTok{geography =} \StringTok{"county"}\NormalTok{,}
+              \AttributeTok{variables =} \FunctionTok{c}\NormalTok{(}\AttributeTok{population =} \StringTok{"B01001\_001"}\NormalTok{),}
+              \AttributeTok{state =} \StringTok{"MD"}\NormalTok{,}
+              \AttributeTok{geometry =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Getting data from the 2017-2021 5-year ACS
+\end{verbatim}
+
+\begin{verbatim}
+Downloading feature geometry from the Census website.  To cache shapefiles for use in future sessions, set `options(tigris_use_cache = TRUE)`.
+\end{verbatim}
+
+\begin{verbatim}
+
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |                                                                      |   1%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |=======                                                               |  11%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  38%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  87%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |======================================================================| 100%
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Simple feature collection with 24 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -79.48765 ymin: 37.91172 xmax: -75.04894 ymax: 39.72304
+Geodetic CRS:  NAD83
+First 10 features:
+   GEOID                             NAME   variable estimate moe
+1  24047       Worcester County, Maryland population    52322  NA
+2  24003    Anne Arundel County, Maryland population   584064  NA
+3  24033 Prince George's County, Maryland population   957767  NA
+4  24025         Harford County, Maryland population   259162  NA
+5  24015           Cecil County, Maryland population   103370  NA
+6  24011        Caroline County, Maryland population    33234  NA
+7  24023         Garrett County, Maryland population    28955  NA
+8  24029            Kent County, Maryland population    19335  NA
+9  24041          Talbot County, Maryland population    37510  NA
+10 24045        Wicomico County, Maryland population   103223  NA
+                         geometry
+1  MULTIPOLYGON (((-75.66061 3...
+2  MULTIPOLYGON (((-76.83849 3...
+3  MULTIPOLYGON (((-77.07995 3...
+4  MULTIPOLYGON (((-76.0921 39...
+5  MULTIPOLYGON (((-76.23326 3...
+6  MULTIPOLYGON (((-76.01505 3...
+7  MULTIPOLYGON (((-79.48765 3...
+8  MULTIPOLYGON (((-76.27737 3...
+9  MULTIPOLYGON (((-76.34647 3...
+10 MULTIPOLYGON (((-75.92033 3...
+\end{verbatim}
+
+We now have a new column, geometry, that contains the ``MULTIPOLYGON''
+data that will draw an outline of each county when we go to draw a map.
+
+The next step will be to join our population data to our voter data on
+the county column.
+
+But there's a problem. The column in our population data that has county
+names is called ``NAME'', and it has the full name of the county spelled
+out in title case -- first word capitalized and has ``County'' and
+``Maryland'' in it. The voter data just has the name of the county. For
+example, the population data has ``Anne Arundel County, Maryland'' and
+the voter data has ``Anne Arundel''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Simple feature collection with 24 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -79.48765 ymin: 37.91172 xmax: -75.04894 ymax: 39.72304
+Geodetic CRS:  NAD83
+First 10 features:
+   GEOID                             NAME   variable estimate moe
+1  24047       Worcester County, Maryland population    52322  NA
+2  24003    Anne Arundel County, Maryland population   584064  NA
+3  24033 Prince George's County, Maryland population   957767  NA
+4  24025         Harford County, Maryland population   259162  NA
+5  24015           Cecil County, Maryland population   103370  NA
+6  24011        Caroline County, Maryland population    33234  NA
+7  24023         Garrett County, Maryland population    28955  NA
+8  24029            Kent County, Maryland population    19335  NA
+9  24041          Talbot County, Maryland population    37510  NA
+10 24045        Wicomico County, Maryland population   103223  NA
+                         geometry
+1  MULTIPOLYGON (((-75.66061 3...
+2  MULTIPOLYGON (((-76.83849 3...
+3  MULTIPOLYGON (((-77.07995 3...
+4  MULTIPOLYGON (((-76.0921 39...
+5  MULTIPOLYGON (((-76.23326 3...
+6  MULTIPOLYGON (((-76.01505 3...
+7  MULTIPOLYGON (((-79.48765 3...
+8  MULTIPOLYGON (((-76.27737 3...
+9  MULTIPOLYGON (((-76.34647 3...
+10 MULTIPOLYGON (((-75.92033 3...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{voters\_by\_county}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 24 x 10
+   County              DEM    REP   BAR   GRN   LIB   WCP   OTH    UNA  TOTAL
+   <chr>             <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
+ 1 Allegany          11793  22732     0    76   223    73   382   8337  43616
+ 2 Anne Arundel     173922 129893     0   632  2257   434  2951  96403 406492
+ 3 Baltimore City   303620  28211     0   908  1080   666  3984  56665 395134
+ 4 Baltimore County 309297 137378     0   898  2493   687  5921 106789 563463
+ 5 Calvert           23779  27912     0    94   410    69   548  15169  67981
+ 6 Caroline           6250  10539     0    34   108    40   160   4454  21585
+ 7 Carroll           33572  63771     0   191   797   102  1033  28139 127605
+ 8 Cecil             20666  31961     0   111   447   104   678  16360  70327
+ 9 Charles           74373  23334     0   129   425   143   864  21819 121087
+10 Dorchester         9608   8965     0    22   110    33   191   3745  22674
+# ... with 14 more rows
+\end{verbatim}
+
+If they're going to join properly, we need to clean one of them up to
+make it match the other.
+
+Let's clean the population table. We're going to rename the ``NAME''
+column to ``County'', then remove ``, Maryland'' and ``County'' and make
+the county titlecase. Next we'll remove any white spaces after that
+first cleaning step that, if left in, would prevent a proper join. We're
+also going to rename the column that contains the population information
+from ``estimate'' to ``population'' and select only the county name and
+the population columns, along with the geometry. That leaves us with
+this tidy table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population }\OtherTok{\textless{}{-}}\NormalTok{ md\_county\_population }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{County =}\NormalTok{ NAME) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{County =} \FunctionTok{str\_to\_title}\NormalTok{(}\FunctionTok{str\_remove\_all}\NormalTok{(County,}\StringTok{", Maryland|County"}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{County =} \FunctionTok{str\_trim}\NormalTok{(County,}\AttributeTok{side=}\StringTok{"both"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{population =}\NormalTok{ estimate) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(County, population, geometry)}
+
+\NormalTok{md\_county\_population}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Simple feature collection with 24 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -79.48765 ymin: 37.91172 xmax: -75.04894 ymax: 39.72304
+Geodetic CRS:  NAD83
+First 10 features:
+            County population                       geometry
+1        Worcester      52322 MULTIPOLYGON (((-75.66061 3...
+2     Anne Arundel     584064 MULTIPOLYGON (((-76.83849 3...
+3  Prince George's     957767 MULTIPOLYGON (((-77.07995 3...
+4          Harford     259162 MULTIPOLYGON (((-76.0921 39...
+5            Cecil     103370 MULTIPOLYGON (((-76.23326 3...
+6         Caroline      33234 MULTIPOLYGON (((-76.01505 3...
+7          Garrett      28955 MULTIPOLYGON (((-79.48765 3...
+8             Kent      19335 MULTIPOLYGON (((-76.27737 3...
+9           Talbot      37510 MULTIPOLYGON (((-76.34647 3...
+10        Wicomico     103223 MULTIPOLYGON (((-75.92033 3...
+\end{verbatim}
+
+Now we can join them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_voters\_per\_10k }\OtherTok{\textless{}{-}}\NormalTok{ md\_county\_population }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(voters\_by\_county)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Joining, by = "County"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_voters\_per\_10k}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Simple feature collection with 24 features and 11 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -79.48765 ymin: 37.91172 xmax: -75.04894 ymax: 39.72304
+Geodetic CRS:  NAD83
+First 10 features:
+            County population    DEM    REP BAR GRN  LIB WCP   OTH   UNA  TOTAL
+1        Worcester      52322  13864  19122   0  56  212  36   454  8372  42116
+2     Anne Arundel     584064 173922 129893   0 632 2257 434  2951 96403 406492
+3  Prince George's     957767 462097  37739   0 789 1313 593 10733 85143 598407
+4          Harford     259162  65127  80005   0 238 1182 202  1628 40778 189160
+5            Cecil     103370  20666  31961   0 111  447 104   678 16360  70327
+6         Caroline      33234   6250  10539   0  34  108  40   160  4454  21585
+7          Garrett      28955   3719  13584   0  24  101  20   157  2791  20396
+8             Kent      19335   5865   5221   0  20   66  22   110  2565  13869
+9           Talbot      37510  10803  11698   0  39  139  20   219  5582  28500
+10        Wicomico     103223  26749  23897   0 105  347 106   667 13406  65277
+                         geometry
+1  MULTIPOLYGON (((-75.66061 3...
+2  MULTIPOLYGON (((-76.83849 3...
+3  MULTIPOLYGON (((-77.07995 3...
+4  MULTIPOLYGON (((-76.0921 39...
+5  MULTIPOLYGON (((-76.23326 3...
+6  MULTIPOLYGON (((-76.01505 3...
+7  MULTIPOLYGON (((-79.48765 3...
+8  MULTIPOLYGON (((-76.27737 3...
+9  MULTIPOLYGON (((-76.34647 3...
+10 MULTIPOLYGON (((-75.92033 3...
+\end{verbatim}
+
+Hang on - there's at least one county with NA values - St.~Mary's, which
+is spelled ``Saint Mary's'' in the voter dataframe. And Baltimore County
+didn't match, either. Let's fix that using if\_else, which allows us to
+conditionally mutate:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_county\_population }\OtherTok{\textless{}{-}}\NormalTok{ md\_county\_population }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{County =} \FunctionTok{if\_else}\NormalTok{(County }\SpecialCharTok{==} \StringTok{"St. Mary\textquotesingle{}s"}\NormalTok{, }\StringTok{"Saint Mary\textquotesingle{}s"}\NormalTok{, County)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{County =} \FunctionTok{if\_else}\NormalTok{(County }\SpecialCharTok{==} \StringTok{"Baltimore"}\NormalTok{, }\StringTok{"Baltimore County"}\NormalTok{, County))}
+\end{Highlighting}
+\end{Shaded}
+
+Our final step before visualization, let's calculate the number of
+voters per 10,000 population for each county and sort from highest to
+lowest to see what trends we can identify just from the table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_voters\_per\_10k }\OtherTok{\textless{}{-}}\NormalTok{ md\_county\_population }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(voters\_by\_county) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{voters\_per\_10k =}\NormalTok{ TOTAL}\SpecialCharTok{/}\NormalTok{population}\SpecialCharTok{*}\DecValTok{10000}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(voters\_per\_10k))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Joining, by = "County"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_voters\_per\_10k}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Simple feature collection with 24 features and 12 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -79.48765 ymin: 37.91172 xmax: -75.04894 ymax: 39.72304
+Geodetic CRS:  NAD83
+First 10 features:
+         County population   DEM   REP BAR GRN  LIB WCP  OTH   UNA  TOTAL
+1     Worcester      52322 13864 19122   0  56  212  36  454  8372  42116
+2  Queen Anne's      49702 11102 19579   0  44  223  35  295  7916  39194
+3        Talbot      37510 10803 11698   0  39  139  20  219  5582  28500
+4       Carroll     172148 33572 63771   0 191  797 102 1033 28139 127605
+5       Calvert      92515 23779 27912   0  94  410  69  548 15169  67981
+6       Charles     165209 74373 23334   0 129  425 143  864 21819 121087
+7     Frederick     267498 76712 68334   0 318 1147 179 1060 48035 195785
+8       Harford     259162 65127 80005   0 238 1182 202 1628 40778 189160
+9          Kent      19335  5865  5221   0  20   66  22  110  2565  13869
+10      Garrett      28955  3719 13584   0  24  101  20  157  2791  20396
+   voters_per_10k                       geometry
+1        8049.386 MULTIPOLYGON (((-75.66061 3...
+2        7885.799 MULTIPOLYGON (((-76.24918 3...
+3        7597.974 MULTIPOLYGON (((-76.34647 3...
+4        7412.517 MULTIPOLYGON (((-77.31151 3...
+5        7348.106 MULTIPOLYGON (((-76.70121 3...
+6        7329.322 MULTIPOLYGON (((-77.27382 3...
+7        7319.120 MULTIPOLYGON (((-77.67716 3...
+8        7298.910 MULTIPOLYGON (((-76.0921 39...
+9        7173.002 MULTIPOLYGON (((-76.27737 3...
+10       7044.034 MULTIPOLYGON (((-79.48765 3...
+\end{verbatim}
+
+Let's take a look at the result of this table. There are some surprising
+ones at the top, some of Maryland's smallest counties! Worcester, Queen
+Anne's, Talbot may not have that many voters, but they also don't have a
+lot of people.
 
 Okay, now let's visualize. We're going to build a choropleth map, with
 the color of each county -- the fill -- set according to the number of
-unaffiliated voters per 10K on a color gradient.
+voters per 10K on a color gradient.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_una\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{una\_per\_10k)) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Error in `check_required_aesthetics()`:
-! stat_sf requires the following missing aesthetics: geometry
-\end{verbatim}
-
-So this error message is pretty sneaky, because it's saying that it
-can't find a geometry column. But we \emph{have} a geometry column -
-it's called geometry! What's happening here is that ggplot expects
-certain details in order to be able to locate the column with geometry
-in it, and sometimes when we build a new dataframe through joins those
-details get dropped. Luckily, we can explicitly tell ggplot where to
-find it:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_una\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{una\_per\_10k, }\AttributeTok{geometry=}\NormalTok{geometry)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_voters\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{voters\_per\_10k)) }\SpecialCharTok{+}
   \FunctionTok{theme\_minimal}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{./geographicanalysis_files/figure-pdf/unnamed-chunk-8-1.pdf}
+{\centering \includegraphics{./geographicanalysis_files/figure-pdf/unnamed-chunk-10-1.pdf}
 
 }
 
@@ -9529,7 +9059,7 @@ last chapter.
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_una\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{una\_per\_10k, }\AttributeTok{geometry=}\NormalTok{geometry)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_voters\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{voters\_per\_10k)) }\SpecialCharTok{+}
   \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{scale\_fill\_viridis\_b}\NormalTok{(}\AttributeTok{option=}\StringTok{"magma"}\NormalTok{)}
 \end{Highlighting}
@@ -9537,21 +9067,64 @@ last chapter.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{./geographicanalysis_files/figure-pdf/unnamed-chunk-9-1.pdf}
+{\centering \includegraphics{./geographicanalysis_files/figure-pdf/unnamed-chunk-11-1.pdf}
 
 }
 
 \end{figure}
 
-Some interesting regional patterns finally emerge.
+The highest ranking counties stand out nicely in this version, but it's
+still hard to make out fine-grained differences between other counties.
 
-The highest number of unaffiliated voters per capita are clustered close
-to DC and Baltimore, with the notable exception of Prince George's
-County. The further west you go, the lower number of unaffiliated voters
-per capita there are (and that's somewhat true for the Eastern Shore,
-too). You could swap out UNA for Republicans or Democrats, or look at
-this another way, but what you're trying to see here are potential
-patterns for further exploration.
+So let's change the color scale to a ``log'' scale, which will help us
+see those differences a bit more clearly.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_voters\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{voters\_per\_10k)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_b}\NormalTok{(}\AttributeTok{option=}\StringTok{"magma"}\NormalTok{,}\AttributeTok{trans =} \StringTok{"log"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{./geographicanalysis_files/figure-pdf/unnamed-chunk-12-1.pdf}
+
+}
+
+\end{figure}
+
+Let's repeat that for Unaffiliated voters:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{md\_voters\_per\_10k }\OtherTok{\textless{}{-}}\NormalTok{ md\_voters\_per\_10k }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{una\_voters\_per\_10k =}\NormalTok{ UNA}\SpecialCharTok{/}\NormalTok{population}\SpecialCharTok{*}\DecValTok{10000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+And then map it:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data=}\NormalTok{md\_voters\_per\_10k, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{una\_voters\_per\_10k)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_b}\NormalTok{(}\AttributeTok{option=}\StringTok{"magma"}\NormalTok{,}\AttributeTok{trans =} \StringTok{"log"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{./geographicanalysis_files/figure-pdf/unnamed-chunk-14-1.pdf}
+
+}
+
+\end{figure}
+
+What regional patterns do you see, especially on the ends of the scale?
 
 \bookmarksetup{startatroot}
 
@@ -9585,18 +9158,17 @@ rolling.
 \end{Highlighting}
 \end{Shaded}
 
-Here's the question we're going to go after: How did federal politicians
-talk about the coronavirus pandemic on Twitter?
+Here's the question we're going to go after: what words or phrases
+appear most in Maryland Sen.~Ben Cardin's press releases?
 
-To answer this question, we'll use a dataset of tweets posted by federal
-politicians from both campaign and official accounts that mentioned
-either ``COVID'' or ``coronavirus'' beginning on Feb.~1, 2020. This
-dataset doesn't include retweets, only original tweets. Let's read in
-this data and examine it:
+To answer this question, we'll use the text of Cardin's most recent 999
+press releases.
+
+Let's read in this data and examine it:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covid\_tweets }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{\textquotesingle{}data/covid\_tweets.rds\textquotesingle{}}\NormalTok{)}
+\NormalTok{releases }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/cardin\_releases.rds"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9604,33 +9176,31 @@ We can see what it looks like with head:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(covid\_tweets)}
+\FunctionTok{head}\NormalTok{(releases)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-# A tibble: 6 x 12
-       id user_~1 content created             branch state distr~2 title first~3
-    <dbl> <chr>   <chr>   <dttm>              <chr>  <chr> <chr>   <chr> <chr>  
-1 1.46e18 RepCha~ "What ~ 2021-11-24 21:53:05 H      FL    13      Hous~ Charlie
-2 1.46e18 swan4c~ "Joe B~ 2021-11-24 21:42:53 H      GA    10      Hous~ Mitche~
-3 1.46e18 TonyVa~ "This ~ 2021-11-24 21:32:43 H      NE    02      Hous~ Tony   
-4 1.46e18 RepGre~ "I won~ 2021-11-24 21:16:48 H      FL    17      Hous~ Greg   
-5 1.46e18 Squire~ "Don’t~ 2021-11-24 20:36:53 H      TX    22      Hous~ Jim    
-6 1.46e18 RepDer~ "90% o~ 2021-11-24 20:33:39 H      WA    06      Hous~ Derek  
-# ... with 3 more variables: last_name <chr>, gender <chr>, party <chr>, and
-#   abbreviated variable names 1: user_name, 2: district, 3: first_name
+# A tibble: 6 x 4
+  date       title                                                   url   text 
+  <date>     <chr>                                                   <chr> <chr>
+1 2022-12-01 Cardin, Trone Lead Effort to Review Health Impacts of ~ http~ " – ~
+2 2022-12-01 Cardin Votes to Avert Rail Strike, Will Continue to Ad~ http~ " – ~
+3 2022-12-01 Cardin Introduces Legislation to Reauthorize and Impro~ http~ "– U~
+4 2022-12-01 Cardin Marks World AIDS Day 2022                        http~ " – ~
+5 2022-12-01 Wyden, Crapo and Bipartisan Senate Finance Committee M~ http~ " – ~
+6 2022-12-01 Cardin, Wicker Lead Legislation to Designate Wagner Gr~ http~ " – ~
 \end{verbatim}
 
-What we want to do is to make the \texttt{content} column easier to
+What we want to do is to make the \texttt{text} column easier to
 analyze. Let's say we want to find out the most commonly used words.
-We'll probably want to remove URLs from the text of the tweets since
-they aren't actual words. Let's use mutate to make that happen:
+We'll want to remove URLs from the text of the releases since they
+aren't actual words. Let's use mutate to make that happen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covid\_tweets }\OtherTok{\textless{}{-}}\NormalTok{ covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{content =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"http.*"}\NormalTok{,}\StringTok{""}\NormalTok{, content))}
+\NormalTok{releases }\OtherTok{\textless{}{-}}\NormalTok{ releases }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{text =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"http.*"}\NormalTok{,}\StringTok{""}\NormalTok{, text))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9655,12 +9225,12 @@ lowercase and remove all punctuation. The way that
 \texttt{unnest\_tokens} works is that we tell it what we want to call
 the field we're creating with this breaking apart, then we tell it what
 we're breaking apart -- what field has all the text in it. For us,
-that's the \texttt{content} column:
+that's the \texttt{text} column:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{unique\_words }\OtherTok{\textless{}{-}}\NormalTok{ covid\_tweets }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(content) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(word, content)}
+\NormalTok{unique\_words }\OtherTok{\textless{}{-}}\NormalTok{ releases }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(text) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest\_tokens}\NormalTok{(word, text)}
 \FunctionTok{View}\NormalTok{(unique\_words)}
 \end{Highlighting}
 \end{Shaded}
@@ -9680,7 +9250,7 @@ to making a plot of the top 25 words:
   \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
       \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Count"}\NormalTok{,}
       \AttributeTok{y =} \StringTok{"Unique words"}\NormalTok{,}
-      \AttributeTok{title =} \StringTok{"Count of unique words found in tweets"}\NormalTok{)}
+      \AttributeTok{title =} \StringTok{"Count of unique words found in Cardin releases"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9700,11 +9270,26 @@ Well, that's a bit underwhelming - a lot of very common (and short)
 words. This also is a solved problem in working with text data, and
 words like ``a'' and ``the'' are known as ``stop words''. In most cases
 you'll want to remove them from your analysis since they are so common.
-Tidytext provides a dataframe of them:
+Tidytext provides a dataframe of them that we'll load, and then we'll
+add some of our own.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{data}\NormalTok{(}\StringTok{"stop\_words"}\NormalTok{)}
+
+\NormalTok{stop\_words }\OtherTok{\textless{}{-}}\NormalTok{ stop\_words }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"ben"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"cardin"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"senator"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"senators"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"maryland"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{\textquotesingle{}federal\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{\textquotesingle{}u.s\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{\textquotesingle{}md\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{\textquotesingle{}senate\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"hollen"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"van"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_row}\NormalTok{(}\AttributeTok{word =} \StringTok{"chris"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9737,70 +9322,38 @@ Selecting by percent
 # A tibble: 10 x 3
    word            n percent
    <chr>       <int>   <dbl>
- 1 covid       78694   2.91 
- 2 19          51817   1.91 
- 3 covid19     44862   1.66 
- 4 amp         43735   1.62 
- 5 coronavirus 35713   1.32 
- 6 health      20832   0.769
- 7 pandemic    20494   0.757
- 8 relief      17576   0.649
- 9 people      14046   0.519
-10 vaccine     12707   0.469
+ 1 health       1804   0.576
+ 2 support      1509   0.481
+ 3 act          1488   0.475
+ 4 funding      1457   0.465
+ 5 program      1297   0.414
+ 6 project      1255   0.400
+ 7 communities  1189   0.379
+ 8 community    1015   0.324
+ 9 public       1014   0.323
+10 covid        1008   0.322
 \end{verbatim}
 
 Those seem like more relevant unique words. Now, here's where we can
 start to do more interesting and meaningful analysis. Let's create two
-dataframes of unique words based on time: one for all of 2020 and the
-other for all of 2021:
+dataframes of unique words based on time: one for all of 2021 and the
+other for all of 2022:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{unique\_words\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(content) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(word, content)}
+\NormalTok{unique\_words\_2021 }\OtherTok{\textless{}{-}}\NormalTok{ releases }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(date }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2022{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(text) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest\_tokens}\NormalTok{(word, text)}
 
-\NormalTok{unique\_words\_2021 }\OtherTok{\textless{}{-}}\NormalTok{ covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textgreater{}=} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(content) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(word, content)}
+\NormalTok{unique\_words\_2022 }\OtherTok{\textless{}{-}}\NormalTok{ releases }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(date }\SpecialCharTok{\textgreater{}=} \StringTok{\textquotesingle{}2022{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(text) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest\_tokens}\NormalTok{(word, text)}
 \end{Highlighting}
 \end{Shaded}
 
 Then we can create top 10 lists for both of them and compare:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{unique\_words\_2020 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{anti\_join}\NormalTok{(stop\_words) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{tally}\NormalTok{(}\AttributeTok{sort=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percent =}\NormalTok{ (n}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(n))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{top\_n}\NormalTok{(}\DecValTok{10}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Joining, by = "word"
-Selecting by percent
-\end{verbatim}
-
-\begin{verbatim}
-# A tibble: 10 x 3
-   word            n percent
-   <chr>       <int>   <dbl>
- 1 covid       47028   2.33 
- 2 covid19     36636   1.81 
- 3 19          34373   1.70 
- 4 coronavirus 34338   1.70 
- 5 amp         33559   1.66 
- 6 health      16697   0.826
- 7 pandemic    14957   0.740
- 8 relief      12672   0.627
- 9 people      10619   0.525
-10 crisis       9125   0.451
-\end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -9820,23 +9373,55 @@ Selecting by percent
 
 \begin{verbatim}
 # A tibble: 10 x 3
-   word         n percent
-   <chr>    <int>   <dbl>
- 1 covid    31666   4.61 
- 2 19       17444   2.54 
- 3 amp      10176   1.48 
- 4 vaccine   8982   1.31 
- 5 covid19   8226   1.20 
- 6 pandemic  5537   0.807
- 7 relief    4904   0.715
- 8 health    4135   0.603
- 9 vaccines  3516   0.512
-10 people    3427   0.499
+   word            n percent
+   <chr>       <int>   <dbl>
+ 1 health       1177   0.608
+ 2 act          1025   0.530
+ 3 funding       962   0.497
+ 4 support       902   0.466
+ 5 covid         807   0.417
+ 6 19            806   0.417
+ 7 communities   767   0.396
+ 8 program       736   0.380
+ 9 american      708   0.366
+10 pandemic      708   0.366
 \end{verbatim}
 
-In the 2021 top 10 list, ``vaccine'' and its variations are much more
-prominent, which makes sense, while ``testing'' drops out of the top 10
-compared to 2020.
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{unique\_words\_2022 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{anti\_join}\NormalTok{(stop\_words) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(word) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{tally}\NormalTok{(}\AttributeTok{sort=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percent =}\NormalTok{ (n}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(n))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{top\_n}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Joining, by = "word"
+Selecting by percent
+\end{verbatim}
+
+\begin{verbatim}
+# A tibble: 10 x 3
+   word            n percent
+   <chr>       <int>   <dbl>
+ 1 project       834   0.695
+ 2 health        627   0.523
+ 3 support       607   0.506
+ 4 program       561   0.468
+ 5 funding       495   0.413
+ 6 act           463   0.386
+ 7 community     453   0.378
+ 8 communities   422   0.352
+ 9 funds         421   0.351
+10 baltimore     416   0.347
+\end{verbatim}
+
+In the 2021 top 10 list, ``covid'' and ``pandemic'' appear, which makes
+sense, while the 2022 doesn't reference the same topic aside from the
+more generic ``health''.
 
 \hypertarget{going-beyond-a-single-word}{%
 \section{Going beyond a single word}\label{going-beyond-a-single-word}}
@@ -9855,8 +9440,8 @@ So this block is is going to do the following:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Use the covid\_tweets data we created above, and filter for pre-2021
-  tweets.
+  Use the releases data we created above, and filter for pre-2022
+  releases.
 \item
   Unnest the tokens again, but instead we're going to create a field
   called bigram, break apart summary, but we're going to specify the
@@ -9880,9 +9465,9 @@ So this block is is going to do the following:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, content, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{releases }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(date }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2022{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, text, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{separate}\NormalTok{(bigram, }\FunctionTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\AttributeTok{sep =} \StringTok{" "}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word1 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word2 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
@@ -9900,29 +9485,30 @@ Selecting by percent
 
 \begin{verbatim}
 # A tibble: 10 x 3
-   bigram                   n percent
-   <chr>                <int>   <dbl>
- 1 covid 19             32302   3.52 
- 2 health care           4388   0.478
- 3 public health         3908   0.426
- 4 covid19 pandemic      3206   0.349
- 5 town hall             3014   0.328
- 6 coronavirus pandemic  2915   0.318
- 7 19 pandemic           2670   0.291
- 8 covid relief          2246   0.245
- 9 relief package        2062   0.225
-10 covid ー              1832   0.200
+   bigram              n percent
+   <chr>           <int>   <dbl>
+ 1 covid 19          786   0.856
+ 2 human rights      319   0.347
+ 3 19 pandemic       288   0.314
+ 4 health care       224   0.244
+ 5 chesapeake bay    190   0.207
+ 6 american rescue   166   0.181
+ 7 rescue plan       166   0.181
+ 8 public health     157   0.171
+ 9 john sarbanes     133   0.145
+10 kweisi mfume      133   0.145
 \end{verbatim}
 
 And we already have a different, more nuanced result. Health was among
-the top single words, and we can see that ``health care'' and ``public
-health'' are among the top 2-word phrases. What about after 2021?
+the top single words, and we can see that ``health care'', ``human
+rights'' and ``chesapeake bay'' are among the top 2-word phrases. What
+about after 2021?
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textgreater{}=} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, content, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{releases }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(date }\SpecialCharTok{\textgreater{}=} \StringTok{\textquotesingle{}2022{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, text, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{separate}\NormalTok{(bigram, }\FunctionTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\AttributeTok{sep =} \StringTok{" "}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word1 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word2 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
@@ -9940,184 +9526,30 @@ Selecting by percent
 
 \begin{verbatim}
 # A tibble: 10 x 3
-   bigram               n percent
-   <chr>            <int>   <dbl>
- 1 covid 19         17357   5.35 
- 2 19 vaccine        2638   0.814
- 3 covid relief      2159   0.666
- 4 19 pandemic       1495   0.461
- 5 covid19 vaccine   1227   0.379
- 6 covid vaccine     1099   0.339
- 7 health care        908   0.280
- 8 covid19 pandemic   872   0.269
- 9 public health      860   0.265
-10 19 relief          805   0.248
+   bigram                 n percent
+   <chr>              <int>   <dbl>
+ 1 project location     262   0.447
+ 2 covid 19             167   0.285
+ 3 health care          140   0.239
+ 4 chesapeake bay       139   0.237
+ 5 human rights         119   0.203
+ 6 amount included      113   0.193
+ 7 baltimore city       100   0.171
+ 8 prince george’s       98   0.167
+ 9 mental health         94   0.160
+10 location baltimore    85   0.145
 \end{verbatim}
 
-While ``covid 19'' is still the leading phrase, vaccine-related phrases
-dominate the top 10, and ``public health'' and ``health care'' have
-slipped down the list.
+While ``covid 19'' is still a top phrase, it's not \emph{the} leading
+phrase any longer. ``Mental health'' makes an appearance, too. You'll
+notice that the percentages are very small; that's not irrelevant but in
+some cases it's the differences in patterns that's more important.
 
-So far, we've only looked at the entire set of tweets, not any
-characteristics of who posted them. Would these lists be any different
-for Democrats and Republicans? To find out, we just need to add to our
-filter.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{, party }\SpecialCharTok{==} \StringTok{\textquotesingle{}D\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, content, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{separate}\NormalTok{(bigram, }\FunctionTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\AttributeTok{sep =} \StringTok{" "}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word1 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word2 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{bigram =} \FunctionTok{paste}\NormalTok{(word1, word2, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(bigram) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{tally}\NormalTok{(}\AttributeTok{sort=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percent =}\NormalTok{ (n}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(n))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{top\_n}\NormalTok{(}\DecValTok{10}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Selecting by percent
-\end{verbatim}
-
-\begin{verbatim}
-# A tibble: 10 x 3
-   bigram                   n percent
-   <chr>                <int>   <dbl>
- 1 covid 19             22182   3.57 
- 2 health care           3398   0.547
- 3 public health         3314   0.534
- 4 town hall             2481   0.400
- 5 covid19 pandemic      2426   0.391
- 6 19 pandemic           1923   0.310
- 7 coronavirus pandemic  1903   0.307
- 8 covid relief          1525   0.246
- 9 relief package        1478   0.238
-10 social distancing     1373   0.221
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{, party }\SpecialCharTok{==} \StringTok{\textquotesingle{}R\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, content, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{separate}\NormalTok{(bigram, }\FunctionTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\AttributeTok{sep =} \StringTok{" "}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word1 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word2 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{bigram =} \FunctionTok{paste}\NormalTok{(word1, word2, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(bigram) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{tally}\NormalTok{(}\AttributeTok{sort=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percent =}\NormalTok{ (n}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(n))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{top\_n}\NormalTok{(}\DecValTok{10}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Selecting by percent
-\end{verbatim}
-
-\begin{verbatim}
-# A tibble: 10 x 3
-   bigram                   n percent
-   <chr>                <int>   <dbl>
- 1 covid 19              9901   3.45 
- 2 coronavirus pandemic   966   0.336
- 3 health care            943   0.328
- 4 ー 19                  782   0.272
- 5 covid ー               782   0.272
- 6 covid19 pandemic       769   0.268
- 7 cares act              759   0.264
- 8 19 pandemic            733   0.255
- 9 american people        711   0.248
-10 covid relief           703   0.245
-\end{verbatim}
-
-Now we can begin to see some differences between the parties. We also
-could do the same for different kinds of accounts: the \texttt{title}
-column represents the role of the account, and if it includes
-``Candidate'' then the tweet is from a campaign account. Let's compare
-House of Representatives' official and campaign tweets during 2020:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{, title }\SpecialCharTok{==} \StringTok{\textquotesingle{}House Representative\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, content, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{separate}\NormalTok{(bigram, }\FunctionTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\AttributeTok{sep =} \StringTok{" "}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word1 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word2 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{bigram =} \FunctionTok{paste}\NormalTok{(word1, word2, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(bigram) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{tally}\NormalTok{(}\AttributeTok{sort=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percent =}\NormalTok{ (n}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(n))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{top\_n}\NormalTok{(}\DecValTok{10}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Selecting by percent
-\end{verbatim}
-
-\begin{verbatim}
-# A tibble: 10 x 3
-   bigram                   n percent
-   <chr>                <int>   <dbl>
- 1 covid 19             15796   3.53 
- 2 town hall             2265   0.507
- 3 health care           2093   0.468
- 4 public health         2033   0.455
- 5 covid19 pandemic      1851   0.414
- 6 19 pandemic           1522   0.341
- 7 coronavirus pandemic  1457   0.326
- 8 covid relief          1108   0.248
- 9 telephone town        1051   0.235
-10 relief package        1010   0.226
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{covid\_tweets }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(created }\SpecialCharTok{\textless{}} \StringTok{\textquotesingle{}2021{-}01{-}01\textquotesingle{}}\NormalTok{, title }\SpecialCharTok{==} \StringTok{\textquotesingle{}House Candidate\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{unnest\_tokens}\NormalTok{(bigram, content, }\AttributeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\AttributeTok{n =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{separate}\NormalTok{(bigram, }\FunctionTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\AttributeTok{sep =} \StringTok{" "}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word1 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{word2 }\SpecialCharTok{\%in\%}\NormalTok{ stop\_words}\SpecialCharTok{$}\NormalTok{word) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{bigram =} \FunctionTok{paste}\NormalTok{(word1, word2, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(bigram) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{tally}\NormalTok{(}\AttributeTok{sort=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percent =}\NormalTok{ (n}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(n))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{top\_n}\NormalTok{(}\DecValTok{10}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Selecting by percent
-\end{verbatim}
-
-\begin{verbatim}
-# A tibble: 10 x 3
-   bigram                   n percent
-   <chr>                <int>   <dbl>
- 1 covid 19              8378   3.38 
- 2 public health          778   0.314
- 3 covid ー               722   0.291
- 4 ー 19                  721   0.291
- 5 health care            721   0.291
- 6 19 pandemic            519   0.209
- 7 social distancing      518   0.209
- 8 coronavirus pandemic   512   0.207
- 9 town hall              482   0.195
-10 covid relief           458   0.185
-\end{verbatim}
-
-There are some differences here, too, but also some potential challenges
-to doing an analysis. For one, there are variations of words like
-``vaccine'' that could probably be standardized - maybe using OpenRefine
-- that would give us cleaner results. There might be some words among
-our list of stop words that actually are meaningful in this context.
+There are some potential challenges to doing an analysis. For one, there
+are variations of words that could probably be standardized - maybe
+using OpenRefine - that would give us cleaner results. There might be
+some words among our list of stop words that actually are meaningful in
+this context.
 
 \hypertarget{sentiment-analysis}{%
 \section{Sentiment Analysis}\label{sentiment-analysis}}
@@ -10134,18 +9566,6 @@ which has nothing to do with the Microsoft search engine. Let's load it:
 \begin{Highlighting}[]
 \NormalTok{bing }\OtherTok{\textless{}{-}} \FunctionTok{get\_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)}
 
-\NormalTok{bing\_word\_counts\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ unique\_words\_2020 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{inner\_join}\NormalTok{(bing) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{count}\NormalTok{(word, sentiment, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Joining, by = "word"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{bing\_word\_counts\_2021 }\OtherTok{\textless{}{-}}\NormalTok{ unique\_words\_2021 }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{inner\_join}\NormalTok{(bing) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{count}\NormalTok{(word, sentiment, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
@@ -10158,8 +9578,20 @@ Joining, by = "word"
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{View}\NormalTok{(bing\_word\_counts\_2020)}
+\NormalTok{bing\_word\_counts\_2022 }\OtherTok{\textless{}{-}}\NormalTok{ unique\_words\_2022 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{inner\_join}\NormalTok{(bing) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(word, sentiment, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{View}\NormalTok{(bing\_word\_counts\_2021)}
+\FunctionTok{View}\NormalTok{(bing\_word\_counts\_2022)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -10298,7 +9730,7 @@ Let's start by plotting them to get a sense of the pattern.
 \end{Shaded}
 
 \begin{verbatim}
-`geom_smooth()` using formula 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'
 \end{verbatim}
 
 \begin{figure}[H]
@@ -10328,7 +9760,7 @@ per small business employee in the state.
 \end{Shaded}
 
 \begin{verbatim}
-`geom_smooth()` using formula 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'
 \end{verbatim}
 
 \begin{figure}[H]
