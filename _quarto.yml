@@ -33,7 +33,6 @@ book:
     - rvest.qmd
     - census.qmd
     - visualizing-for-reporting.qmd
-    - visualizing-for-publication.qmd
     - geographic-basics.qmd
     - geographicanalysis.qmd
     - textanalysis.qmd
@@ -42,7 +41,7 @@ book:
 
 format:
   html:
-    theme: simplex
+    theme: cosmo
   pdf:
     documentclass: scrreprt
   epub:
