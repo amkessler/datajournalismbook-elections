@@ -51,7 +51,7 @@ Fortunately, this is a solved problem with tidytext, which has a function called
 ```{r}
 unique_words <- releases %>% select(text) %>%
   unnest_tokens(word, text)
-View(unique_words)
+head(unique_words)
 ```
 
 Now we can look at the top words in this dataset. Let's limit ourselves to making a plot of the top 25 words:
@@ -145,7 +145,7 @@ The code to make ngrams is similar to what we did above, but involves some more 
 
 So this block is is going to do the following:
 
-1. Use the releases data we created above, and filter for pre-2022 releases.
+1.  Use the releases data we created above, and filter for pre-2022 releases.
 2.  Unnest the tokens again, but instead we're going to create a field called bigram, break apart summary, but we're going to specify the tokens in this case are ngrams of 2.
 3.  We're going to make things easier to read and split bigrams into word1 and word2.
 4.  We're going to filter out stopwords again, but this time we're going to do it in both word1 and word2 using a slightly different filtering method.
@@ -183,7 +183,7 @@ releases %>%
   top_n(10)
 ```
 
-While "covid 19" is still a top phrase, it's not _the_ leading phrase any longer. "Mental health" makes an appearance, too. You'll notice that the percentages are very small; that's not irrelevant but in some cases it's the differences in patterns that's more important.
+While "covid 19" is still a top phrase, it's not *the* leading phrase any longer. "Mental health" makes an appearance, too. You'll notice that the percentages are very small; that's not irrelevant but in some cases it's the differences in patterns that's more important.
 
 There are some potential challenges to doing an analysis. For one, there are variations of words that could probably be standardized - maybe using OpenRefine - that would give us cleaner results. There might be some words among our list of stop words that actually are meaningful in this context.
 
@@ -202,8 +202,8 @@ bing_word_counts_2022 <- unique_words_2022 %>%
   inner_join(bing) %>%
   count(word, sentiment, sort = TRUE)
 
-View(bing_word_counts_2021)
-View(bing_word_counts_2022)
+head(bing_word_counts_2021)
+head(bing_word_counts_2022)
 ```
 
 Gauging the sentiment of a word can be heavily dependent on the context, and as with other types of text analysis sometimes larger patterns are more meaningful than individual results. But the potential with text analysis is vast: knowing what words and phrases that public officials employ can be a way to evaluate their priorities, cohesiveness and tactics for persuading voters and their colleagues. And those words and phrases are data.

@@ -478,18 +478,30 @@ dbl (5): POLLS, EARLY_VOING, ABSENTEE, PROVISIONAL, ELIGIBLE_VOTERS
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(precinct) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_polls =</span> <span class="fu">sum</span>(polls), <span class="at">total_early =</span> <span class="fu">sum</span>(early_voing), <span class="at">total_absentee =</span> <span class="fu">sum</span>(absentee), <span class="at">total_provisional =</span> <span class="fu">sum</span>(provisional), <span class="at">total_eligible =</span> <span class="fu">sum</span>(eligible_voters))</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(pg_turnout)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pg_turnout)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  precinct total_polls total_early total_absentee total_provisional total_elig…¹
+  &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;             &lt;dbl&gt;        &lt;dbl&gt;
+1 001-001          275         106            226                38         2981
+2 001-002           99          36             81                16         1096
+3 001-003          231          72            148                39         2423
+4 001-004          149          71            142                28         1910
+5 001-005          240          56            160                32         1891
+6 001-006          151          73             97                10         1303
+# … with abbreviated variable name ¹​total_eligible</code></pre>
+</div>
 </div>
 <p>Now we can join the precincts to the turnout data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pg_precincts_with_turnout <span class="ot">&lt;-</span> pg_precincts <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(pg_turnout, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"PRECINCT_ID"</span><span class="ot">=</span><span class="st">"precinct"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pg_precincts_with_turnout <span class="ot">&lt;-</span> pg_precincts <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(pg_turnout, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"PRECINCT_ID"</span><span class="ot">=</span><span class="st">"precinct"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can use color to distinguish precincts from each other. Let’s use the total eligible voters to start with, and we’ll use a color scale that will help us see the differences:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>pg_precincts_with_turnout, <span class="fu">aes</span>(<span class="at">fill=</span>total_eligible)) <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_b</span>(<span class="at">option=</span><span class="st">"magma"</span>) <span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>pg_precincts_with_turnout, <span class="fu">aes</span>(<span class="at">fill=</span>total_eligible)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_b</span>(<span class="at">option=</span><span class="st">"magma"</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="geographic-basics_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
