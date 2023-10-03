@@ -106,11 +106,23 @@ To do that by hand, we'd have to take each of the 54,247 individual rows (or obs
 
 So to do this, we'll take our dataset and we'll introduce a new operator: `%>%`. The best way to read that operator, in my opinion, is to interpret that as "and then do this."
 
-We're going to establish a pattern that will come up again and again throughout this book: `data %>% function`. In English: take your data set and then do this specific action to it.
+We're going to establish a pattern that will come up again and again throughout this book:
+
+`data %>%`
+
+`function`
+
+In English: take your data set and then do this specific action to it.
 
 The first step of every analysis starts with the data being used. Then we apply functions to the data.
 
-In our case, the pattern that you'll use many, many times is: `data %>% group_by(COLUMN NAME) %>% summarize(VARIABLE NAME = AGGREGATE FUNCTION(COLUMN NAME))`
+In our case, the pattern that you'll use many, many times is:
+
+`data %>%`
+
+`group_by(COLUMN NAME) %>%`
+
+`summarize(VARIABLE NAME = AGGREGATE FUNCTION(COLUMN NAME))`
 
 In our dataset, the column with recipient information is called "memo_text"
 
