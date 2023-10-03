@@ -23,38 +23,50 @@ If we look at what we got when we imported the data, you'll see there's `electio
 
 ```{r}
 primary_18 %>%
-  select(office, district, name_raw, party, jurisdiction, election_day, votes) %>%
+  select(
+    office, district, name_raw, party, jurisdiction, election_day, votes
+    ) %>%
   mutate(
   percent_election_day = election_day/votes
-)
+    )
 ```
+
 Now we've got our `percent_election_day` column. But what do you see right away? Do those numbers look like we expect them to? No. They're a decimal expressed as a percentage. So let's fix that by multiplying by 100.
 
 ```{r}
 primary_18 %>%
-  select(office, district, name_raw, party, jurisdiction, election_day, votes) %>%
+  select(
+    office, district, name_raw, party, jurisdiction, election_day, votes
+    ) %>%
   mutate(
   percent_election_day = (election_day/votes)*100
-)
+    )
 ```
+
 Now, does this ordering do anything for us? No. Let's fix that with arrange.
 
 ```{r}
 primary_18 %>%
-  select(office, district, name_raw, party, jurisdiction, election_day, votes) %>%
+  select(
+    office, district, name_raw, party, jurisdiction, election_day, votes
+    ) %>%
   mutate(
-  percent_election_day = (election_day/votes)*100
-)  %>% arrange(desc(percent_election_day))
+  percent_election_day = (election_day/votes) * 100
+    ) %>% 
+  arrange(desc(percent_election_day))
 ```
 
 So now we have results ordered by `percent_election_day` with the highest percentage first. To see the lowest percentage first, we can reverse that `arrange` function.
 
 ```{r}
 primary_18 %>%
-  select(office, district, name_raw, party, jurisdiction, election_day, votes) %>%
+  select(
+    office, district, name_raw, party, jurisdiction, election_day, votes
+    ) %>%
   mutate(
-  percent_election_day = (election_day/votes)*100
-)  %>% arrange(percent_election_day)
+    percent_election_day = (election_day/votes) * 100
+    ) %>%
+  arrange(percent_election_day)
 ```
 
 Only a handful of candidates got less than 50 percent of their total votes in a county on election day. What a difference a pandemic makes.
@@ -77,7 +89,7 @@ So how can we fix that? Mutate - it's not just for math! And a function called `
 standardized_maryland_cities <- maryland_cities %>%
   mutate(
     upper_city = str_to_upper(city)
-)
+  )
 ```
 
 There are lots of potential uses for standardization - addresses, zip codes, anything that can be misspelled or abbreviated.
@@ -86,12 +98,12 @@ There are lots of potential uses for standardization - addresses, zip codes, any
 
 Mutate is even more useful when combined with some additional functions. Let's focus on individual contributions from Maryland donors via WinRed; we'd like to group their donations by amount into one of four categories:
 
-1. Under $100
-2. $101-$499
-3. $500-$2,900
-4. More than $2,901
+1.  Under \$100
+2.  \$101-\$499
+3.  \$500-\$2,900
+4.  More than \$2,901
 
-Mutate can make that happen by creating a new column and putting in a category value _based on the amount_ of each record. First, let's load the individual contributions:
+Mutate can make that happen by creating a new column and putting in a category value *based on the amount* of each record. First, let's load the individual contributions:
 
 ```{r}
 maryland_winred <- read_csv("data/winred_md_q2_2022.csv")
@@ -122,6 +134,6 @@ maryland_winred_categories %>%
   arrange(desc(total_amount))
 ```
 
-The largest category - by far - in dollar amount is the sub-$100 category, which makes sense for an online fundraising platform. Big little money.
+The largest category - by far - in dollar amount is the sub-\$100 category, which makes sense for an online fundraising platform. Big little money.
 
 Mutate is there to make your data more useful and to make it easier for you to ask more and better questions of it.
