@@ -370,7 +370,7 @@ dbl (9): DEM, REP, BAR, GRN, LIB, WCP, OTH, UNA, TOTAL
  8 Harford           65127  80005     0   238  1182   202  1628  40778 189160
  9 Carroll           33572  63771     0   191   797   102  1033  28139 127605
 10 Charles           74373  23334     0   129   425   143   864  21819 121087
-# … with 14 more rows</code></pre>
+# ℹ 14 more rows</code></pre>
 </div>
 </div>
 <p>So, what do we see here? Montgomery County has the most, followed by Prince George’s &amp; Baltimore County. Checks out.</p>
@@ -397,7 +397,7 @@ dbl (9): DEM, REP, BAR, GRN, LIB, WCP, OTH, UNA, TOTAL
  8 24017 Charles County, Maryland      population   165209    NA
  9 24019 Dorchester County, Maryland   population    32486    NA
 10 24021 Frederick County, Maryland    population   267498    NA
-# … with 14 more rows</code></pre>
+# ℹ 14 more rows</code></pre>
 </div>
 </div>
 <p>Ultimately, we’re going to join this county population table with our voters by county table, and then calculate a voters per 50,000 people statistic. But remember, we then want to visualize this data by drawing a county map that helps us pick out trends. Thinking ahead, we know we’ll need a county map shapefile. Fortunately, we can pull this geometry information right from tidycensus at the same time that we pull in the population data by adding “geometry = TRUE” to our get_acs function.</p>
@@ -421,91 +421,67 @@ dbl (9): DEM, REP, BAR, GRN, LIB, WCP, OTH, UNA, TOTAL
   |                                                                            
   |=                                                                     |   1%
   |                                                                            
-  |=                                                                     |   2%
-  |                                                                            
   |==                                                                    |   2%
-  |                                                                            
-  |==                                                                    |   3%
   |                                                                            
   |===                                                                   |   4%
   |                                                                            
   |===                                                                   |   5%
   |                                                                            
-  |====                                                                  |   5%
-  |                                                                            
-  |====                                                                  |   6%
-  |                                                                            
-  |=====                                                                 |   7%
+  |=====                                                                 |   8%
   |                                                                            
   |======                                                                |   8%
   |                                                                            
-  |=======                                                               |   9%
+  |======                                                                |   9%
   |                                                                            
-  |=========                                                             |  13%
-  |                                                                            
-  |===========                                                           |  16%
-  |                                                                            
-  |============                                                          |  18%
-  |                                                                            
-  |==============                                                        |  20%
+  |============                                                          |  17%
   |                                                                            
   |=================                                                     |  24%
   |                                                                            
-  |==================                                                    |  26%
+  |=================                                                     |  25%
   |                                                                            
   |===================                                                   |  27%
   |                                                                            
-  |====================                                                  |  29%
+  |=====================                                                 |  30%
   |                                                                            
-  |=======================                                               |  33%
+  |===========================                                           |  38%
   |                                                                            
-  |========================                                              |  34%
-  |                                                                            
-  |=========================                                             |  36%
-  |                                                                            
-  |===========================                                           |  39%
-  |                                                                            
-  |==============================                                        |  42%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |==================================                                    |  49%
-  |                                                                            
-  |=====================================                                 |  53%
-  |                                                                            
-  |=======================================                               |  55%
+  |===============================                                       |  44%
   |                                                                            
   |=========================================                             |  58%
   |                                                                            
-  |==========================================                            |  60%
+  |===================================================                   |  72%
   |                                                                            
-  |============================================                          |  63%
-  |                                                                            
-  |==============================================                        |  65%
-  |                                                                            
-  |===============================================                       |  67%
-  |                                                                            
-  |=================================================                     |  70%
-  |                                                                            
-  |==================================================                    |  72%
+  |===================================================                   |  73%
   |                                                                            
   |====================================================                  |  75%
   |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
   |======================================================                |  77%
   |                                                                            
-  |========================================================              |  79%
+  |======================================================                |  78%
   |                                                                            
-  |=========================================================             |  82%
+  |=======================================================               |  79%
   |                                                                            
-  |===========================================================           |  84%
+  |========================================================              |  80%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |===========================================================           |  85%
+  |                                                                            
+  |============================================================          |  86%
   |                                                                            
   |=============================================================         |  88%
   |                                                                            
-  |================================================================      |  91%
+  |==============================================================        |  88%
   |                                                                            
-  |==================================================================    |  95%
+  |===============================================================       |  90%
   |                                                                            
-  |===================================================================== |  98%
+  |===============================================================       |  91%
+  |                                                                            
+  |=================================================================     |  93%
   |                                                                            
   |======================================================================| 100%</code></pre>
 </div>
@@ -591,7 +567,7 @@ First 10 features:
  8 Cecil             20666  31961     0   111   447   104   678  16360  70327
  9 Charles           74373  23334     0   129   425   143   864  21819 121087
 10 Dorchester         9608   8965     0    22   110    33   191   3745  22674
-# … with 14 more rows</code></pre>
+# ℹ 14 more rows</code></pre>
 </div>
 </div>
 <p>If they’re going to join properly, we need to clean one of them up to make it match the other.</p>
@@ -630,7 +606,7 @@ First 10 features:
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>md_voters_per_10k <span class="ot">&lt;-</span> md_county_population <span class="sc">%&gt;%</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(voters_by_county)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Joining, by = "County"</code></pre>
+<pre><code>Joining with `by = join_by(County)`</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>md_voters_per_10k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -677,7 +653,7 @@ First 10 features:
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">voters_per_10k =</span> TOTAL<span class="sc">/</span>population<span class="sc">*</span><span class="dv">10000</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(voters_per_10k))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Joining, by = "County"</code></pre>
+<pre><code>Joining with `by = join_by(County)`</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>md_voters_per_10k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

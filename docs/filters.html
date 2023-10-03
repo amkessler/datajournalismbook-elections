@@ -368,18 +368,17 @@ dttm (1): end_date
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(prince_georges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 15
-  end_date            election_type resul…¹ special office distr…² name_…³ party
-  &lt;dttm&gt;              &lt;chr&gt;         &lt;chr&gt;   &lt;lgl&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;
-1 2018-06-26 00:00:00 primary       certif… FALSE   Gover… &lt;NA&gt;    Rusher… DEM  
-2 2018-06-26 00:00:00 primary       certif… FALSE   Gover… &lt;NA&gt;    Ralph … DEM  
-3 2018-06-26 00:00:00 primary       certif… FALSE   Gover… &lt;NA&gt;    Ben Je… DEM  
-4 2018-06-26 00:00:00 primary       certif… FALSE   Gover… &lt;NA&gt;    James … DEM  
-5 2018-06-26 00:00:00 primary       certif… FALSE   Gover… &lt;NA&gt;    Valeri… DEM  
-6 2018-06-26 00:00:00 primary       certif… FALSE   Gover… &lt;NA&gt;    Rich M… DEM  
-# … with 7 more variables: jurisdiction &lt;chr&gt;, votes &lt;dbl&gt;, year &lt;dbl&gt;,
+  end_date            election_type result_type special office district name_raw
+  &lt;dttm&gt;              &lt;chr&gt;         &lt;chr&gt;       &lt;lgl&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;   
+1 2018-06-26 00:00:00 primary       certified   FALSE   Gover… &lt;NA&gt;     Rushern…
+2 2018-06-26 00:00:00 primary       certified   FALSE   Gover… &lt;NA&gt;     Ralph J…
+3 2018-06-26 00:00:00 primary       certified   FALSE   Gover… &lt;NA&gt;     Ben Jea…
+4 2018-06-26 00:00:00 primary       certified   FALSE   Gover… &lt;NA&gt;     James H…
+5 2018-06-26 00:00:00 primary       certified   FALSE   Gover… &lt;NA&gt;     Valerie…
+6 2018-06-26 00:00:00 primary       certified   FALSE   Gover… &lt;NA&gt;     Rich Ma…
+# ℹ 8 more variables: party &lt;chr&gt;, jurisdiction &lt;chr&gt;, votes &lt;dbl&gt;, year &lt;dbl&gt;,
 #   election_day &lt;dbl&gt;, absentee &lt;dbl&gt;, provisional &lt;dbl&gt;,
-#   second_absentee &lt;dbl&gt;, and abbreviated variable names ¹​result_type,
-#   ²​district, ³​name_raw</code></pre>
+#   second_absentee &lt;dbl&gt;</code></pre>
 </div>
 </div>
 <p>And just like that, we have just Prince George’s results, which we can verify looking at the head, the first six rows.</p>

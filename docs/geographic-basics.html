@@ -481,15 +481,15 @@ dbl (5): POLLS, EARLY_VOING, ABSENTEE, PROVISIONAL, ELIGIBLE_VOTERS
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pg_turnout)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
-  precinct total_polls total_early total_absentee total_provisional total_elig…¹
-  &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;             &lt;dbl&gt;        &lt;dbl&gt;
-1 001-001          275         106            226                38         2981
-2 001-002           99          36             81                16         1096
-3 001-003          231          72            148                39         2423
-4 001-004          149          71            142                28         1910
-5 001-005          240          56            160                32         1891
-6 001-006          151          73             97                10         1303
-# … with abbreviated variable name ¹​total_eligible</code></pre>
+  precinct total_polls total_early total_absentee total_provisional
+  &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;             &lt;dbl&gt;
+1 001-001          275         106            226                38
+2 001-002           99          36             81                16
+3 001-003          231          72            148                39
+4 001-004          149          71            142                28
+5 001-005          240          56            160                32
+6 001-006          151          73             97                10
+# ℹ 1 more variable: total_eligible &lt;dbl&gt;</code></pre>
 </div>
 </div>
 <p>Now we can join the precincts to the turnout data.</p>

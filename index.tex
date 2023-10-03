@@ -176,7 +176,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Data Journalism with R and the Tidyverse},
-  pdfauthor={Matt Waite \& Sarah Cohen (original authors); updated by Derek Willis and Sean Mussenden},
+  pdfauthor={Matt Waite \& Sarah Cohen (original authors); updated by Derek Willis and Sean Mussenden; additional modifications by Aaron Kessler},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -193,12 +193,12 @@
 \makeatother
 \subtitle{Code, data and visuals for storytellers}
 \author{Matt Waite \& Sarah Cohen (original authors); updated by Derek
-Willis and Sean Mussenden}
+Willis and Sean Mussenden; additional modifications by Aaron Kessler}
 \date{8/23/2022}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, boxrule=0pt, interior hidden, borderline west={3pt}{0pt}{shadecolor}, sharp corners, enhanced, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, frame hidden, interior hidden, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, breakable]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -3343,7 +3343,7 @@ data from earlier this year.
 So step 1 is to import the data. The code to import the data looks like
 this:
 
-\texttt{maryland\_winred\_contributions\ \textless{}-\ read\_rds("maryland\_winred.rds")}
+\texttt{maryland\_winred\_contributions\ \textless{}-\ read\_rds("data/maryland\_winred.rds")}
 
 Let's unpack that.
 
@@ -3473,20 +3473,19 @@ out the columns and the first six rows of data.
 
 \begin{verbatim}
 # A tibble: 6 x 24
-  linenu~1 fec_c~2 tran_id flag_~3 org_n~4 last_~5 first~6 middl~7 prefix suffix
-  <chr>    <chr>   <chr>   <chr>   <lgl>   <chr>   <chr>   <lgl>   <lgl>  <lgl> 
-1 SA11AI   C00694~ A9EF36~ IND     NA      Hansher Beth    NA      NA     NA    
-2 SA11AI   C00694~ A64BB5~ IND     NA      Leishm~ Alexan~ NA      NA     NA    
-3 SA11AI   C00694~ A5835B~ IND     NA      Bode    John    NA      NA     NA    
-4 SA11AI   C00694~ AE3AF0~ IND     NA      Gallag~ Daniel  NA      NA     NA    
-5 SA11AI   C00694~ AC5569~ IND     NA      Bode    Denise  NA      NA     NA    
-6 SA11AI   C00694~ A2B1EB~ IND     NA      Kaplan  Joel    NA      NA     NA    
-# ... with 14 more variables: address_one <chr>, address_two <chr>, city <chr>,
-#   state <chr>, zip <dbl>, prigen <lgl>, date <date>, amount <dbl>,
-#   aggregate_amount <dbl>, employer <chr>, occupation <chr>, memo_code <lgl>,
-#   memo_text <chr>, cycle <dbl>, and abbreviated variable names 1: linenumber,
-#   2: fec_committee_id, 3: flag_orgind, 4: org_name, 5: last_name,
-#   6: first_name, 7: middle_name
+  linenumber fec_committee_id tran_id  flag_orgind org_name last_name first_name
+  <chr>      <chr>            <chr>    <chr>       <lgl>    <chr>     <chr>     
+1 SA11AI     C00694323        A9EF366~ IND         NA       Hansher   Beth      
+2 SA11AI     C00694323        A64BB50~ IND         NA       Leishman  Alexander 
+3 SA11AI     C00694323        A5835B6~ IND         NA       Bode      John      
+4 SA11AI     C00694323        AE3AF0E~ IND         NA       Gallagher Daniel    
+5 SA11AI     C00694323        AC55692~ IND         NA       Bode      Denise    
+6 SA11AI     C00694323        A2B1EB0~ IND         NA       Kaplan    Joel      
+# i 17 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <chr>, city <chr>, state <chr>, zip <dbl>,
+#   prigen <lgl>, date <date>, amount <dbl>, aggregate_amount <dbl>,
+#   employer <chr>, occupation <chr>, memo_code <lgl>, memo_text <chr>,
+#   cycle <dbl>
 \end{verbatim}
 
 We can also click on the data name in the R Studio environment window to
@@ -3512,14 +3511,24 @@ operator: \texttt{\%\textgreater{}\%}. The best way to read that
 operator, in my opinion, is to interpret that as ``and then do this.''
 
 We're going to establish a pattern that will come up again and again
-throughout this book: \texttt{data\ \%\textgreater{}\%\ function}. In
-English: take your data set and then do this specific action to it.
+throughout this book:
+
+\texttt{data\ \%\textgreater{}\%}
+
+\texttt{function}
+
+In English: take your data set and then do this specific action to it.
 
 The first step of every analysis starts with the data being used. Then
 we apply functions to the data.
 
 In our case, the pattern that you'll use many, many times is:
-\texttt{data\ \%\textgreater{}\%\ group\_by(COLUMN\ NAME)\ \%\textgreater{}\%\ summarize(VARIABLE\ NAME\ =\ AGGREGATE\ FUNCTION(COLUMN\ NAME))}
+
+\texttt{data\ \%\textgreater{}\%}
+
+\texttt{group\_by(COLUMN\ NAME)\ \%\textgreater{}\%}
+
+\texttt{summarize(VARIABLE\ NAME\ =\ AGGREGATE\ FUNCTION(COLUMN\ NAME))}
 
 In our dataset, the column with recipient information is called
 ``memo\_text''
@@ -3530,9 +3539,7 @@ Here's the code to count the number of contributions to each recipient:
 \begin{Highlighting}[]
 \NormalTok{maryland\_winred\_contributions }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{group\_by}\NormalTok{(memo\_text) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{count\_contribs =} \FunctionTok{n}\NormalTok{()}
-\NormalTok{  )}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count\_contribs =} \FunctionTok{n}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3550,7 +3557,7 @@ Here's the code to count the number of contributions to each recipient:
  8 Earmarked for ALEK FOR OREGON (C00715854)                      121
  9 Earmarked for ALEX FOR CONGRESS (C00771279)                      3
 10 Earmarked for ALLCORN FOR COLORADO (C00798983)                   2
-# ... with 509 more rows
+# i 509 more rows
 \end{verbatim}
 
 So let's walk through that.
@@ -3589,18 +3596,16 @@ looks like this:
 \begin{Highlighting}[]
 \NormalTok{maryland\_winred\_contributions }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{group\_by}\NormalTok{(memo\_text) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{count\_contribs =} \FunctionTok{n}\NormalTok{()}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count\_contribs =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(count\_contribs))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 # A tibble: 519 x 2
-   memo_text                                                          count_co~1
+   memo_text                                                      count_contribs
    <chr>                                                                   <int>
- 1 Earmarked for SAVE AMERICA JOINT FUNDRAISING COMMITTEE (C00770941)       7809
+ 1 Earmarked for SAVE AMERICA JOINT FUNDRAISING COMMITTEE (C0077~           7809
  2 Earmarked for NRSC (C00027466)                                           6497
  3 Earmarked for REPUBLICAN NATIONAL COMMITTEE (C00003418)                  4268
  4 Earmarked for NRCC (C00075820)                                           3945
@@ -3610,7 +3615,7 @@ looks like this:
  8 Earmarked for RON JOHNSON FOR SENATE, INC. (C00482984)                    974
  9 Earmarked for JOHN KENNEDY FOR US (C00608398)                             955
 10 Earmarked for TIM SCOTT FOR SENATE (C00540302)                            915
-# ... with 509 more rows, and abbreviated variable name 1: count_contribs
+# i 509 more rows
 \end{verbatim}
 
 The Save America Joint Fundraising Committee has 7,809 contributions,
@@ -3629,9 +3634,7 @@ recipient and then date
 \begin{Highlighting}[]
 \NormalTok{maryland\_winred\_contributions }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{group\_by}\NormalTok{(memo\_text, date) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{count\_contribs =} \FunctionTok{n}\NormalTok{()}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count\_contribs =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{arrange}\NormalTok{(memo\_text, date)}
 \end{Highlighting}
 \end{Shaded}
@@ -3656,7 +3659,7 @@ recipient and then date
  8 Earmarked for ALAN SIMS FOR CONGRESS (C00784975)    2022-04-23              1
  9 Earmarked for ALAN SIMS FOR CONGRESS (C00784975)    2022-05-23              1
 10 Earmarked for ALASKANS FOR DAN SULLIVAN (C00570994) 2022-04-22              1
-# ... with 9,184 more rows
+# i 9,184 more rows
 \end{verbatim}
 
 \hypertarget{other-summarization-methods-summing-mean-median-min-and-max}{%
@@ -3687,20 +3690,19 @@ function here, keeping our count\_contribs field in our output table.
 
 \begin{verbatim}
 # A tibble: 519 x 3
-   memo_text                                                     count~1 total~2
-   <chr>                                                           <int>   <dbl>
- 1 Earmarked for SAVE AMERICA JOINT FUNDRAISING COMMITTEE (C007~    7809 220155.
- 2 Earmarked for NRSC (C00027466)                                   6497 149673.
- 3 Earmarked for NRCC (C00075820)                                   3945 118658.
- 4 Earmarked for REPUBLICAN NATIONAL COMMITTEE (C00003418)          4268 111955.
- 5 Earmarked for NICOLEE AMBROSE FOR CONGRESS (C00812891)            150  67980.
- 6 Earmarked for TEAM SCALISE (C00750521)                           2477  51709.
- 7 Earmarked for PARROTT FOR CONGRESS (C00691931)                    346  45243.
- 8 Earmarked for MARCO RUBIO FOR SENATE (C00620518)                 1326  43279.
- 9 Earmarked for KEVIN MCCARTHY FOR CONGRESS (C00420935)            1461  29612.
-10 Earmarked for RON JOHNSON FOR SENATE, INC. (C00482984)            974  29611.
-# ... with 509 more rows, and abbreviated variable names 1: count_contribs,
-#   2: total_amount
+   memo_text                                         count_contribs total_amount
+   <chr>                                                      <int>        <dbl>
+ 1 Earmarked for SAVE AMERICA JOINT FUNDRAISING COM~           7809      220155.
+ 2 Earmarked for NRSC (C00027466)                              6497      149673.
+ 3 Earmarked for NRCC (C00075820)                              3945      118658.
+ 4 Earmarked for REPUBLICAN NATIONAL COMMITTEE (C00~           4268      111955.
+ 5 Earmarked for NICOLEE AMBROSE FOR CONGRESS (C008~            150       67980.
+ 6 Earmarked for TEAM SCALISE (C00750521)                      2477       51709.
+ 7 Earmarked for PARROTT FOR CONGRESS (C00691931)               346       45243.
+ 8 Earmarked for MARCO RUBIO FOR SENATE (C00620518)            1326       43279.
+ 9 Earmarked for KEVIN MCCARTHY FOR CONGRESS (C0042~           1461       29612.
+10 Earmarked for RON JOHNSON FOR SENATE, INC. (C004~            974       29611.
+# i 509 more rows
 \end{verbatim}
 
 We can also calculate the average amount for each recipient -- the mean
@@ -3722,20 +3724,19 @@ We can also calculate the average amount for each recipient -- the mean
 
 \begin{verbatim}
 # A tibble: 519 x 5
-   memo_text                                     count~1 total~2 mean_~3 media~4
-   <chr>                                           <int>   <dbl>   <dbl>   <dbl>
- 1 Earmarked for SAVE AMERICA JOINT FUNDRAISING~    7809 220155.    28.2    20  
- 2 Earmarked for NRSC (C00027466)                   6497 149673.    23.0    12.5
- 3 Earmarked for REPUBLICAN NATIONAL COMMITTEE ~    4268 111955.    26.2    18  
- 4 Earmarked for NRCC (C00075820)                   3945 118658.    30.1    25  
- 5 Earmarked for TEAM SCALISE (C00750521)           2477  51709.    20.9    10  
- 6 Earmarked for KEVIN MCCARTHY FOR CONGRESS (C~    1461  29612.    20.3    10  
- 7 Earmarked for MARCO RUBIO FOR SENATE (C00620~    1326  43279.    32.6    20.2
- 8 Earmarked for RON JOHNSON FOR SENATE, INC. (~     974  29611.    30.4    25  
- 9 Earmarked for JOHN KENNEDY FOR US (C00608398)     955  26433.    27.7    15  
-10 Earmarked for TIM SCOTT FOR SENATE (C0054030~     915  29095.    31.8    10  
-# ... with 509 more rows, and abbreviated variable names 1: count_contribs,
-#   2: total_amount, 3: mean_amount, 4: median_amount
+   memo_text               count_contribs total_amount mean_amount median_amount
+   <chr>                            <int>        <dbl>       <dbl>         <dbl>
+ 1 Earmarked for SAVE AME~           7809      220155.        28.2          20  
+ 2 Earmarked for NRSC (C0~           6497      149673.        23.0          12.5
+ 3 Earmarked for REPUBLIC~           4268      111955.        26.2          18  
+ 4 Earmarked for NRCC (C0~           3945      118658.        30.1          25  
+ 5 Earmarked for TEAM SCA~           2477       51709.        20.9          10  
+ 6 Earmarked for KEVIN MC~           1461       29612.        20.3          10  
+ 7 Earmarked for MARCO RU~           1326       43279.        32.6          20.2
+ 8 Earmarked for RON JOHN~            974       29611.        30.4          25  
+ 9 Earmarked for JOHN KEN~            955       26433.        27.7          15  
+10 Earmarked for TIM SCOT~            915       29095.        31.8          10  
+# i 509 more rows
 \end{verbatim}
 
 We see something interesting here. The mean contribution amount is
@@ -3766,21 +3767,20 @@ we can use the \texttt{min()} and \texttt{max()} functions.
 
 \begin{verbatim}
 # A tibble: 519 x 7
-   memo_text                     count~1 total~2 mean_~3 media~4 min_a~5 max_a~6
-   <chr>                           <int>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
- 1 Earmarked for ALASKANS FOR D~       5   7304   1461.      500    1       5800
- 2 Earmarked for AMAL FOR CONGR~      30  10442.   348.       25    1       5800
- 3 Earmarked for BLAKE MASTERS ~      24   6780    282.       25   10       5800
- 4 Earmarked for FRIENDS OF MIK~     358  17711.    49.5      10    0.5     5800
- 5 Earmarked for FRIENDS OF TOD~      75  14833.   198.        5    0.2     5800
- 6 Earmarked for GALLUCH FOR CO~       1   5800   5800      5800 5800       5800
- 7 Earmarked for KELLY FOR ALAS~      54   7900    146.       25    5       5800
- 8 Earmarked for LAWLER FOR CON~       1   5800   5800      5800 5800       5800
- 9 Earmarked for LAXALT FOR SEN~     334  26920.    80.6      25    0.77    5800
-10 Earmarked for MCHENRY FOR CO~       3   6800   2267.      500  500       5800
-# ... with 509 more rows, and abbreviated variable names 1: count_contribs,
-#   2: total_amount, 3: mean_amount, 4: median_amount, 5: min_amount,
-#   6: max_amount
+   memo_text    count_contribs total_amount mean_amount median_amount min_amount
+   <chr>                 <int>        <dbl>       <dbl>         <dbl>      <dbl>
+ 1 Earmarked f~              5        7304       1461.            500       1   
+ 2 Earmarked f~             30       10442.       348.             25       1   
+ 3 Earmarked f~             24        6780        282.             25      10   
+ 4 Earmarked f~            358       17711.        49.5            10       0.5 
+ 5 Earmarked f~             75       14833.       198.              5       0.2 
+ 6 Earmarked f~              1        5800       5800            5800    5800   
+ 7 Earmarked f~             54        7900        146.             25       5   
+ 8 Earmarked f~              1        5800       5800            5800    5800   
+ 9 Earmarked f~            334       26920.        80.6            25       0.77
+10 Earmarked f~              3        6800       2267.            500     500   
+# i 509 more rows
+# i 1 more variable: max_amount <dbl>
 \end{verbatim}
 
 From this, we can see that some committees focus on small-dollar donors
@@ -3800,24 +3800,24 @@ highest to lowest on the amount.
 
 \begin{verbatim}
 # A tibble: 54,247 x 24
-   linen~1 fec_c~2 tran_id flag_~3 org_n~4 last_~5 first~6 middl~7 prefix suffix
-   <chr>   <chr>   <chr>   <chr>   <lgl>   <chr>   <chr>   <lgl>   <lgl>  <lgl> 
- 1 SA11AI  C00694~ A9EF36~ IND     NA      Hansher Beth    NA      NA     NA    
- 2 SA11AI  C00694~ A64BB5~ IND     NA      Leishm~ Alexan~ NA      NA     NA    
- 3 SA11AI  C00694~ A5835B~ IND     NA      Bode    John    NA      NA     NA    
- 4 SA11AI  C00694~ AE3AF0~ IND     NA      Gallag~ Daniel  NA      NA     NA    
- 5 SA11AI  C00694~ AC5569~ IND     NA      Bode    Denise  NA      NA     NA    
- 6 SA11AI  C00694~ A2B1EB~ IND     NA      Kaplan  Joel    NA      NA     NA    
- 7 SA11AI  C00694~ A2D9CC~ IND     NA      Freas   Dustin  NA      NA     NA    
- 8 SA11AI  C00694~ A8F4D9~ IND     NA      Monahan Tom     NA      NA     NA    
- 9 SA11AI  C00694~ A3E262~ IND     NA      powers  rick    NA      NA     NA    
-10 SA11AI  C00694~ AD5034~ IND     NA      JonesL~ Brien   NA      NA     NA    
-# ... with 54,237 more rows, 14 more variables: address_one <chr>,
-#   address_two <chr>, city <chr>, state <chr>, zip <dbl>, prigen <lgl>,
-#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
-#   occupation <chr>, memo_code <lgl>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: org_name, 5: last_name, 6: first_name, 7: middle_name
+   linenumber fec_committee_id tran_id flag_orgind org_name last_name first_name
+   <chr>      <chr>            <chr>   <chr>       <lgl>    <chr>     <chr>     
+ 1 SA11AI     C00694323        A9EF36~ IND         NA       Hansher   Beth      
+ 2 SA11AI     C00694323        A64BB5~ IND         NA       Leishman  Alexander 
+ 3 SA11AI     C00694323        A5835B~ IND         NA       Bode      John      
+ 4 SA11AI     C00694323        AE3AF0~ IND         NA       Gallagher Daniel    
+ 5 SA11AI     C00694323        AC5569~ IND         NA       Bode      Denise    
+ 6 SA11AI     C00694323        A2B1EB~ IND         NA       Kaplan    Joel      
+ 7 SA11AI     C00694323        A2D9CC~ IND         NA       Freas     Dustin    
+ 8 SA11AI     C00694323        A8F4D9~ IND         NA       Monahan   Tom       
+ 9 SA11AI     C00694323        A3E262~ IND         NA       powers    rick      
+10 SA11AI     C00694323        AD5034~ IND         NA       JonesLan~ Brien     
+# i 54,237 more rows
+# i 17 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <chr>, city <chr>, state <chr>, zip <dbl>,
+#   prigen <lgl>, date <date>, amount <dbl>, aggregate_amount <dbl>,
+#   employer <chr>, occupation <chr>, memo_code <lgl>, memo_text <chr>,
+#   cycle <dbl>
 \end{verbatim}
 
 Lots of \$5,800 contributions, which probably seems like a weirdly
@@ -3888,29 +3888,31 @@ the denominator. We can simply things by only selecting a few columns.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{primary\_18 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(office, district, name\_raw, party, jurisdiction, election\_day, votes) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    office, district, name\_raw, party, jurisdiction, election\_day, votes}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}
   \AttributeTok{percent\_election\_day =}\NormalTok{ election\_day}\SpecialCharTok{/}\NormalTok{votes}
-\NormalTok{)}
+\NormalTok{    )}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 # A tibble: 1,778 x 8
-   office                  district name_raw party juris~1 elect~2 votes perce~3
-   <chr>                   <chr>    <chr>    <chr> <chr>     <dbl> <dbl>   <dbl>
- 1 Governor / Lt. Governor <NA>     Rushern~ DEM   Allega~     324   413   0.785
- 2 Governor / Lt. Governor <NA>     Ralph J~ DEM   Allega~     106   122   0.869
- 3 Governor / Lt. Governor <NA>     Ben Jea~ DEM   Allega~     979  1170   0.837
- 4 Governor / Lt. Governor <NA>     James H~ DEM   Allega~      99   106   0.934
- 5 Governor / Lt. Governor <NA>     Valerie~ DEM   Allega~     118   159   0.742
- 6 Governor / Lt. Governor <NA>     Rich Ma~ DEM   Allega~     133   169   0.787
- 7 Governor / Lt. Governor <NA>     Alec Ro~ DEM   Allega~     175   218   0.803
- 8 Governor / Lt. Governor <NA>     Jim Shea DEM   Allega~     239   284   0.842
- 9 Governor / Lt. Governor <NA>     Krish O~ DEM   Allega~     364   462   0.788
-10 Comptroller             <NA>     Peter F~ DEM   Allega~    2518  3077   0.818
-# ... with 1,768 more rows, and abbreviated variable names 1: jurisdiction,
-#   2: election_day, 3: percent_election_day
+   office                district name_raw party jurisdiction election_day votes
+   <chr>                 <chr>    <chr>    <chr> <chr>               <dbl> <dbl>
+ 1 Governor / Lt. Gover~ <NA>     Rushern~ DEM   Allegany              324   413
+ 2 Governor / Lt. Gover~ <NA>     Ralph J~ DEM   Allegany              106   122
+ 3 Governor / Lt. Gover~ <NA>     Ben Jea~ DEM   Allegany              979  1170
+ 4 Governor / Lt. Gover~ <NA>     James H~ DEM   Allegany               99   106
+ 5 Governor / Lt. Gover~ <NA>     Valerie~ DEM   Allegany              118   159
+ 6 Governor / Lt. Gover~ <NA>     Rich Ma~ DEM   Allegany              133   169
+ 7 Governor / Lt. Gover~ <NA>     Alec Ro~ DEM   Allegany              175   218
+ 8 Governor / Lt. Gover~ <NA>     Jim Shea DEM   Allegany              239   284
+ 9 Governor / Lt. Gover~ <NA>     Krish O~ DEM   Allegany              364   462
+10 Comptroller           <NA>     Peter F~ DEM   Allegany             2518  3077
+# i 1,768 more rows
+# i 1 more variable: percent_election_day <dbl>
 \end{verbatim}
 
 Now we've got our \texttt{percent\_election\_day} column. But what do
@@ -3921,29 +3923,31 @@ multiplying by 100.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{primary\_18 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(office, district, name\_raw, party, jurisdiction, election\_day, votes) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    office, district, name\_raw, party, jurisdiction, election\_day, votes}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}
   \AttributeTok{percent\_election\_day =}\NormalTok{ (election\_day}\SpecialCharTok{/}\NormalTok{votes)}\SpecialCharTok{*}\DecValTok{100}
-\NormalTok{)}
+\NormalTok{    )}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 # A tibble: 1,778 x 8
-   office                  district name_raw party juris~1 elect~2 votes perce~3
-   <chr>                   <chr>    <chr>    <chr> <chr>     <dbl> <dbl>   <dbl>
- 1 Governor / Lt. Governor <NA>     Rushern~ DEM   Allega~     324   413    78.5
- 2 Governor / Lt. Governor <NA>     Ralph J~ DEM   Allega~     106   122    86.9
- 3 Governor / Lt. Governor <NA>     Ben Jea~ DEM   Allega~     979  1170    83.7
- 4 Governor / Lt. Governor <NA>     James H~ DEM   Allega~      99   106    93.4
- 5 Governor / Lt. Governor <NA>     Valerie~ DEM   Allega~     118   159    74.2
- 6 Governor / Lt. Governor <NA>     Rich Ma~ DEM   Allega~     133   169    78.7
- 7 Governor / Lt. Governor <NA>     Alec Ro~ DEM   Allega~     175   218    80.3
- 8 Governor / Lt. Governor <NA>     Jim Shea DEM   Allega~     239   284    84.2
- 9 Governor / Lt. Governor <NA>     Krish O~ DEM   Allega~     364   462    78.8
-10 Comptroller             <NA>     Peter F~ DEM   Allega~    2518  3077    81.8
-# ... with 1,768 more rows, and abbreviated variable names 1: jurisdiction,
-#   2: election_day, 3: percent_election_day
+   office                district name_raw party jurisdiction election_day votes
+   <chr>                 <chr>    <chr>    <chr> <chr>               <dbl> <dbl>
+ 1 Governor / Lt. Gover~ <NA>     Rushern~ DEM   Allegany              324   413
+ 2 Governor / Lt. Gover~ <NA>     Ralph J~ DEM   Allegany              106   122
+ 3 Governor / Lt. Gover~ <NA>     Ben Jea~ DEM   Allegany              979  1170
+ 4 Governor / Lt. Gover~ <NA>     James H~ DEM   Allegany               99   106
+ 5 Governor / Lt. Gover~ <NA>     Valerie~ DEM   Allegany              118   159
+ 6 Governor / Lt. Gover~ <NA>     Rich Ma~ DEM   Allegany              133   169
+ 7 Governor / Lt. Gover~ <NA>     Alec Ro~ DEM   Allegany              175   218
+ 8 Governor / Lt. Gover~ <NA>     Jim Shea DEM   Allegany              239   284
+ 9 Governor / Lt. Gover~ <NA>     Krish O~ DEM   Allegany              364   462
+10 Comptroller           <NA>     Peter F~ DEM   Allegany             2518  3077
+# i 1,768 more rows
+# i 1 more variable: percent_election_day <dbl>
 \end{verbatim}
 
 Now, does this ordering do anything for us? No.~Let's fix that with
@@ -3952,29 +3956,32 @@ arrange.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{primary\_18 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(office, district, name\_raw, party, jurisdiction, election\_day, votes) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    office, district, name\_raw, party, jurisdiction, election\_day, votes}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}
-  \AttributeTok{percent\_election\_day =}\NormalTok{ (election\_day}\SpecialCharTok{/}\NormalTok{votes)}\SpecialCharTok{*}\DecValTok{100}
-\NormalTok{)  }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(percent\_election\_day))}
+  \AttributeTok{percent\_election\_day =}\NormalTok{ (election\_day}\SpecialCharTok{/}\NormalTok{votes) }\SpecialCharTok{*} \DecValTok{100}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(percent\_election\_day))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 # A tibble: 1,778 x 8
-   office                    distr~1 name_~2 party juris~3 elect~4 votes perce~5
-   <chr>                     <chr>   <chr>   <chr> <chr>     <dbl> <dbl>   <dbl>
- 1 U.S. Senator              <NA>    Erik J~ DEM   Garrett       8     8   100  
- 2 U.S. Senator              <NA>    Albert~ REP   Allega~      69    71    97.2
- 3 House of Delegates        01A     James ~ REP   Allega~     140   148    94.6
- 4 Governor / Lt. Governor   <NA>    James ~ DEM   Allega~      99   106    93.4
- 5 House of Delegates        38C     Jim Sh~ REP   Wicomi~      23    25    92  
- 6 House of Delegates        01A     Wendel~ REP   Allega~     947  1031    91.9
- 7 U.S. Senator              <NA>    Richar~ DEM   Garrett      11    12    91.7
- 8 U.S. Senator              <NA>    Christ~ REP   Allega~     863   948    91.0
- 9 U.S. Senator              <NA>    Marcia~ DEM   Allega~     113   125    90.4
-10 Representative in Congre~ 06      Christ~ DEM   Allega~      37    41    90.2
-# ... with 1,768 more rows, and abbreviated variable names 1: district,
-#   2: name_raw, 3: jurisdiction, 4: election_day, 5: percent_election_day
+   office                district name_raw party jurisdiction election_day votes
+   <chr>                 <chr>    <chr>    <chr> <chr>               <dbl> <dbl>
+ 1 U.S. Senator          <NA>     Erik Je~ DEM   Garrett                 8     8
+ 2 U.S. Senator          <NA>     Albert ~ REP   Allegany               69    71
+ 3 House of Delegates    01A      James M~ REP   Allegany              140   148
+ 4 Governor / Lt. Gover~ <NA>     James H~ DEM   Allegany               99   106
+ 5 House of Delegates    38C      Jim Sha~ REP   Wicomico               23    25
+ 6 House of Delegates    01A      Wendell~ REP   Allegany              947  1031
+ 7 U.S. Senator          <NA>     Richard~ DEM   Garrett                11    12
+ 8 U.S. Senator          <NA>     Christi~ REP   Allegany              863   948
+ 9 U.S. Senator          <NA>     Marcia ~ DEM   Allegany              113   125
+10 Representative in Co~ 06       Christo~ DEM   Allegany               37    41
+# i 1,768 more rows
+# i 1 more variable: percent_election_day <dbl>
 \end{verbatim}
 
 So now we have results ordered by \texttt{percent\_election\_day} with
@@ -3984,29 +3991,32 @@ reverse that \texttt{arrange} function.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{primary\_18 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(office, district, name\_raw, party, jurisdiction, election\_day, votes) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    office, district, name\_raw, party, jurisdiction, election\_day, votes}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}
-  \AttributeTok{percent\_election\_day =}\NormalTok{ (election\_day}\SpecialCharTok{/}\NormalTok{votes)}\SpecialCharTok{*}\DecValTok{100}
-\NormalTok{)  }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(percent\_election\_day)}
+    \AttributeTok{percent\_election\_day =}\NormalTok{ (election\_day}\SpecialCharTok{/}\NormalTok{votes) }\SpecialCharTok{*} \DecValTok{100}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(percent\_election\_day)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 # A tibble: 1,778 x 8
-   office                    distr~1 name_~2 party juris~3 elect~4 votes perce~5
-   <chr>                     <chr>   <chr>   <chr> <chr>     <dbl> <dbl>   <dbl>
- 1 Governor / Lt. Governor   <NA>    Valeri~ DEM   Talbot       38    89    42.7
- 2 Governor / Lt. Governor   <NA>    Rich M~ DEM   Talbot       84   192    43.8
- 3 Governor / Lt. Governor   <NA>    Rich M~ DEM   Kent         40    85    47.1
- 4 Governor / Lt. Governor   <NA>    Rich M~ DEM   Garrett      32    67    47.8
- 5 Governor / Lt. Governor   <NA>    Jim Sh~ DEM   Talbot      168   345    48.7
- 6 U.S. Senator              <NA>    Blaine~ REP   Talbot       41    84    48.8
- 7 House of Delegates        43      Urcill~ DEM   Baltim~     550  1122    49.0
- 8 Governor / Lt. Governor   <NA>    Rusher~ DEM   Talbot      286   577    49.6
- 9 House of Delegates        21      Mary A~ DEM   Anne A~     407   816    49.9
-10 Representative in Congre~ 06      Christ~ DEM   Garrett       3     6    50  
-# ... with 1,768 more rows, and abbreviated variable names 1: district,
-#   2: name_raw, 3: jurisdiction, 4: election_day, 5: percent_election_day
+   office                district name_raw party jurisdiction election_day votes
+   <chr>                 <chr>    <chr>    <chr> <chr>               <dbl> <dbl>
+ 1 Governor / Lt. Gover~ <NA>     Valerie~ DEM   Talbot                 38    89
+ 2 Governor / Lt. Gover~ <NA>     Rich Ma~ DEM   Talbot                 84   192
+ 3 Governor / Lt. Gover~ <NA>     Rich Ma~ DEM   Kent                   40    85
+ 4 Governor / Lt. Gover~ <NA>     Rich Ma~ DEM   Garrett                32    67
+ 5 Governor / Lt. Gover~ <NA>     Jim Shea DEM   Talbot                168   345
+ 6 U.S. Senator          <NA>     Blaine ~ REP   Talbot                 41    84
+ 7 House of Delegates    43       Urcille~ DEM   Baltimore C~          550  1122
+ 8 Governor / Lt. Gover~ <NA>     Rushern~ DEM   Talbot                286   577
+ 9 House of Delegates    21       Mary A.~ DEM   Anne Arundel          407   816
+10 Representative in Co~ 06       Christo~ DEM   Garrett                 3     6
+# i 1,768 more rows
+# i 1 more variable: percent_election_day <dbl>
 \end{verbatim}
 
 Only a handful of candidates got less than 50 percent of their total
@@ -4054,7 +4064,7 @@ Baltimore (I mean, of course, BALTIMORE).
 \NormalTok{standardized\_maryland\_cities }\OtherTok{\textless{}{-}}\NormalTok{ maryland\_cities }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}
     \AttributeTok{upper\_city =} \FunctionTok{str\_to\_upper}\NormalTok{(city)}
-\NormalTok{)}
+\NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4113,20 +4123,19 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 
 \begin{verbatim}
 # A tibble: 6 x 24
-  linenu~1 fec_c~2 tran_id flag_~3 org_n~4 last_~5 first~6 middl~7 prefix suffix
-  <chr>    <chr>   <chr>   <chr>   <lgl>   <chr>   <chr>   <lgl>   <lgl>  <lgl> 
-1 SA11AI   C00694~ A9EF36~ IND     NA      Hansher Beth    NA      NA     NA    
-2 SA11AI   C00694~ A64BB5~ IND     NA      Leishm~ Alexan~ NA      NA     NA    
-3 SA11AI   C00694~ A5835B~ IND     NA      Bode    John    NA      NA     NA    
-4 SA11AI   C00694~ AE3AF0~ IND     NA      Gallag~ Daniel  NA      NA     NA    
-5 SA11AI   C00694~ AC5569~ IND     NA      Bode    Denise  NA      NA     NA    
-6 SA11AI   C00694~ A2B1EB~ IND     NA      Kaplan  Joel    NA      NA     NA    
-# ... with 14 more variables: address_one <chr>, address_two <chr>, city <chr>,
-#   state <chr>, zip <dbl>, prigen <lgl>, date <date>, amount <dbl>,
-#   aggregate_amount <dbl>, employer <chr>, occupation <chr>, memo_code <lgl>,
-#   memo_text <chr>, cycle <dbl>, and abbreviated variable names 1: linenumber,
-#   2: fec_committee_id, 3: flag_orgind, 4: org_name, 5: last_name,
-#   6: first_name, 7: middle_name
+  linenumber fec_committee_id tran_id  flag_orgind org_name last_name first_name
+  <chr>      <chr>            <chr>    <chr>       <lgl>    <chr>     <chr>     
+1 SA11AI     C00694323        A9EF366~ IND         NA       Hansher   Beth      
+2 SA11AI     C00694323        A64BB50~ IND         NA       Leishman  Alexander 
+3 SA11AI     C00694323        A5835B6~ IND         NA       Bode      John      
+4 SA11AI     C00694323        AE3AF0E~ IND         NA       Gallagher Daniel    
+5 SA11AI     C00694323        AC55692~ IND         NA       Bode      Denise    
+6 SA11AI     C00694323        A2B1EB0~ IND         NA       Kaplan    Joel      
+# i 17 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <chr>, city <chr>, state <chr>, zip <dbl>,
+#   prigen <lgl>, date <date>, amount <dbl>, aggregate_amount <dbl>,
+#   employer <chr>, occupation <chr>, memo_code <lgl>, memo_text <chr>,
+#   cycle <dbl>
 \end{verbatim}
 
 Now that we've gotten a look, we can use \texttt{case\_when} to give our
@@ -4244,18 +4253,17 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 
 \begin{verbatim}
 # A tibble: 6 x 13
-  expen~1 payee~2 address payee~3 amount commi~4 expen~5 expen~6 expen~7 expen~8
-  <chr>   <chr>   <chr>   <chr>    <dbl> <chr>   <chr>   <chr>   <chr>   <chr>  
-1 3/1/22  Bank o~ 10 Lig~ Busine~   30.0 Gordon~ Other ~ Bank C~ <NA>    EFT    
-2 4/1/22  Bank o~ 10 Lig~ Busine~   30.0 Gordon~ Other ~ Bank C~ <NA>    EFT    
-3 5/1/22  Bank o~ 10 Lig~ Busine~   30.0 Gordon~ Other ~ Bank C~ <NA>    EFT    
-4 6/30/22 Meta    1 Hack~ Busine~   26.0 Hazel ~ Media   Online~ <NA>    Debit ~
-5 6/13/22 Antiet~ 1000 W~ Busine~ 9506   Barr  ~ Media   TV      <NA>    Check  
-6 6/10/22 Meta    1 Hack~ Busine~   35.4 Ali  S~ Media   Online~ <NA>    Debit ~
-# ... with 3 more variables: vendor <chr>, fundtype <chr>, comments <chr>, and
-#   abbreviated variable names 1: expenditure_date, 2: payee_name,
-#   3: payee_type, 4: committee_name, 5: expense_category, 6: expense_purpose,
-#   7: expense_toward, 8: expense_method
+  expenditure_date payee_name         address   payee_type amount committee_name
+  <chr>            <chr>              <chr>     <chr>       <dbl> <chr>         
+1 3/1/22           Bank of America    10 Light~ Business/~   30.0 Gordon Feinbl~
+2 4/1/22           Bank of America    10 Light~ Business/~   30.0 Gordon Feinbl~
+3 5/1/22           Bank of America    10 Light~ Business/~   30.0 Gordon Feinbl~
+4 6/30/22          Meta               1 Hacker~ Business/~   26.0 Hazel  Kristi~
+5 6/13/22          Antietam broadband 1000 Wil~ Business/~ 9506   Barr  John Fr~
+6 6/10/22          Meta               1 Hacker~ Business/~   35.4 Ali  Saqib Fr~
+# i 7 more variables: expense_category <chr>, expense_purpose <chr>,
+#   expense_toward <chr>, expense_method <chr>, vendor <chr>, fundtype <chr>,
+#   comments <chr>
 \end{verbatim}
 
 Take a look at that first column, expenditure\_date. It \emph{looks}
@@ -4277,18 +4285,17 @@ mutate:
 
 \begin{verbatim}
 # A tibble: 6 x 13
-  expenditure_d~1 payee~2 address payee~3 amount commi~4 expen~5 expen~6 expen~7
-  <date>          <chr>   <chr>   <chr>    <dbl> <chr>   <chr>   <chr>   <chr>  
-1 2022-03-01      Bank o~ 10 Lig~ Busine~   30.0 Gordon~ Other ~ Bank C~ <NA>   
-2 2022-04-01      Bank o~ 10 Lig~ Busine~   30.0 Gordon~ Other ~ Bank C~ <NA>   
-3 2022-05-01      Bank o~ 10 Lig~ Busine~   30.0 Gordon~ Other ~ Bank C~ <NA>   
-4 2022-06-30      Meta    1 Hack~ Busine~   26.0 Hazel ~ Media   Online~ <NA>   
-5 2022-06-13      Antiet~ 1000 W~ Busine~ 9506   Barr  ~ Media   TV      <NA>   
-6 2022-06-10      Meta    1 Hack~ Busine~   35.4 Ali  S~ Media   Online~ <NA>   
-# ... with 4 more variables: expense_method <chr>, vendor <chr>,
-#   fundtype <chr>, comments <chr>, and abbreviated variable names
-#   1: expenditure_date, 2: payee_name, 3: payee_type, 4: committee_name,
-#   5: expense_category, 6: expense_purpose, 7: expense_toward
+  expenditure_date payee_name         address   payee_type amount committee_name
+  <date>           <chr>              <chr>     <chr>       <dbl> <chr>         
+1 2022-03-01       Bank of America    10 Light~ Business/~   30.0 Gordon Feinbl~
+2 2022-04-01       Bank of America    10 Light~ Business/~   30.0 Gordon Feinbl~
+3 2022-05-01       Bank of America    10 Light~ Business/~   30.0 Gordon Feinbl~
+4 2022-06-30       Meta               1 Hacker~ Business/~   26.0 Hazel  Kristi~
+5 2022-06-13       Antietam broadband 1000 Wil~ Business/~ 9506   Barr  John Fr~
+6 2022-06-10       Meta               1 Hacker~ Business/~   35.4 Ali  Saqib Fr~
+# i 7 more variables: expense_category <chr>, expense_purpose <chr>,
+#   expense_toward <chr>, expense_method <chr>, vendor <chr>, fundtype <chr>,
+#   comments <chr>
 \end{verbatim}
 
 Now look at the expenditure\_date column: R says it's a date column and
@@ -4435,18 +4442,17 @@ how things get named.}
 
 \begin{verbatim}
 # A tibble: 6 x 15
-  end_date            election_type resul~1 special office distr~2 name_~3 party
-  <dttm>              <chr>         <chr>   <lgl>   <chr>  <chr>   <chr>   <chr>
-1 2018-06-26 00:00:00 primary       certif~ FALSE   Gover~ <NA>    Rusher~ DEM  
-2 2018-06-26 00:00:00 primary       certif~ FALSE   Gover~ <NA>    Ralph ~ DEM  
-3 2018-06-26 00:00:00 primary       certif~ FALSE   Gover~ <NA>    Ben Je~ DEM  
-4 2018-06-26 00:00:00 primary       certif~ FALSE   Gover~ <NA>    James ~ DEM  
-5 2018-06-26 00:00:00 primary       certif~ FALSE   Gover~ <NA>    Valeri~ DEM  
-6 2018-06-26 00:00:00 primary       certif~ FALSE   Gover~ <NA>    Rich M~ DEM  
-# ... with 7 more variables: jurisdiction <chr>, votes <dbl>, year <dbl>,
+  end_date            election_type result_type special office district name_raw
+  <dttm>              <chr>         <chr>       <lgl>   <chr>  <chr>    <chr>   
+1 2018-06-26 00:00:00 primary       certified   FALSE   Gover~ <NA>     Rushern~
+2 2018-06-26 00:00:00 primary       certified   FALSE   Gover~ <NA>     Ralph J~
+3 2018-06-26 00:00:00 primary       certified   FALSE   Gover~ <NA>     Ben Jea~
+4 2018-06-26 00:00:00 primary       certified   FALSE   Gover~ <NA>     James H~
+5 2018-06-26 00:00:00 primary       certified   FALSE   Gover~ <NA>     Valerie~
+6 2018-06-26 00:00:00 primary       certified   FALSE   Gover~ <NA>     Rich Ma~
+# i 8 more variables: party <chr>, jurisdiction <chr>, votes <dbl>, year <dbl>,
 #   election_day <dbl>, absentee <dbl>, provisional <dbl>,
-#   second_absentee <dbl>, and abbreviated variable names 1: result_type,
-#   2: district, 3: name_raw
+#   second_absentee <dbl>
 \end{verbatim}
 
 And just like that, we have just Prince George's results, which we can
@@ -4695,7 +4701,7 @@ wrong. Let's do that.
  8 28466    13 1/0/T/F/TRUE/FALSE 3      ""   
  9 28472    12 1/0/T/F/TRUE/FALSE 22     ""   
 10 28472    13 1/0/T/F/TRUE/FALSE 17     ""   
-# ... with 1,630 more rows
+# i 1,630 more rows
 \end{verbatim}
 
 It produces a table of all the parsing problems. It has 1,640 rows,
@@ -4773,12 +4779,11 @@ original file has a single value in that column that is ``5+''.
 
 \begin{verbatim}
 # A tibble: 1 x 13
-  county   precinct office   distr~1 candi~2 party votes absen~3 elect~4 early~5
-  <chr>    <chr>    <chr>      <dbl> <chr>   <chr> <dbl>   <dbl> <chr>     <dbl>
-1 Anderson 11       Railroa~      NA Chryst~ DEM     141      NA 5+          136
-# ... with 3 more variables: mail <dbl>, provisional <dbl>, limited <dbl>, and
-#   abbreviated variable names 1: district, 2: candidate, 3: absentee,
-#   4: election_day, 5: early_voting
+  county   precinct office  district candidate party votes absentee election_day
+  <chr>    <chr>    <chr>      <dbl> <chr>     <chr> <dbl>    <dbl> <chr>       
+1 Anderson 11       Railro~       NA Chrysta ~ DEM     141       NA 5+          
+# i 4 more variables: early_voting <dbl>, mail <dbl>, provisional <dbl>,
+#   limited <dbl>
 \end{verbatim}
 
 Because this is just one result that's weird, we can fix it by comparing
@@ -4874,7 +4879,7 @@ describe the data.
  8     6     35
  9     7     21
 10     8     21
-# ... with 20 more rows
+# i 20 more rows
 \end{verbatim}
 
 Now let's try the ``provisional'' column, which represents the number of
@@ -4906,7 +4911,7 @@ values. The rest have different dollar amounts.
  8           6     44
  9          10     29
 10           7     27
-# ... with 17 more rows
+# i 17 more rows
 \end{verbatim}
 
 The number of NA values - 473,381 - is even higher, which should give us
@@ -4963,25 +4968,25 @@ the most recent \texttt{registr\_dt} in this dataset:
 
 \begin{verbatim}
 # A tibble: 28,456 x 67
-   count~1 count~2 voter~3 ncid  last_~4 first~5 middl~6 name_~7 statu~8 voter~9
-     <dbl> <chr>   <chr>   <chr> <chr>   <chr>   <chr>   <chr>   <chr>   <chr>  
- 1      99 YADKIN  000000~ ER48~ FINCAN~ JOY     LYNN    <NA>    A       ACTIVE 
- 2      99 YADKIN  000000~ ER48~ LUCK    ERIN    EILEEN  <NA>    A       ACTIVE 
- 3      99 YADKIN  000000~ ER37~ OSBORNE EMILY   DANIEL~ <NA>    A       ACTIVE 
- 4      99 YADKIN  000000~ AC80~ TEMPLE  BRENDA  PUGH    <NA>    A       ACTIVE 
- 5      99 YADKIN  000000~ EN44~ EDWARDS ROCKY   ALLEN   <NA>    A       ACTIVE 
- 6      99 YADKIN  000000~ BN36~ HAWKINS COREY   ALAN    <NA>    A       ACTIVE 
- 7      99 YADKIN  000000~ BN27~ LING    ANDREW  STUART  <NA>    A       ACTIVE 
- 8      99 YADKIN  000000~ ER48~ SPICER  CHARLES STANLEY JR      A       ACTIVE 
- 9      99 YADKIN  000000~ CG17~ WHITAK~ SABRINA JOLEIG~ <NA>    A       ACTIVE 
-10      99 YADKIN  000000~ ER48~ GLEI    SALLY   COWIN   <NA>    A       ACTIVE 
-# ... with 28,446 more rows, 57 more variables: reason_cd <chr>,
-#   voter_status_reason_desc <chr>, res_street_address <chr>,
-#   res_city_desc <chr>, state_cd <chr>, zip_code <dbl>, mail_addr1 <chr>,
-#   mail_addr2 <chr>, mail_addr3 <lgl>, mail_addr4 <lgl>, mail_city <chr>,
-#   mail_state <chr>, mail_zipcode <chr>, full_phone_number <dbl>,
-#   confidential_ind <chr>, registr_dt <date>, race_code <chr>,
-#   ethnic_code <chr>, party_cd <chr>, gender_code <chr>, birth_year <dbl>, ...
+   county_id county_desc voter_reg_num ncid     last_name first_name middle_name
+       <dbl> <chr>       <chr>         <chr>    <chr>     <chr>      <chr>      
+ 1        99 YADKIN      000000086882  ER48215  FINCANNON JOY        LYNN       
+ 2        99 YADKIN      000000086881  ER48214  LUCK      ERIN       EILEEN     
+ 3        99 YADKIN      000000086883  ER37698  OSBORNE   EMILY      DANIELLE   
+ 4        99 YADKIN      000000086880  AC8089   TEMPLE    BRENDA     PUGH       
+ 5        99 YADKIN      000000086879  EN44870  EDWARDS   ROCKY      ALLEN      
+ 6        99 YADKIN      000000086875  BN367045 HAWKINS   COREY      ALAN       
+ 7        99 YADKIN      000000086877  BN273260 LING      ANDREW     STUART     
+ 8        99 YADKIN      000000086878  ER48213  SPICER    CHARLES    STANLEY    
+ 9        99 YADKIN      000000086876  CG173637 WHITAKER  SABRINA    JOLEIGH RAY
+10        99 YADKIN      000000086874  ER48212  GLEI      SALLY      COWIN      
+# i 28,446 more rows
+# i 60 more variables: name_suffix_lbl <chr>, status_cd <chr>,
+#   voter_status_desc <chr>, reason_cd <chr>, voter_status_reason_desc <chr>,
+#   res_street_address <chr>, res_city_desc <chr>, state_cd <chr>,
+#   zip_code <dbl>, mail_addr1 <chr>, mail_addr2 <chr>, mail_addr3 <lgl>,
+#   mail_addr4 <lgl>, mail_city <chr>, mail_state <chr>, mail_zipcode <chr>,
+#   full_phone_number <dbl>, confidential_ind <chr>, registr_dt <date>, ...
 \end{verbatim}
 
 It's July 14, 2022. That means that this dataset doesn't have any
@@ -4998,25 +5003,25 @@ What about the most recent \texttt{birth\_year}?
 
 \begin{verbatim}
 # A tibble: 28,456 x 67
-   count~1 count~2 voter~3 ncid  last_~4 first~5 middl~6 name_~7 statu~8 voter~9
-     <dbl> <chr>   <chr>   <chr> <chr>   <chr>   <chr>   <chr>   <chr>   <chr>  
- 1      99 YADKIN  000000~ ER47~ ADAMS   BLAIN   NOAH    <NA>    A       ACTIVE 
- 2      99 YADKIN  000000~ ER47~ ALEXAN~ PERRY   NATHAN~ <NA>    A       ACTIVE 
- 3      99 YADKIN  000000~ ER48~ ALVARE~ KAREN   ESMERA~ <NA>    A       ACTIVE 
- 4      99 YADKIN  000000~ ER48~ ALVARE~ PABLO   <NA>    <NA>    A       ACTIVE 
- 5      99 YADKIN  000000~ ER47~ ARCADI~ JAZMIN  <NA>    <NA>    A       ACTIVE 
- 6      99 YADKIN  000000~ ER47~ ARELLA~ ALEX    <NA>    <NA>    A       ACTIVE 
- 7      99 YADKIN  000000~ ER47~ ARZATE~ ELIDETH <NA>    <NA>    A       ACTIVE 
- 8      99 YADKIN  000000~ ER47~ ARZATE~ JESSICA <NA>    <NA>    A       ACTIVE 
- 9      99 YADKIN  000000~ ER47~ BALL    ALEXIS  NYKOL   <NA>    A       ACTIVE 
-10      99 YADKIN  000000~ ER47~ BAUTIS~ ALEXAN~ ROSE    <NA>    A       ACTIVE 
-# ... with 28,446 more rows, 57 more variables: reason_cd <chr>,
-#   voter_status_reason_desc <chr>, res_street_address <chr>,
-#   res_city_desc <chr>, state_cd <chr>, zip_code <dbl>, mail_addr1 <chr>,
-#   mail_addr2 <chr>, mail_addr3 <lgl>, mail_addr4 <lgl>, mail_city <chr>,
-#   mail_state <chr>, mail_zipcode <chr>, full_phone_number <dbl>,
-#   confidential_ind <chr>, registr_dt <date>, race_code <chr>,
-#   ethnic_code <chr>, party_cd <chr>, gender_code <chr>, birth_year <dbl>, ...
+   county_id county_desc voter_reg_num ncid    last_name  first_name middle_name
+       <dbl> <chr>       <chr>         <chr>   <chr>      <chr>      <chr>      
+ 1        99 YADKIN      000000086335  ER47897 ADAMS      BLAIN      NOAH       
+ 2        99 YADKIN      000000086376  ER47937 ALEXANDER  PERRY      NATHANIEL  
+ 3        99 YADKIN      000000086569  ER48064 ALVARENGA~ KAREN      ESMERALDA  
+ 4        99 YADKIN      000000086849  ER48202 ALVAREZ-A~ PABLO      <NA>       
+ 5        99 YADKIN      000000086392  ER47953 ARCADIO-P~ JAZMIN     <NA>       
+ 6        99 YADKIN      000000086060  ER47741 ARELLANO-~ ALEX       <NA>       
+ 7        99 YADKIN      000000086414  ER47975 ARZATE-HE~ ELIDETH    <NA>       
+ 8        99 YADKIN      000000086336  ER47898 ARZATE-VE~ JESSICA    <NA>       
+ 9        99 YADKIN      000000086371  ER47932 BALL       ALEXIS     NYKOL      
+10        99 YADKIN      000000086147  ER47790 BAUTISTA   ALEXANDRIA ROSE       
+# i 28,446 more rows
+# i 60 more variables: name_suffix_lbl <chr>, status_cd <chr>,
+#   voter_status_desc <chr>, reason_cd <chr>, voter_status_reason_desc <chr>,
+#   res_street_address <chr>, res_city_desc <chr>, state_cd <chr>,
+#   zip_code <dbl>, mail_addr1 <chr>, mail_addr2 <chr>, mail_addr3 <lgl>,
+#   mail_addr4 <lgl>, mail_city <chr>, mail_state <chr>, mail_zipcode <chr>,
+#   full_phone_number <dbl>, confidential_ind <chr>, registr_dt <date>, ...
 \end{verbatim}
 
 Lots of 2004 records in there, which makes sense, since those folks are
@@ -5047,21 +5052,6 @@ have \texttt{lubridate} handy for \texttt{floor\_date}.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-Loading required package: timechange
-\end{verbatim}
-
-\begin{verbatim}
-
-Attaching package: 'lubridate'
-\end{verbatim}
-
-\begin{verbatim}
-The following objects are masked from 'package:base':
-
-    date, intersect, setdiff, union
-\end{verbatim}
-
 The \texttt{floor\_date} function will allow us to group by month,
 instead of a single day.
 
@@ -5091,7 +5081,7 @@ instead of a single day.
  8 1956-05-01             1
  9 1956-10-01             1
 10 1960-04-01             1
-# ... with 624 more rows
+# i 624 more rows
 \end{verbatim}
 
 So, uh, if this data is accurate, then we have 13 registered voters who
@@ -5191,28 +5181,26 @@ And let's examine the full data set.
 
 \begin{verbatim}
 # A tibble: 14 x 21
-   1_lin~1 fec_c~2 tran_id flag_~3 LAST_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-14 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <chr>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: `1_linenumber`, 2: fec_committee_id,
-#   3: flag_orgind, 4: LAST_NAME, 5: first_name, 6: middle_name,
-#   7: `address one`
+   `1_linenumber` fec_committee_id tran_id      flag_orgind LAST_NAME first_name
+   <chr>          <chr>            <chr>        <chr>       <chr>     <chr>     
+ 1 SA11AI         C00694323        AC8C7155172~ IND         Pabis     Sherry    
+ 2 SA11AI         C00694323        A61211F59EB~ IND         Garvey    Brian     
+ 3 SA11AI         C00694323        A9C895B091C~ IND         Huddlest~ Deborah   
+ 4 SA11AI         C00694323        ABAA82A5E70~ IND         Huddlest~ Deborah   
+ 5 SA11AI         C00694323        A45519E3246~ IND         Buonaugu~ Wm        
+ 6 SA11AI         C00694323        A33987D736E~ IND         Huddlest~ Deborah   
+ 7 SA11AI         C00694323        AE7C6D0C074~ IND         Hamilton  Derrick   
+ 8 SA11AI         C00694323        A07D7A1ECE3~ IND         Buonaugu~ Wm        
+ 9 SA11AI         C00694323        A290335F896~ IND         Buonaugu~ Wm        
+10 SA11AI         C00694323        AD6C11068B7~ IND         Buonaugu~ Wm        
+11 SA11AI         C00694323        A99BBCB87D5~ IND         Buonaugu~ Wm        
+12 SA11AI         C00694323        A142B275F78~ IND         Buonaugu~ Wm        
+13 SA11AI         C00694323        AF8E4C98168~ IND         Buonaugu~ Wm        
+14 SA11AI         C00694323        AE7C6D0C074~ IND         Hamilton  Derrick   
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   `address one` <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <chr>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 There are a number of issues with this data set that might get in the
@@ -5284,27 +5272,26 @@ the function \texttt{clean\_names()}
 
 \begin{verbatim}
 # A tibble: 14 x 21
-   x1_li~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-14 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <chr>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: x1_linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   x1_linenumber fec_committee_id tran_id       flag_orgind last_name first_name
+   <chr>         <chr>            <chr>         <chr>       <chr>     <chr>     
+ 1 SA11AI        C00694323        AC8C71551726~ IND         Pabis     Sherry    
+ 2 SA11AI        C00694323        A61211F59EBD~ IND         Garvey    Brian     
+ 3 SA11AI        C00694323        A9C895B091C8~ IND         Huddlest~ Deborah   
+ 4 SA11AI        C00694323        ABAA82A5E70D~ IND         Huddlest~ Deborah   
+ 5 SA11AI        C00694323        A45519E3246C~ IND         Buonaugu~ Wm        
+ 6 SA11AI        C00694323        A33987D736EC~ IND         Huddlest~ Deborah   
+ 7 SA11AI        C00694323        AE7C6D0C0742~ IND         Hamilton  Derrick   
+ 8 SA11AI        C00694323        A07D7A1ECE3C~ IND         Buonaugu~ Wm        
+ 9 SA11AI        C00694323        A290335F896E~ IND         Buonaugu~ Wm        
+10 SA11AI        C00694323        AD6C11068B72~ IND         Buonaugu~ Wm        
+11 SA11AI        C00694323        A99BBCB87D53~ IND         Buonaugu~ Wm        
+12 SA11AI        C00694323        A142B275F787~ IND         Buonaugu~ Wm        
+13 SA11AI        C00694323        AF8E4C981687~ IND         Buonaugu~ Wm        
+14 SA11AI        C00694323        AE7C6D0C0742~ IND         Hamilton  Derrick   
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <chr>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 This function changed \texttt{LAST\_NAME} to \texttt{last\_name}. It put
@@ -5331,27 +5318,26 @@ the \emph{new} name comes first.
 
 \begin{verbatim}
 # A tibble: 14 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-14 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <chr>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+14 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <chr>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 \hypertarget{changing-data-types}{%
@@ -5372,7 +5358,7 @@ so.
 
 \begin{verbatim}
 Error in `summarise()`:
-! Problem while computing `total_amount = sum(amount)`.
+i In argument: `total_amount = sum(amount)`.
 Caused by error in `sum()`:
 ! invalid 'type' (character) of argument
 \end{verbatim}
@@ -5408,27 +5394,26 @@ column name, so it overwrites it.
 
 \begin{verbatim}
 # A tibble: 14 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-14 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+14 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 Notice that the amount has been converted to a
@@ -5481,16 +5466,14 @@ No variable names specified - using all columns.
 
 \begin{verbatim}
 # A tibble: 2 x 22
-  linenu~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-  <chr>    <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
-1 SA11AI   C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
-2 SA11AI   C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
-# ... with 12 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>,
-#   dupe_count <int>, and abbreviated variable names 1: linenumber,
-#   2: fec_committee_id, 3: flag_orgind, 4: last_name, 5: first_name,
-#   6: middle_name, 7: address_one
+  linenumber fec_committee_id tran_id           flag_orgind last_name first_name
+  <chr>      <chr>            <chr>             <chr>       <chr>     <chr>     
+1 SA11AI     C00694323        AE7C6D0C074234DC~ IND         Hamilton  Derrick   
+2 SA11AI     C00694323        AE7C6D0C074234DC~ IND         Hamilton  Derrick   
+# i 16 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>, dupe_count <int>
 \end{verbatim}
 
 In this case, a contribution by Derrick Hamilton in our table is fully
@@ -5517,26 +5500,25 @@ our table
 
 \begin{verbatim}
 # A tibble: 13 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 \hypertarget{cleaning-strings}{%
@@ -5576,26 +5558,25 @@ in concert with \texttt{str\_sub()}, from the \texttt{stringr} package.
 
 \begin{verbatim}
 # A tibble: 13 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 Let's break down this line of code. It says: take the value in each zip
@@ -5628,26 +5609,25 @@ uppercase, subsequent letters lowercase -- using the
 
 \begin{verbatim}
 # A tibble: 13 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 That was enough to standardize two values (CONOWINGO and conowingo). The
@@ -5679,26 +5659,25 @@ if it doesn't, don't change it.
 
 \begin{verbatim}
 # A tibble: 13 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 This is a little complex, so let's break it down.
@@ -5738,26 +5717,25 @@ so.
 
 \begin{verbatim}
 # A tibble: 13 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 Instead of specifying the exact value, we can also solve the problem by
@@ -5792,26 +5770,25 @@ tilde \textasciitilde{} means then) change it to ``Conowingo''.
 
 \begin{verbatim}
 # A tibble: 13 x 21
-   linen~1 fec_c~2 tran_id flag_~3 last_~4 first~5 middl~6 prefix suffix addre~7
-   <chr>   <chr>   <chr>   <chr>   <chr>   <chr>   <lgl>   <lgl>  <lgl>  <chr>  
- 1 SA11AI  C00694~ AC8C71~ IND     Pabis   Sherry  NA      NA     NA     144 Bi~
- 2 SA11AI  C00694~ A61211~ IND     Garvey  Brian   NA      NA     NA     116 Fi~
- 3 SA11AI  C00694~ A9C895~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 4 SA11AI  C00694~ ABAA82~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 5 SA11AI  C00694~ A45519~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 6 SA11AI  C00694~ A33987~ IND     Huddle~ Deborah NA      NA     NA     118 Me~
- 7 SA11AI  C00694~ AE7C6D~ IND     Hamilt~ Derrick NA      NA     NA     553 Be~
- 8 SA11AI  C00694~ A07D7A~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
- 9 SA11AI  C00694~ A29033~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-10 SA11AI  C00694~ AD6C11~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-11 SA11AI  C00694~ A99BBC~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-12 SA11AI  C00694~ A142B2~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-13 SA11AI  C00694~ AF8E4C~ IND     Buonau~ Wm      NA      NA     NA     84 Cle~
-# ... with 11 more variables: address_two <lgl>, city <chr>, state <chr>,
-#   zip <chr>, date <date>, amount <dbl>, aggregate_amount <dbl>,
-#   employer <chr>, occupation <chr>, memo_text <chr>, cycle <dbl>, and
-#   abbreviated variable names 1: linenumber, 2: fec_committee_id,
-#   3: flag_orgind, 4: last_name, 5: first_name, 6: middle_name, 7: address_one
+   linenumber fec_committee_id tran_id          flag_orgind last_name first_name
+   <chr>      <chr>            <chr>            <chr>       <chr>     <chr>     
+ 1 SA11AI     C00694323        AC8C7155172624C~ IND         Pabis     Sherry    
+ 2 SA11AI     C00694323        A61211F59EBD845~ IND         Garvey    Brian     
+ 3 SA11AI     C00694323        A9C895B091C8A4A~ IND         Huddlest~ Deborah   
+ 4 SA11AI     C00694323        ABAA82A5E70D445~ IND         Huddlest~ Deborah   
+ 5 SA11AI     C00694323        A45519E3246C947~ IND         Buonaugu~ Wm        
+ 6 SA11AI     C00694323        A33987D736EC447~ IND         Huddlest~ Deborah   
+ 7 SA11AI     C00694323        AE7C6D0C074234D~ IND         Hamilton  Derrick   
+ 8 SA11AI     C00694323        A07D7A1ECE3C44B~ IND         Buonaugu~ Wm        
+ 9 SA11AI     C00694323        A290335F896EC41~ IND         Buonaugu~ Wm        
+10 SA11AI     C00694323        AD6C11068B72B40~ IND         Buonaugu~ Wm        
+11 SA11AI     C00694323        A99BBCB87D53C45~ IND         Buonaugu~ Wm        
+12 SA11AI     C00694323        A142B275F787E48~ IND         Buonaugu~ Wm        
+13 SA11AI     C00694323        AF8E4C981687E4D~ IND         Buonaugu~ Wm        
+# i 15 more variables: middle_name <lgl>, prefix <lgl>, suffix <lgl>,
+#   address_one <chr>, address_two <lgl>, city <chr>, state <chr>, zip <chr>,
+#   date <date>, amount <dbl>, aggregate_amount <dbl>, employer <chr>,
+#   occupation <chr>, memo_text <chr>, cycle <dbl>
 \end{verbatim}
 
 By using str\_detect(city,``\^{}Conowing''), we pick up any values that
@@ -5941,7 +5918,7 @@ means ``starts with'') a lowercase ``w'' OR (the vertical
  8 WALTERS                 1
  9 WALTERS SPORT           1
 10 WALTERS SPORTS          1
-# ... with 40 more rows
+# i 40 more rows
 \end{verbatim}
 
 There are several problems in this data that will prevent proper
@@ -5976,25 +5953,25 @@ there.
 
 \begin{verbatim}
 # A tibble: 13,108 x 50
-   recipient_n~1 recip~2 commi~3 commi~4 repor~5 repor~6 image~7 line_~8 trans~9
-   <chr>         <chr>   <chr>   <chr>     <dbl> <chr>     <dbl> <chr>   <chr>  
- 1 ST. REGIS HO~ ST. RE~ C00658~ MARK G~    2021 YE      2.02e17 17      SB17.I~
- 2 HARKER, GRAY  HARKER~ C00536~ JOBS, ~    2021 YE      2.02e17 21B     SB21B.~
- 3 REPUBLICAN N~ REPUBL~ C00055~ NY REP~    2021 M2      2.02e17 21B     B35A42~
- 4 JOE'S SEAFOO~ JOE'S ~ C00551~ OORAH!~    2021 M4      2.02e17 21B     SB21B.~
- 5 NATIONAL DEM~ NATION~ C00391~ JIM CO~    2021 Q1      2.02e17 17      BA7DD5~
- 6 NATIONAL DEM~ NATION~ C00454~ MARCIA~    2021 Q1      2.02e17 17      SB17.2~
- 7 CAFE MILANO   CAFE M~ C00391~ JIM CO~    2021 Q1      2.02e17 17      B68639~
- 8 CAPITOL HILL~ CAPITO~ C00383~ CONAWA~    2021 Q1      2.02e17 17      BA078C~
- 9 CAPITOL HILL~ CAPITO~ C00725~ CLIFF ~    2021 Q1      2.02e17 17      17883  
-10 CAPITOL HILL~ CAPITO~ C00383~ CONAWA~    2021 Q1      2.02e17 17      B51CE8~
-# ... with 13,098 more rows, 41 more variables: file_number <dbl>,
+   recipient_name        recipient_clean committee_id committee_name report_year
+   <chr>                 <chr>           <chr>        <chr>                <dbl>
+ 1 ST. REGIS HOTEL       ST. REGIS HOTEL C00658385    MARK GREEN FO~        2021
+ 2 HARKER, GRAY          HARKER, GRAY    C00536540    JOBS, FREEDOM~        2021
+ 3 REPUBLICAN NATIONAL ~ REPUBLICAN NAT~ C00055582    NY REPUBLICAN~        2021
+ 4 JOE'S SEAFOOD PRIME ~ JOE'S SEAFOOD,~ C00551853    OORAH! POLITI~        2021
+ 5 NATIONAL DEMOCRATIC ~ NATIONAL DEMOC~ C00391029    JIM COSTA FOR~        2021
+ 6 NATIONAL DEMOCRATIC ~ NATIONAL DEMOC~ C00454694    MARCIA FUDGE ~        2021
+ 7 CAFE MILANO           CAFE MILANO     C00391029    JIM COSTA FOR~        2021
+ 8 CAPITOL HILL CLUB     CAPITOL HILL C~ C00383828    CONAWAY FOR C~        2021
+ 9 CAPITOL HILL CLUB     CAPITOL HILL C~ C00725465    CLIFF BENTZ F~        2021
+10 CAPITOL HILL CLUB     CAPITOL HILL C~ C00383828    CONAWAY FOR C~        2021
+# i 13,098 more rows
+# i 45 more variables: report_type <chr>, image_number <dbl>,
+#   line_number <chr>, transaction_id <chr>, file_number <dbl>,
 #   entity_type <chr>, entity_type_desc <chr>,
 #   unused_recipient_committee_id <chr>, recipient_committee_id <chr>,
 #   recipient_state <chr>, beneficiary_committee_name <chr>,
-#   national_committee_nonfederal_account <lgl>, disbursement_type <lgl>,
-#   disbursement_type_description <lgl>, disbursement_description <chr>,
-#   memo_code <chr>, memo_code_full <lgl>, disbursement_date <chr>, ...
+#   national_committee_nonfederal_account <lgl>, disbursement_type <lgl>, ...
 \end{verbatim}
 
 To examine changes \texttt{refinr} made, let's examine the changes it
@@ -6032,7 +6009,7 @@ the `.groups` argument.
  8 WALTERS SPORT       WALTERS SPORT           1
  9 WALTERS SPORTS      WALTERS SPORTS          1
 10 WALTER'S SPORTS BAR WALTERS SPORTS BAR      1
-# ... with 42 more rows
+# i 42 more rows
 \end{verbatim}
 
 You can see several changes on the second page of results, including
@@ -6058,25 +6035,25 @@ that one.
 
 \begin{verbatim}
 # A tibble: 13,108 x 50
-   recipient_n~1 recip~2 commi~3 commi~4 repor~5 repor~6 image~7 line_~8 trans~9
-   <chr>         <chr>   <chr>   <chr>     <dbl> <chr>     <dbl> <chr>   <chr>  
- 1 ST. REGIS HO~ ST. RE~ C00658~ MARK G~    2021 YE      2.02e17 17      SB17.I~
- 2 HARKER, GRAY  HARKER~ C00536~ JOBS, ~    2021 YE      2.02e17 21B     SB21B.~
- 3 REPUBLICAN N~ REPUBL~ C00055~ NY REP~    2021 M2      2.02e17 21B     B35A42~
- 4 JOE'S SEAFOO~ JOE'S ~ C00551~ OORAH!~    2021 M4      2.02e17 21B     SB21B.~
- 5 NATIONAL DEM~ NATION~ C00391~ JIM CO~    2021 Q1      2.02e17 17      BA7DD5~
- 6 NATIONAL DEM~ NATION~ C00454~ MARCIA~    2021 Q1      2.02e17 17      SB17.2~
- 7 CAFE MILANO   CAFE M~ C00391~ JIM CO~    2021 Q1      2.02e17 17      B68639~
- 8 CAPITOL HILL~ CAPITO~ C00383~ CONAWA~    2021 Q1      2.02e17 17      BA078C~
- 9 CAPITOL HILL~ CAPITO~ C00725~ CLIFF ~    2021 Q1      2.02e17 17      17883  
-10 CAPITOL HILL~ CAPITO~ C00383~ CONAWA~    2021 Q1      2.02e17 17      B51CE8~
-# ... with 13,098 more rows, 41 more variables: file_number <dbl>,
+   recipient_name        recipient_clean committee_id committee_name report_year
+   <chr>                 <chr>           <chr>        <chr>                <dbl>
+ 1 ST. REGIS HOTEL       ST. REGIS HOTEL C00658385    MARK GREEN FO~        2021
+ 2 HARKER, GRAY          HARKER, GRAY    C00536540    JOBS, FREEDOM~        2021
+ 3 REPUBLICAN NATIONAL ~ REPUBLICAN NAT~ C00055582    NY REPUBLICAN~        2021
+ 4 JOE'S SEAFOOD PRIME ~ JOE'S SEAFOOD,~ C00551853    OORAH! POLITI~        2021
+ 5 NATIONAL DEMOCRATIC ~ NATIONAL DEMOC~ C00391029    JIM COSTA FOR~        2021
+ 6 NATIONAL DEMOCRATIC ~ NATIONAL DEMOC~ C00454694    MARCIA FUDGE ~        2021
+ 7 CAFE MILANO           CAFE MILANO     C00391029    JIM COSTA FOR~        2021
+ 8 CAPITOL HILL CLUB     CAPITOL HILL C~ C00383828    CONAWAY FOR C~        2021
+ 9 CAPITOL HILL CLUB     CAPITOL HILL C~ C00725465    CLIFF BENTZ F~        2021
+10 CAPITOL HILL CLUB     CAPITOL HILL C~ C00383828    CONAWAY FOR C~        2021
+# i 13,098 more rows
+# i 45 more variables: report_type <chr>, image_number <dbl>,
+#   line_number <chr>, transaction_id <chr>, file_number <dbl>,
 #   entity_type <chr>, entity_type_desc <chr>,
 #   unused_recipient_committee_id <chr>, recipient_committee_id <chr>,
 #   recipient_state <chr>, beneficiary_committee_name <chr>,
-#   national_committee_nonfederal_account <lgl>, disbursement_type <lgl>,
-#   disbursement_type_description <lgl>, disbursement_description <chr>,
-#   memo_code <chr>, memo_code_full <lgl>, disbursement_date <chr>, ...
+#   national_committee_nonfederal_account <lgl>, disbursement_type <lgl>, ...
 \end{verbatim}
 
 To examine changes \texttt{refinr} made with this algorithm, let's again
@@ -6116,7 +6093,7 @@ the `.groups` argument.
  8 WALTERS SPORT       WALTERS SPORT           1
  9 WALTERS SPORTS      WALTERS SPORT           1
 10 WALTER'S SPORTS BAR WALTERS SPORTS BAR      1
-# ... with 41 more rows
+# i 41 more rows
 \end{verbatim}
 
 This method also made some good changes, but not in every case. No
@@ -6346,7 +6323,7 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
  8 Cecil             21601  30880     8   103   341    49   727  15110  68819
  9 Charles           72416  24711    19   112   349    83   763  19849 118302
 10 Dorchester         9848   8730     4    19    78    12   148   3348  22187
-# ... with 15 more rows
+# i 15 more rows
 \end{verbatim}
 
 Boom - we're good to go.
@@ -6426,7 +6403,7 @@ Specify the column types or set `show_col_types = FALSE` to quiet this message.
  8 FREEDOM                   594      224 37.71% 
  9 GREENVIEW                 1551     570 36.75% 
 10 HILLHOUSE                 503      167 33.20% 
-# ... with 13 more rows
+# i 13 more rows
 \end{verbatim}
 
 \hypertarget{cleaning-up-the-data-in-r}{%
@@ -6472,9 +6449,12 @@ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 \end{Shaded}
 
 \begin{verbatim}
-Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+Warning: There were 2 warnings in `mutate()`.
+The first warning was:
+i In argument: `voters = as.numeric(voters)`.
+Caused by warning:
+! NAs introduced by coercion
+i Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.
 \end{verbatim}
 
 \begin{Shaded}
@@ -6497,7 +6477,7 @@ Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
  8 FREEDOM                      594   224    37.7
  9 GREENVIEW                   1551   570    36.8
 10 HILLHOUSE                    503   167    33.2
-# ... with 13 more rows
+# i 13 more rows
 \end{verbatim}
 
 Ok, now we have numbers. Next we'll get rid of the rows where
@@ -6527,7 +6507,7 @@ point before it (you can read that filter as ``where cast is NOT NA'').
  8 GREENVIEW                   1551   570    36.8
  9 HILLHOUSE                    503   167    33.2
 10 HORSESHOE BEND              4100  1230    30  
-# ... with 11 more rows
+# i 11 more rows
 \end{verbatim}
 
 All things considered, that was pretty easy. Many - most? - electronic
@@ -6722,7 +6702,7 @@ instance but let's try it. If it works, we should get 24 rows.
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "COUNTY"
+Joining with `by = join_by(COUNTY)`
 \end{verbatim}
 
 \begin{verbatim}
@@ -6739,7 +6719,7 @@ Joining, by = "COUNTY"
  8 Cecil             103725  2020  21601  30880   103   341   784  15110  68819
  9 Charles           166617  2020  72416  24711   112   349   865  19849 118302
 10 Dorchester         32531  2020   9848   8730    19    78   164   3348  22187
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 Since we only have one column in common between the two tables, the join
@@ -6758,7 +6738,7 @@ remove the select function so we don't limit the columns to just three.
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "COUNTY"
+Joining with `by = join_by(COUNTY)`
 \end{verbatim}
 
 Now, with our joined data, we can answer questions in a more useful way.
@@ -6834,7 +6814,7 @@ We can get this by using mutate and arrange:
  8 Howard                        18.7     52.4
  9 Montgomery                    18.1     61.0
 10 Anne Arundel                  17.4     43.0
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 If you know Maryland political demographics, this result isn't too
@@ -6867,7 +6847,7 @@ Let's change that to look at Asian population:
  8 Charles                       3.55     61.2
  9 Harford                       3.15     35.4
 10 St. Mary's                    3.13     35.7
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 Here, Howard and Montgomery County stand out in terms of the percentage
@@ -7116,9 +7096,9 @@ page html, storing it as an object called results.
 
 \begin{verbatim}
 {html_document}
-<html lang="en">
+<html lang="en" manifest="manifest.appcache">
 [1] <head>\n<meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
-[2] <body>\n      <div class="container">\n      <div class="skipNav">\n      ...
+[2] <body>\r\n    <div class="container">  \r\n        <div class="skipNav">\ ...
 \end{verbatim}
 
 If you're running this code in R Studio, in our environment window at
@@ -7181,21 +7161,21 @@ only has one so we're good.
 \begin{verbatim}
 [[1]]
 # A tibble: 25 x 4
-   Jurisdiction     Michael Anthony Peroutka\r\n\r\n\r\nRepubl~1 Antho~2 Other~3
-   <chr>            <chr>                                        <chr>   <chr>  
- 1 Allegany         14,382                                       6,994   16     
- 2 Anne Arundel     91,718                                       121,096 433    
- 3 Baltimore City   14,594                                       128,282 288    
- 4 Baltimore County 100,480                                      170,858 467    
- 5 Calvert          20,275                                       16,647  41     
- 6 Caroline         7,128                                        3,475   13     
- 7 Carroll          44,195                                       26,928  112    
- 8 Cecil            20,750                                       11,844  35     
- 9 Charles          16,042                                       37,945  55     
-10 Dorchester       6,615                                        4,784   16     
-# ... with 15 more rows, and abbreviated variable names
-#   1: `Michael Anthony Peroutka\r\n\r\n\r\nRepublican`,
-#   2: `Anthony G. Brown\r\n\r\n\r\nDemocratic`, 3: `Other Write-Ins`
+   Jurisdiction  Michael Anthony Pero~1 Anthony G. Brown\r\n~2 `Other Write-Ins`
+   <chr>         <chr>                  <chr>                  <chr>            
+ 1 Allegany      14,382                 6,994                  16               
+ 2 Anne Arundel  91,718                 121,096                433              
+ 3 Baltimore Ci~ 14,594                 128,282                288              
+ 4 Baltimore Co~ 100,480                170,858                467              
+ 5 Calvert       20,275                 16,647                 41               
+ 6 Caroline      7,128                  3,475                  13               
+ 7 Carroll       44,195                 26,928                 112              
+ 8 Cecil         20,750                 11,844                 35               
+ 9 Charles       16,042                 37,945                 55               
+10 Dorchester    6,615                  4,784                  16               
+# i 15 more rows
+# i abbreviated names: 1: `Michael Anthony Peroutka\r\n\r\n\r\nRepublican`,
+#   2: `Anthony G. Brown\r\n\r\n\r\nDemocratic`
 \end{verbatim}
 
 In the environment window at right, look at results Note that it's now a
@@ -7228,21 +7208,21 @@ dataframe from our nested list.''
 
 \begin{verbatim}
 # A tibble: 25 x 4
-   Jurisdiction     Michael Anthony Peroutka\r\n\r\n\r\nRepubl~1 Antho~2 Other~3
-   <chr>            <chr>                                        <chr>   <chr>  
- 1 Allegany         14,382                                       6,994   16     
- 2 Anne Arundel     91,718                                       121,096 433    
- 3 Baltimore City   14,594                                       128,282 288    
- 4 Baltimore County 100,480                                      170,858 467    
- 5 Calvert          20,275                                       16,647  41     
- 6 Caroline         7,128                                        3,475   13     
- 7 Carroll          44,195                                       26,928  112    
- 8 Cecil            20,750                                       11,844  35     
- 9 Charles          16,042                                       37,945  55     
-10 Dorchester       6,615                                        4,784   16     
-# ... with 15 more rows, and abbreviated variable names
-#   1: `Michael Anthony Peroutka\r\n\r\n\r\nRepublican`,
-#   2: `Anthony G. Brown\r\n\r\n\r\nDemocratic`, 3: `Other Write-Ins`
+   Jurisdiction  Michael Anthony Pero~1 Anthony G. Brown\r\n~2 `Other Write-Ins`
+   <chr>         <chr>                  <chr>                  <chr>            
+ 1 Allegany      14,382                 6,994                  16               
+ 2 Anne Arundel  91,718                 121,096                433              
+ 3 Baltimore Ci~ 14,594                 128,282                288              
+ 4 Baltimore Co~ 100,480                170,858                467              
+ 5 Calvert       20,275                 16,647                 41               
+ 6 Caroline      7,128                  3,475                  13               
+ 7 Carroll       44,195                 26,928                 112              
+ 8 Cecil         20,750                 11,844                 35               
+ 9 Charles       16,042                 37,945                 55               
+10 Dorchester    6,615                  4,784                  16               
+# i 15 more rows
+# i abbreviated names: 1: `Michael Anthony Peroutka\r\n\r\n\r\nRepublican`,
+#   2: `Anthony G. Brown\r\n\r\n\r\nDemocratic`
 \end{verbatim}
 
 We now have a proper dataframe, albeit with some lengthy column headers.
@@ -7293,7 +7273,7 @@ which we use to replace all the commas with nothing.
  8 Cecil               20750  11844        35
  9 Charles             16042  37945        55
 10 Dorchester           6615   4784        16
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 And there we go. We now have a nice tidy dataframe of Maryland attorney
@@ -7397,7 +7377,7 @@ SF1. That has the major population and housing stuff.
  8 H003001 Total                                OCCUPANCY STATUS
  9 H003002 Total!!Occupied                      OCCUPANCY STATUS
 10 H003003 Total!!Vacant                        OCCUPANCY STATUS
-# ... with 8,949 more rows
+# i 8,949 more rows
 \end{verbatim}
 
 Note: There are thousands of variables in SF1. That's not a typo. Open
@@ -7428,7 +7408,7 @@ If you think that's crazy, try the SF3 file from 2000.
  8 H005001 Total                                       URBAN AND RURAL [7]      
  9 H005002 Total!!Urban                                URBAN AND RURAL [7]      
 10 H005003 Total!!Urban!!Inside urbanized areas        URBAN AND RURAL [7]      
-# ... with 16,510 more rows
+# i 16,510 more rows
 \end{verbatim}
 
 Yes. That's more than 16,000 variables to choose from. I told you.
@@ -7654,20 +7634,19 @@ change and sort it by that change.
 
 \begin{verbatim}
 # A tibble: 24 x 9
-   GEOID NAME             estim~1 estim~2 min2010 max2010 min2020 max2020 change
-   <chr> <chr>              <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>  <dbl>
- 1 24011 Caroline County~   58799   59042   56740   60858   54827   63257  0.413
- 2 24039 Somerset County~   42443   44980   39092   45794   40432   49528  5.98 
- 3 24041 Talbot County, ~   63017   73102   60081   65953   69071   77133 16.0  
- 4 24017 Charles County,~   88825  103678   87268   90382  102024  105332 16.7  
- 5 24019 Dorchester Coun~   45151   52799   43470   46832   49020   56578 16.9  
- 6 24047 Worcester Count~   55487   65396   52749   58225   61540   69252 17.9  
- 7 24045 Wicomico County~   50752   60366   49313   52191   57929   62803 18.9  
- 8 24035 Queen Anne's Co~   81096   96467   78068   84124   91682  101252 19.0  
- 9 24023 Garrett County,~   45760   54542   43729   47791   51055   58029 19.2  
-10 24031 Montgomery Coun~   93373  111812   92535   94211  110451  113173 19.7  
-# ... with 14 more rows, and abbreviated variable names 1: estimate2010,
-#   2: estimate2020
+   GEOID NAME   estimate2010 estimate2020 min2010 max2010 min2020 max2020 change
+   <chr> <chr>         <dbl>        <dbl>   <dbl>   <dbl>   <dbl>   <dbl>  <dbl>
+ 1 24011 Carol~        58799        59042   56740   60858   54827   63257  0.413
+ 2 24039 Somer~        42443        44980   39092   45794   40432   49528  5.98 
+ 3 24041 Talbo~        63017        73102   60081   65953   69071   77133 16.0  
+ 4 24017 Charl~        88825       103678   87268   90382  102024  105332 16.7  
+ 5 24019 Dorch~        45151        52799   43470   46832   49020   56578 16.9  
+ 6 24047 Worce~        55487        65396   52749   58225   61540   69252 17.9  
+ 7 24045 Wicom~        50752        60366   49313   52191   57929   62803 18.9  
+ 8 24035 Queen~        81096        96467   78068   84124   91682  101252 19.0  
+ 9 24023 Garre~        45760        54542   43729   47791   51055   58029 19.2  
+10 24031 Montg~        93373       111812   92535   94211  110451  113173 19.7  
+# i 14 more rows
 \end{verbatim}
 
 So according to this, Somerset and Caroline counties had the smallest
@@ -7741,7 +7720,7 @@ Getting data from the 2016-2020 5-year ACS
  8 24035 Queen Anne's County, Maryland medincome    96467  4785
  9 24037 St. Mary's County, Maryland   medincome    95864  3872
 10 24025 Harford County, Maryland      medincome    94003  2398
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 In this case we don't save the sorted results to a variable, we can just
@@ -8108,7 +8087,7 @@ Then we'll make our aggregate dataframe:
  8 2022-04-08                 619
  9 2022-04-09                 498
 10 2022-04-10                 500
-# ... with 81 more rows
+# i 81 more rows
 \end{verbatim}
 
 And now let's make a line chart to look for patterns in this data.
@@ -8506,9 +8485,22 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
   \FunctionTok{group\_by}\NormalTok{(precinct) }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_polls =} \FunctionTok{sum}\NormalTok{(polls), }\AttributeTok{total\_early =} \FunctionTok{sum}\NormalTok{(early\_voing), }\AttributeTok{total\_absentee =} \FunctionTok{sum}\NormalTok{(absentee), }\AttributeTok{total\_provisional =} \FunctionTok{sum}\NormalTok{(provisional), }\AttributeTok{total\_eligible =} \FunctionTok{sum}\NormalTok{(eligible\_voters))}
 
-\FunctionTok{View}\NormalTok{(pg\_turnout)}
+\FunctionTok{head}\NormalTok{(pg\_turnout)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 6
+  precinct total_polls total_early total_absentee total_provisional
+  <chr>          <dbl>       <dbl>          <dbl>             <dbl>
+1 001-001          275         106            226                38
+2 001-002           99          36             81                16
+3 001-003          231          72            148                39
+4 001-004          149          71            142                28
+5 001-005          240          56            160                32
+6 001-006          151          73             97                10
+# i 1 more variable: total_eligible <dbl>
+\end{verbatim}
 
 Now we can join the precincts to the turnout data.
 
@@ -8613,7 +8605,7 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
  8 Harford           65127  80005     0   238  1182   202  1628  40778 189160
  9 Carroll           33572  63771     0   191   797   102  1033  28139 127605
 10 Charles           74373  23334     0   129   425   143   864  21819 121087
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 So, what do we see here? Montgomery County has the most, followed by
@@ -8654,7 +8646,7 @@ Getting data from the 2017-2021 5-year ACS
  8 24017 Charles County, Maryland      population   165209    NA
  9 24019 Dorchester County, Maryland   population    32486    NA
 10 24021 Frederick County, Maryland    population   267498    NA
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 Ultimately, we're going to join this county population table with our
@@ -8702,55 +8694,123 @@ Downloading feature geometry from the Census website.  To cache shapefiles for u
   |                                                                            
   |===                                                                   |   5%
   |                                                                            
-  |====                                                                  |   5%
-  |                                                                            
   |====                                                                  |   6%
   |                                                                            
   |=====                                                                 |   7%
   |                                                                            
-  |======                                                                |   8%
+  |=====                                                                 |   8%
   |                                                                            
-  |=======                                                               |  11%
+  |======                                                                |   9%
   |                                                                            
-  |========                                                              |  11%
+  |===========                                                           |  15%
   |                                                                            
-  |========                                                              |  12%
-  |                                                                            
-  |=========                                                             |  12%
-  |                                                                            
-  |============                                                          |  18%
+  |===========                                                           |  16%
   |                                                                            
   |=============                                                         |  18%
   |                                                                            
   |==============                                                        |  20%
   |                                                                            
-  |=====================                                                 |  30%
+  |===================                                                   |  27%
   |                                                                            
-  |==========================                                            |  37%
+  |===================                                                   |  28%
   |                                                                            
-  |==========================                                            |  38%
+  |====================                                                  |  28%
   |                                                                            
-  |===========================                                           |  38%
+  |====================                                                  |  29%
   |                                                                            
-  |===============================                                       |  44%
+  |============================                                          |  40%
   |                                                                            
-  |==================================                                    |  49%
+  |=============================                                         |  41%
   |                                                                            
-  |=========================================                             |  58%
+  |================================                                      |  46%
   |                                                                            
-  |==========================================                            |  60%
+  |=================================                                     |  47%
   |                                                                            
-  |============================================                          |  62%
+  |==========================================                            |  61%
   |                                                                            
-  |============================================                          |  63%
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
   |                                                                            
   |=====================================================                 |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |======================================================                |  78%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |========================================================              |  79%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |==========================================================            |  84%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |===========================================================           |  85%
+  |                                                                            
+  |============================================================          |  85%
   |                                                                            
   |============================================================          |  86%
   |                                                                            
   |=============================================================         |  87%
   |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |===============================================================       |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |===============================================================       |  91%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
   |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |===================================================================   |  95%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================|  99%
   |                                                                            
   |======================================================================| 100%
 \end{verbatim}
@@ -8862,7 +8922,7 @@ First 10 features:
  8 Cecil             20666  31961     0   111   447   104   678  16360  70327
  9 Charles           74373  23334     0   129   425   143   864  21819 121087
 10 Dorchester         9608   8965     0    22   110    33   191   3745  22674
-# ... with 14 more rows
+# i 14 more rows
 \end{verbatim}
 
 If they're going to join properly, we need to clean one of them up to
@@ -8920,7 +8980,7 @@ Now we can join them.
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "County"
+Joining with `by = join_by(County)`
 \end{verbatim}
 
 \begin{Shaded}
@@ -8987,7 +9047,7 @@ lowest to see what trends we can identify just from the table.
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "County"
+Joining with `by = join_by(County)`
 \end{verbatim}
 
 \begin{Shaded}
@@ -9231,9 +9291,21 @@ that's the \texttt{text} column:
 \begin{Highlighting}[]
 \NormalTok{unique\_words }\OtherTok{\textless{}{-}}\NormalTok{ releases }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(text) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{unnest\_tokens}\NormalTok{(word, text)}
-\FunctionTok{View}\NormalTok{(unique\_words)}
+\FunctionTok{head}\NormalTok{(unique\_words)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 1
+  word   
+  <chr>  
+1 u.s    
+2 senator
+3 ben    
+4 cardin 
+5 d      
+6 md     
+\end{verbatim}
 
 Now we can look at the top words in this dataset. Let's limit ourselves
 to making a plot of the top 25 words:
@@ -9314,7 +9386,7 @@ get a percent of the words our top 10 words represent.
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "word"
+Joining with `by = join_by(word)`
 Selecting by percent
 \end{verbatim}
 
@@ -9367,7 +9439,7 @@ Then we can create top 10 lists for both of them and compare:
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "word"
+Joining with `by = join_by(word)`
 Selecting by percent
 \end{verbatim}
 
@@ -9399,7 +9471,7 @@ Selecting by percent
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "word"
+Joining with `by = join_by(word)`
 Selecting by percent
 \end{verbatim}
 
@@ -9573,7 +9645,7 @@ which has nothing to do with the Microsoft search engine. Let's load it:
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "word"
+Joining with `by = join_by(word)`
 \end{verbatim}
 
 \begin{Shaded}
@@ -9585,15 +9657,44 @@ Joining, by = "word"
 \end{Shaded}
 
 \begin{verbatim}
-Joining, by = "word"
+Joining with `by = join_by(word)`
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{View}\NormalTok{(bing\_word\_counts\_2021)}
-\FunctionTok{View}\NormalTok{(bing\_word\_counts\_2022)}
+\FunctionTok{head}\NormalTok{(bing\_word\_counts\_2021)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 3
+  word      sentiment     n
+  <chr>     <chr>     <int>
+1 support   positive    902
+2 work      positive    465
+3 critical  negative    357
+4 well      positive    312
+5 important positive    301
+6 relief    positive    278
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(bing\_word\_counts\_2022)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 3
+  word      sentiment     n
+  <chr>     <chr>     <int>
+1 support   positive    607
+2 work      positive    307
+3 important positive    184
+4 critical  negative    183
+5 well      positive    176
+6 emergency negative    144
+\end{verbatim}
 
 Gauging the sentiment of a word can be heavily dependent on the context,
 and as with other types of text analysis sometimes larger patterns are
@@ -9689,20 +9790,21 @@ Now let's load the data we'll be using. It has five fields:
 
 \begin{verbatim}
 # A tibble: 51 x 5
-   state_name   vote_2016 pct_trump businesses_receiving_ppe_pct ppe_amount_pe~1
-   <chr>        <chr>         <dbl>                        <dbl>           <dbl>
- 1 North Dakota Trump          63.0                           58            7928
- 2 Nebraska     Trump          58.8                           56            7244
- 3 South Dakota Trump          61.5                           53            6541
- 4 Oklahoma     Trump          65.3                           50            6499
- 5 Mississippi  Trump          57.9                           49            5674
- 6 Iowa         Trump          51.2                           48            6642
- 7 Kansas       Trump          56.6                           47            7087
- 8 Hawaii       Clinton        29.4                           47            7417
- 9 Maine        Clinton        43.5                           45            6617
-10 Arkansas     Trump          60.6                           44            5549
-# ... with 41 more rows, and abbreviated variable name
-#   1: ppe_amount_per_employee
+   state_name  vote_2016 pct_trump businesses_receiving~1 ppe_amount_per_emplo~2
+   <chr>       <chr>         <dbl>                  <dbl>                  <dbl>
+ 1 North Dako~ Trump          63.0                     58                   7928
+ 2 Nebraska    Trump          58.8                     56                   7244
+ 3 South Dako~ Trump          61.5                     53                   6541
+ 4 Oklahoma    Trump          65.3                     50                   6499
+ 5 Mississippi Trump          57.9                     49                   5674
+ 6 Iowa        Trump          51.2                     48                   6642
+ 7 Kansas      Trump          56.6                     47                   7087
+ 8 Hawaii      Clinton        29.4                     47                   7417
+ 9 Maine       Clinton        43.5                     45                   6617
+10 Arkansas    Trump          60.6                     44                   5549
+# i 41 more rows
+# i abbreviated names: 1: businesses_receiving_ppe_pct,
+#   2: ppe_amount_per_employee
 \end{verbatim}
 
 \bookmarksetup{startatroot}

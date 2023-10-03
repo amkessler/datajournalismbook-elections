@@ -365,18 +365,17 @@ dbl  (1): amount
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(maryland_expenses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 13
-  expen…¹ payee…² address payee…³ amount commi…⁴ expen…⁵ expen…⁶ expen…⁷ expen…⁸
-  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 3/1/22  Bank o… 10 Lig… Busine…   30.0 Gordon… Other … Bank C… &lt;NA&gt;    EFT    
-2 4/1/22  Bank o… 10 Lig… Busine…   30.0 Gordon… Other … Bank C… &lt;NA&gt;    EFT    
-3 5/1/22  Bank o… 10 Lig… Busine…   30.0 Gordon… Other … Bank C… &lt;NA&gt;    EFT    
-4 6/30/22 Meta    1 Hack… Busine…   26.0 Hazel … Media   Online… &lt;NA&gt;    Debit …
-5 6/13/22 Antiet… 1000 W… Busine… 9506   Barr  … Media   TV      &lt;NA&gt;    Check  
-6 6/10/22 Meta    1 Hack… Busine…   35.4 Ali  S… Media   Online… &lt;NA&gt;    Debit …
-# … with 3 more variables: vendor &lt;chr&gt;, fundtype &lt;chr&gt;, comments &lt;chr&gt;, and
-#   abbreviated variable names ¹​expenditure_date, ²​payee_name, ³​payee_type,
-#   ⁴​committee_name, ⁵​expense_category, ⁶​expense_purpose, ⁷​expense_toward,
-#   ⁸​expense_method</code></pre>
+  expenditure_date payee_name         address   payee_type amount committee_name
+  &lt;chr&gt;            &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;         
+1 3/1/22           Bank of America    10 Light… Business/…   30.0 Gordon Feinbl…
+2 4/1/22           Bank of America    10 Light… Business/…   30.0 Gordon Feinbl…
+3 5/1/22           Bank of America    10 Light… Business/…   30.0 Gordon Feinbl…
+4 6/30/22          Meta               1 Hacker… Business/…   26.0 Hazel  Kristi…
+5 6/13/22          Antietam broadband 1000 Wil… Business/… 9506   Barr  John Fr…
+6 6/10/22          Meta               1 Hacker… Business/…   35.4 Ali  Saqib Fr…
+# ℹ 7 more variables: expense_category &lt;chr&gt;, expense_purpose &lt;chr&gt;,
+#   expense_toward &lt;chr&gt;, expense_method &lt;chr&gt;, vendor &lt;chr&gt;, fundtype &lt;chr&gt;,
+#   comments &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>Take a look at that first column, expenditure_date. It <em>looks</em> like a date, but see the <code>&lt;chr</code> right below the column name? That means R thinks it’s actually a character column. What we need to do is make it into an actual date column, which lubridate is very good at doing. It has a variety of functions that match the format of the data you have. In this case, the current format is <code>m/d/y</code>, and the lubridate function is called <code>mdy</code> that we can use with mutate:</p>
@@ -386,18 +385,17 @@ dbl  (1): amount
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(maryland_expenses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 13
-  expenditure_d…¹ payee…² address payee…³ amount commi…⁴ expen…⁵ expen…⁶ expen…⁷
-  &lt;date&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 2022-03-01      Bank o… 10 Lig… Busine…   30.0 Gordon… Other … Bank C… &lt;NA&gt;   
-2 2022-04-01      Bank o… 10 Lig… Busine…   30.0 Gordon… Other … Bank C… &lt;NA&gt;   
-3 2022-05-01      Bank o… 10 Lig… Busine…   30.0 Gordon… Other … Bank C… &lt;NA&gt;   
-4 2022-06-30      Meta    1 Hack… Busine…   26.0 Hazel … Media   Online… &lt;NA&gt;   
-5 2022-06-13      Antiet… 1000 W… Busine… 9506   Barr  … Media   TV      &lt;NA&gt;   
-6 2022-06-10      Meta    1 Hack… Busine…   35.4 Ali  S… Media   Online… &lt;NA&gt;   
-# … with 4 more variables: expense_method &lt;chr&gt;, vendor &lt;chr&gt;, fundtype &lt;chr&gt;,
-#   comments &lt;chr&gt;, and abbreviated variable names ¹​expenditure_date,
-#   ²​payee_name, ³​payee_type, ⁴​committee_name, ⁵​expense_category,
-#   ⁶​expense_purpose, ⁷​expense_toward</code></pre>
+  expenditure_date payee_name         address   payee_type amount committee_name
+  &lt;date&gt;           &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;         
+1 2022-03-01       Bank of America    10 Light… Business/…   30.0 Gordon Feinbl…
+2 2022-04-01       Bank of America    10 Light… Business/…   30.0 Gordon Feinbl…
+3 2022-05-01       Bank of America    10 Light… Business/…   30.0 Gordon Feinbl…
+4 2022-06-30       Meta               1 Hacker… Business/…   26.0 Hazel  Kristi…
+5 2022-06-13       Antietam broadband 1000 Wil… Business/… 9506   Barr  John Fr…
+6 2022-06-10       Meta               1 Hacker… Business/…   35.4 Ali  Saqib Fr…
+# ℹ 7 more variables: expense_category &lt;chr&gt;, expense_purpose &lt;chr&gt;,
+#   expense_toward &lt;chr&gt;, expense_method &lt;chr&gt;, vendor &lt;chr&gt;, fundtype &lt;chr&gt;,
+#   comments &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>Now look at the expenditure_date column: R says it’s a date column and it looks like we want it to: YYYY-MM-DD. Accept no substitutes.</p>
