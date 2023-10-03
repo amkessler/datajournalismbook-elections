@@ -42,7 +42,7 @@ The rds file we're going to read in contains individual campaign contributions f
 
 So step 1 is to import the data. The code to import the data looks like this:
 
-`maryland_winred_contributions <- read_rds("maryland_winred.rds")`
+`maryland_winred_contributions <- read_rds("data/maryland_winred.rds")`
 
 Let's unpack that.
 
@@ -119,9 +119,7 @@ Here's the code to count the number of contributions to each recipient:
 ```{r}
 maryland_winred_contributions %>%
   group_by(memo_text) %>%
-  summarise(
-    count_contribs = n()
-  )
+  summarise(count_contribs = n())
 ```
 
 So let's walk through that.
@@ -139,9 +137,7 @@ So we'll add another "and then do this" symbol -- %\>% -- and use a new function
 ```{r}
 maryland_winred_contributions %>%
   group_by(memo_text) %>%
-  summarise(
-    count_contribs = n()
-  ) %>%
+  summarise(count_contribs = n()) %>%
   arrange(desc(count_contribs))
 ```
 
@@ -156,9 +152,7 @@ We can group by "memo_text" and "date" to see how many contributions occurred on
 ```{r}
 maryland_winred_contributions %>%
   group_by(memo_text, date) %>%
-  summarise(
-    count_contribs = n()
-  ) %>%
+  summarise(count_contribs = n()) %>%
   arrange(memo_text, date)
 ```
 
